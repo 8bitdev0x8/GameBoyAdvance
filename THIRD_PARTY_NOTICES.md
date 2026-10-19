@@ -10,7 +10,7 @@ The existing repository's `LICENSE` is GNU GPL version 3. It is retained unchang
 - The locally modified files under `GBAPrototype/GBAFeather/src/core/` and `GBAPrototype/GBAFeather/src/gba/` are not published. This includes the modified ARM7 interpreter, bus, PPU, APU, IRQ, DMA, timers, cartridge logic and core renderer worker.
 - No patch archive, old source ZIP, or compiled emulator image is included as a substitute for those excluded sources. Permission or a licensed replacement is needed for a complete public implementation.
 
-The published integration files refer to that absent API to document the local system. They do not make this a complete rebuildable v24 release.
+The published integration files refer to that absent API to document the local system. They do not make this a complete rebuildable v28 release.
 
 ## tinf: included with notices
 

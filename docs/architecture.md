@@ -1,12 +1,12 @@
 # Architecture of the RP2350 GBA experiment
 
-This describes the local **v24** implementation, including the excluded emulator core. The original frontend and hardware support files are published; core implementation details are documented without redistributing its sources. See [publication boundaries](../THIRD_PARTY_NOTICES.md).
+This describes the local **v28** implementation, including the excluded emulator core. The original frontend and hardware support files are published; core implementation details are documented without redistributing its sources. See [publication boundaries](../THIRD_PARTY_NOTICES.md).
 
 ## Three different timing domains
 
 It helps to distinguish controller sampling, guest execution and monitor refresh. Bluetooth reports arrive independently of emulation. UART forwards the newest report at up to 100 Hz. The GBA interpreter advances a guest cycle counter at the modeled hardware rate, but it can take much longer than one real second to emulate one guest second. HSTX continues generating a 60 Hz monitor signal from the last framebuffer throughout that work.
 
-The guest model uses 16,777,216 cycles/second, 1232 cycles/scanline and 228 scanlines/frame: 280896 cycles per frame, or about 59.73 guest frames per second at full speed. At 5 completed guest frames per wall-clock second, the game runs far below real-time. The HUD FPS counts completed emulated frames rather than HDMI refreshes.
+The guest model uses 16,777,216 cycles/second, 1232 cycles/scanline and 228 scanlines/frame: 280896 cycles per frame, or about 59.73 guest frames per second at full speed. At 7 completed guest frames per wall-clock second, the game runs far below real-time. The HUD FPS counts completed emulated frames rather than HDMI refreshes.
 
 ## Controller acquisition on ESP32
 
@@ -46,13 +46,15 @@ Boot uses a Cult-of-GBA replacement BIOS. Earlier HLE-only boot did not boot the
 
 | Execution context | Work |
 | --- | --- |
-| Core 0 main loop | ARM7 interpretation, guest hardware scheduling, UART input, HUD and presentation |
-| Core 0 video IRQ | Original Adafruit HSTX DMA handler, wrapped with a completion counter |
-| Core 1 | GBA scanline rendering through a release/acquire mailbox |
+| Core 0 main loop | ARM7 interpretation, guest hardware scheduling, UART input, HUD and frame accounting |
+| Core 0 video IRQ | Original Adafruit HSTX DMA handler, wrapped with completion and handler-time counters |
+| Core 1 | GBA scanline rendering into a 480-byte SRAM row, RGB565 conversion and direct display writes through a release/acquire mailbox |
 
-The worker permits one pending scanline. Core 0 can overlap unrelated CPU work with core 1 drawing, but must synchronize before palette/VRAM/OAM writes, video-register changes, relevant DMA operations, reset or presentation. Frames are drained before the frontend reads their framebuffer. Core 1 has an explicit 8 KiB SRAM stack and 64-byte canary.
+The worker permits one pending scanline. Core 0 can overlap unrelated CPU work with core 1 drawing. Changed palette/VRAM/OAM writes, video-register accesses, relevant DMA operations, reset and frame completion retain synchronization. Core 0 is the sole memory writer; core 1 only reads those arrays. V28 can compare an effective stored video-memory value while a job is pending: an identical value needs no store, join or dirty/cache mutation. A changed value still joins before shared memory changes. Guest timing/access bookkeeping is retained in both cases.
 
-This split does not double emulator speed: CPU interpretation remains serial, memory and video resources are shared, and synchronization limits overlap. The old `C1` counter counted completed scanline jobs, including unchanged lines, and did not prove that game logic or visible pixels were advancing.
+The worker joins previous work before checking dirty flags; clean rows keep their existing display pixels. Frame completion drains pending work. HDMI recovery drains and detaches the worker before freeing the display allocation, restores backed-up pixels and rebinds the new target. Core 1 has an explicit 8 KiB SRAM stack and 64-byte canary. The legacy PPU framebuffer allocation remains but is stale during direct output; captures must use the actual display path.
+
+Neither core has a measured complete busy/stall/idle utilization profile yet. This split does not double emulator speed: CPU interpretation remains serial, memory and video resources are shared, and synchronization limits overlap. The old `C1` counter counted completed scanline jobs, including unchanged lines, and did not prove that game logic or visible pixels were advancing.
 
 ## Storage and on-demand decompression
 
@@ -94,13 +96,13 @@ PSRAM provides capacity; internal SRAM provides lower-latency access. The port d
 | Renderer stack | 8192 bytes plus 64-byte canary |
 | Replacement BIOS, core state, renderer caches and hot code | Additional runtime/linked SRAM use |
 
-These categories are not additive to the compiler's static-SRAM total: some are already included in it, while others are runtime allocations. V24 reports **223896 static bytes** and **284000 bytes between `__end__` and `__HeapLimit` before dynamic allocations**, with the main stack reserved above that. This is not a runtime free-heap measurement.
+These categories are not additive to the compiler's static-SRAM total: some are already included in it, while others are runtime allocations. V28 reports **227108 static bytes** and **280788 bytes between `__end__` and `__HeapLimit` before dynamic allocations**, with the main stack reserved above that. This is not a runtime free-heap measurement.
 
 | Fixed PSRAM arena allocation | Bytes |
 | --- | ---: |
 | Video recovery backup | 153600 |
 | Decoded ROM cache | 7208960 |
-| GBA framebuffer | 76800 |
+| Legacy GBA framebuffer, retained but stale during direct output | 76800 |
 | GBA EWRAM | 262144 |
 | Reusable maximum save reservation | 131072 |
 | **Used** | **7832576** |
@@ -113,9 +115,9 @@ The arena occupies 7.5 MiB and leaves a separate 512 KiB outside it for the SDK.
 
 The working frontend uses `DVHSTX16` with a 320x240 RGB565 framebuffer. The driver generates 640x480/60 Hz DVI-compatible video over the HSTX adapter's HDMI connector. There is no HDMI audio.
 
-The GBA PPU produces 240x160 RGB555 pixels in PSRAM. Core 0 converts and copies these into the display buffer at `(40,48)`, leaving room for diagnostics. The game aspect ratio is preserved. A single display buffer can tear while HSTX scans it.
+Since v26, core 1 renders each dirty 240-pixel RGB555 scanline into 480 bytes of SRAM, converts it to RGB565 and writes it into the display rectangle at `(40,48)`. This bypasses the old PSRAM framebuffer write/read round trip and core-0 full-frame copy. Conversion/presentation now contributes to Draw. Copy near zero does not mean pixel conversion disappeared. The game aspect ratio is preserved. A single display buffer can tear while HSTX scans it.
 
-HSTX uses DMA channels 0-2 in the tested library configuration and invokes a per-scanline interrupt at roughly 31400-31500 calls/second in user reports. The original handler performs video work as well as acknowledging IRQs. The wrapper counts completions and preserves the original handler. That interrupt rate is a workload clue, not a measured CPU-utilization percentage.
+HSTX uses DMA channels 0-2 in the tested library configuration and invokes a per-scanline interrupt at roughly 31400-31500 calls/second in user reports. The original handler performs video work as well as acknowledging IRQs. The wrapper preserves the original handler. V28 counts completions and adds handler time in `ms/s`, excluding some entry/exit/wrapper overhead and adding two timer reads per IRQ. The original handler still expands 320-pixel source rows to 640 output pixels in software. Its measured time has not yet been supplied; IRQ rate alone does not establish utilization.
 
 The emulator sets the CPU to **240 MHz** and PSRAM to **30 MHz**, preserving the separate video clock. The memory timing code runs from SRAM, applies the slower memory divisor before increasing CPU speed, and uses legal QMI field values. The build retains a 16 KiB main stack and distinct scratch-memory placement for the video handler.
 
@@ -125,4 +127,22 @@ Native instruction sampling located Sonic repeatedly reading DISPSTAT's VBlank s
 
 Acceleration requires repeated stable CPU registers, flags, bus/prefetch/latch state, fetch age and loop period. It advances only whole redundant iterations before the next scheduled hardware event, retains a normal-execution tail and preserves the interpreter's timer-service instruction phase. It changes neither ROM data nor guest frame timing and does not skip rendering frames.
 
-The 6000-frame native test bypasses 347342144 of 1685292894 guest cycles, or **20.61%**. The board's latest `VBskip` report is **15-21%**, with about **5 FPS**. `VBskip` measures guest cycles bypassed during the HUD interval; it is not CPU idle time, speedup or a promise of full-speed emulation.
+The 6000-frame native test bypasses 347342144 of 1685292894 guest cycles, or **20.61%**. The board's latest v28 `VBskip` report is **12%**, with about **7 FPS**. `VBskip` measures guest cycles bypassed during the HUD interval; it is not CPU idle time, speedup or a promise of full-speed emulation.
+
+## Interpreter and memory-path work through v28
+
+V25 inlines small unchanged IRQ/deadline/halt/prefetch helpers and moves three hot ROM-cache callbacks into SRAM. The inspected interpreter loop's static call sites fell from 20 to 12; that compiler observation is not a proportional FPS claim.
+
+V27 specializes common instruction fetches while keeping ordinary bus fallback for special cases. It returns value/cycles in a scalar instead of the general data-access result and caches the next timer deadline, with an inline guard before entering the large event handler. Independent nonempty Thumb-transfer tests also exposed and fixed LDMIA/STMIA base-in-list behavior. Those exceptional cases were not reached by the scripted Sonic sequence. See the [core audit](core-audit-v27.md).
+
+V28 avoids dirty marking for unchanged storage display-register writes without changing the existing register merge/flag model. Small changed physical VRAM ranges invalidate only overlapping decoded 4bpp/8bpp row-cache slots; large or unknown changes use the conservative epoch path. A real video change still marks all scanlines dirty. Fast VRAM DMA compares values, aggregates changed physical bytes and invalidates once after a joined burst. Scalar stores and the SRAM source helper avoid per-unit flash calls. In-range generic bus helpers avoid runtime modulo.
+
+The native sequence still submits 958723 worker jobs across 6000 frames, nearly all visible rows. The improvement targets redundant stores/joins and tile decoding; it does not eliminate most rendering. Guest timing, ROM data and frame count are preserved.
+
+## Measurement facilities and open questions
+
+V28 startup stage 13 measures existing SRAM IWRAM and PSRAM EWRAM before guest reset, without an extra memory allocation. It times 131072 32-bit operations per column: sequential reads, dependent pointer-chain reads, sequential writes and scattered writes. The table compares SRAM 32 KiB, PSRAM 32 KiB and PSRAM 256 KiB, then remains visible for 15 seconds. Results include cache, loop and live HDMI interrupts; they are not isolated raw-chip latency or simultaneous emulation/rendering measurements. The normal reset clears the test buffers before executing guest code.
+
+PSRAM access, CPU decoding, flash helper calls, synchronization and HDMI work can all contribute. Zero software ROM-page misses says nothing by itself about PSRAM working-RAM stalls or physical XIP-cache misses. UART uses about 8.6 KB/s at its maximum report rate and its polling is bounded; its parsing/ISR cost has not been separately measured. Low guest FPS also delays input processing independently of UART delivery.
+
+The [performance and profiling record](performance-v28.md) separates the implemented benchmark/IRQ timer from proposed per-core PC sampling, DWT and bus counters, controlled tests, decoded instruction caching, dynamic recompilation, interpolator use and DMA scanout redesign. None of those proposals has an established speedup. Latest v28 hardware: Run 113, Draw 22, Copy 0, Wait 14 ms/frame, about 7 FPS. Wait belongs to Run and Draw overlaps Run; these are not additive utilization measurements.

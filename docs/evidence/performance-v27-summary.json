@@ -1,0 +1,109 @@
+{
+  "version": 27,
+  "rom": "Sonic Advance 3 (Europe)",
+  "fixes": [
+    "Thumb LDMIA retains loaded base when present in a nonempty register list",
+    "Thumb STMIA stores updated base when it is later in a nonempty list, old base when first"
+  ],
+  "performance_changes": [
+    "Fast IWRAM/EWRAM and active GamePak-prefetch instruction reads, scalar value/cycle return, ordinary-reader fallback for special cases",
+    "Cached timer event deadline maintained across reset/writes/events, inline early guard before heavy handler prologue",
+    "Identical FIFO request checks inlined and prefetch bookkeeping forced inline to avoid flash helper trips",
+    "Nonempty Thumb multiple transfer iterates selected registers; popcount needed only for exceptional store-base case"
+  ],
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "build": "Arduino CLI -O3 C++20, separate sources, unchanged v26 flags/clock/linker/HDMI/IRQ/direct pipeline",
+  "arduino_reported_program_bytes": 4942924,
+  "static_sram_bytes": 225936,
+  "additional_static_sram_vs_v26": 624,
+  "heap_capacity_before_dynamic_allocations": 281968,
+  "main_stack_bytes": 16384,
+  "core1_stack_bytes": 8192,
+  "psram_arena_used_bytes": 7832576,
+  "psram_arena_spare_bytes": 31744,
+  "uf2_bytes": 10008064,
+  "flash_address_span_bytes": 5003776,
+  "sha256": "4e3b09fbba8d621cc3c04def30c26e09eb0072bca38374ff233b71ea3a80901f",
+  "initialized_ram_load_bytes_verified": 48460,
+  "validation": "PASS UF2 headers/order/count/flash bounds, vector/stacks/PSRAM, exact packed ROM, ELF initialized RAM, hot fetch/timer/render SRAM placement; same v26 frontend except version and enabling fast fetch; preserved clock/build/linker/PPU/render/cartridge/IRQ/DMA sources",
+  "preserved_v26_sources_verified": [
+    "GBAFeather/BoardStartup.h",
+    "GBAFeather/CompressedRom.h",
+    "build.ps1",
+    "linker/feather-8mb-stack16k.ld",
+    "GBAFeather/src/core/ppu.cpp",
+    "GBAFeather/src/gba/core/ppu.hpp",
+    "GBAFeather/src/core/render_worker.cpp",
+    "GBAFeather/src/gba/core/render_worker.hpp",
+    "GBAFeather/src/core/emulator.cpp",
+    "GBAFeather/src/gba/core/emulator.hpp",
+    "GBAFeather/src/core/cartridge.cpp",
+    "GBAFeather/src/gba/core/cartridge.hpp",
+    "GBAFeather/src/core/dma.cpp",
+    "GBAFeather/src/gba/core/dma.hpp",
+    "GBAFeather/src/core/irq.cpp",
+    "GBAFeather/src/gba/core/irq.hpp"
+  ],
+  "independent_thumb_cases": 8160,
+  "before_fix_failures_reproduced": [
+    "STMIA later-base store",
+    "LDMIA loaded-base writeback"
+  ],
+  "mixed_fetch_comparisons": 30000,
+  "timer_operations_against_independent_v26": 60000,
+  "native_frames": 6000,
+  "native_status": "PASS full CPU/banked/flags, exact cycles, bus/prefetch/latches, EWRAM/IWRAM and direct RGB565 pixels/margins; original ordinary fetch vs compressed optimized fetch; output target replacement at frame 3000",
+  "checkpoints_identical_to_v26": 20,
+  "native_final_pc": "080bcca6",
+  "native_final_hash": "5ba30470",
+  "native_guest_cycles": 1685292894,
+  "native_input_reads": 11861,
+  "native_instruction_fetches": 109063662,
+  "native_fast_instruction_fetches": 89126473,
+  "native_fast_fetch_coverage_percent": 81.7196776319504,
+  "native_thumb_corrected_case_executions": {
+    "loads": 0,
+    "stores": 0
+  },
+  "native_vblank_bypassed_cycles": 347342144,
+  "native_worker_jobs": 958816,
+  "baseline_v26_hardware": {
+    "fps_range": [
+      6,
+      7
+    ],
+    "vblank_skip_percent_range": [
+      6,
+      12
+    ],
+    "draw_ms_per_frame": 49,
+    "copy_ms_per_frame": 0,
+    "wait_ms_per_frame": 26,
+    "run_ms_per_frame": null,
+    "rom_misses_per_second": 0,
+    "decode_ms_per_second_range": [
+      0,
+      19
+    ]
+  },
+  "fallback_v26_sha256": "4834c2b0a79d2b7bb5ef93bf10f8c312f1d0f5e1e66308a20b415d79367ef2f3",
+  "hardware_tested": true,
+  "hardware_fps": 7,
+  "limits": "Confirmed working at user-reported average 7 FPS; scene/duration unspecified, occasional ROM spikes and HDMI resets reported. Wait is included in Run; Run and Draw overlap. Fast-fetch coverage is not speedup. Fixed Thumb cases were not reached by the scripted Sonic sequence. Empty register lists and ARM block-transfer PC/base edge cases remain accuracy work. Same-core comparisons do not prove original hardware or full gameplay. Native run reaches language/name entry. 30/60 FPS not demonstrated. Keep core/ROM firmware local.",
+  "hardware_report": {
+    "fps_average": 7,
+    "pad": "ON",
+    "vblank_skip_percent": 10,
+    "run_ms_per_frame": 121,
+    "draw_ms_per_frame": 33,
+    "copy_ms_per_frame": 0,
+    "wait_ms_per_frame": 32,
+    "hdmi_resets": 5,
+    "irq_per_second": 31495,
+    "rom_misses_per_second_usual": 0,
+    "decode_ms_per_second_usual": 0,
+    "occasional_rom_miss_decode_spikes": true,
+    "scene": null
+  }
+}

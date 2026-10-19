@@ -8,6 +8,7 @@
 #include "UartProtocol.h"
 #include "src/ReplacementBios.h"
 #include "BoardStartup.h"
+#include "MemoryBenchmark.h"
 #include <hardware/watchdog.h>
 #include <hardware/structs/watchdog.h>
 #include <hardware/exception.h>
@@ -23,7 +24,7 @@ extern "C" uint8_t __StackBottom, __StackTop;
 void textLine(int y,const char* message,uint16_t color=0xffff);
 uint16_t gbaKeys();
 
-constexpr uint32_t BOOT_MAGIC=0x47424124;
+constexpr uint32_t BOOT_MAGIC=0x47424128;
 const char* bootStageName(uint32_t stage) {
   switch(stage) {
     case 1:return "1: VERIFY ROM BLOCKS";
@@ -38,6 +39,7 @@ const char* bootStageName(uint32_t stage) {
     case 10:return "10: RESTART HDMI OUTPUT";
     case 11:return "11: START CORE 1 RENDERER";
     case 12:return "12: VERIFY LARGE CACHE RETENTION";
+    case 13:return "13: MEASURE MEMORY ACCESS";
     default:return gbaBootStepName(stage);
   }
 }
@@ -72,17 +74,23 @@ uint32_t emulatedFrames=0,fps=0,lastFps=0,fpsFrames=0;
 uint32_t lastProfileMisses=0,lastProfileInflate=0;
 uint64_t lastProfileVblankCycles=0,lastProfileGuestCycles=0;
 uint32_t runWallUs=0,copyWallUs=0,lastRunWallUs=0,lastCopyWallUs=0,lastRenderWallUs=0;
+uint32_t lastWaitUs=0;
 constexpr size_t VIDEO_BYTES=320*240*sizeof(uint16_t);
 uint8_t* videoBackup=nullptr;
 bool videoReady=false,repairingVideo=false;
+bool directVideoReady=false;
 uint32_t videoRestarts=0;
 uint32_t lastVideoRestart=0;
 VideoIdleMonitor videoIdle;
 VideoProgressMonitor videoProgress;
 volatile uint32_t videoIrqCount=0;
+volatile uint32_t videoIrqWallUs=0;
+MemoryBenchmarkResult memoryResults[3]{};
 irq_handler_t videoDriverIrq=nullptr;
 static void __no_inline_not_in_flash_func(countVideoIrq)() {
+  const uint32_t started=time_us_32();
   videoDriverIrq();
+  videoIrqWallUs=videoIrqWallUs+uint32_t(time_us_32()-started);
   videoIrqCount=videoIrqCount+1;
 }
 void installVideoProbe() {
@@ -111,6 +119,10 @@ void restartVideo(bool force) {
   const uint32_t previousStage=watchdog_hw->scratch[1];
   watchdog_hw->scratch[1]=10;
   watchdog_update();
+  // Core 1 must finish before the display allocation is freed. Core 0 is the
+  // sole producer, so no new render job can be submitted during this restart.
+  if(emulator)emulator->flush_render();
+  if(directVideoReady)renderWorker.set_video_target(nullptr,0);
   memcpy(videoBackup,display.getBuffer(),VIDEO_BYTES);
   display.end();
   if(!display.begin()) {
@@ -120,6 +132,7 @@ void restartVideo(bool force) {
   }
   installVideoProbe();
   memcpy(display.getBuffer(),videoBackup,VIDEO_BYTES);
+  if(directVideoReady)renderWorker.set_video_target(display.getBuffer()+48*320+40,320);
   ++videoRestarts;
   videoIdle.reset();
   watchdog_hw->scratch[1]=previousStage;
@@ -142,14 +155,16 @@ void serviceVideo() {
   if(idle || stalled)restartVideo(false);
 }
 void runtimeProgress() {
-  static uint32_t lastTime=0,lastIrqs=0;
+  static uint32_t lastTime=0,lastIrqs=0,lastIrqUs=0;
   const uint32_t now=millis();
   if(uint32_t(now-lastTime)<1000)return;
   const uint32_t count=videoIrqCount;
+  const uint32_t irqUs=videoIrqWallUs;
+  const uint32_t irqMsPerSecond=uint32_t(irqUs-lastIrqUs)/uint32_t(now-lastTime);
   const uint32_t irqRate=uint64_t(uint32_t(count-lastIrqs))*1000/uint32_t(now-lastTime);
-  lastTime=now;lastIrqs=count;
+  lastTime=now;lastIrqs=count;lastIrqUs=irqUs;
   char line[70];
-  snprintf(line,sizeof(line),"HDMI resets %lu | IRQ/s %lu",(unsigned long)videoRestarts,(unsigned long)irqRate);
+  snprintf(line,sizeof(line),"HDMI reset %lu IRQ/s %lu %lu ms/s",(unsigned long)videoRestarts,(unsigned long)irqRate,(unsigned long)irqMsPerSecond);
   textLine(34,line,0x07e0);
   if(!emulatedFrames) {
     textLine(4,"GBA CPU running / waiting for first frame",0x07ff);
@@ -236,16 +251,8 @@ uint16_t gbaKeys() {
 }
 void presentGame() {
   const uint32_t copyStarted=micros();
-  auto frame=emulator->framebuffer();
-  uint16_t* out=display.getBuffer();
-  // GBA framebuffer is RGB555; Adafruit framebuffer uses RGB565.
-  for(int y=0;y<160;++y) {
-    uint16_t* row=out+(y+48)*320+40;
-    for(int x=0;x<240;++x) {
-      const uint16_t v=frame[y*240+x];
-      row[x]=((v&31)<<11)|(((v>>5)&31)<<6)|(((v>>10)&31));
-    }
-  }
+  // consume_frame_ready() already drained core 1. Each dirty scanline has
+  // been converted and written into the HDMI buffer; no frame copy remains.
   copyWallUs+=uint32_t(micros()-copyStarted);
   ++emulatedFrames;++fpsFrames;
   const uint32_t now=millis();
@@ -262,12 +269,15 @@ void presentGame() {
   const uint32_t runMs=uint32_t(runWallUs-lastRunWallUs)/(fpsFrames*1000u);
   const uint32_t drawMs=uint32_t(rendered-lastRenderWallUs)/(fpsFrames*1000u);
   const uint32_t copyMs=uint32_t(copyWallUs-lastCopyWallUs)/(fpsFrames*1000u);
+  const uint32_t waited=renderWorker.wait_wall_us();
+  const uint32_t waitMs=uint32_t(waited-lastWaitUs)/(fpsFrames*1000u);
+  lastWaitUs=waited;
   lastRunWallUs=runWallUs;lastCopyWallUs=copyWallUs;lastRenderWallUs=rendered;
   fpsFrames=0;lastFps=now;
   char line[80];
-  snprintf(line,sizeof(line),"v24 %lu.%lu FPS | PAD %s | VBskip %lu%%",(unsigned long)(fps/10),(unsigned long)(fps%10),controller.connected?"ON":"OFF",(unsigned long)vblankPercent);
+  snprintf(line,sizeof(line),"v28 %lu.%lu FPS | PAD %s | VBskip %lu%%",(unsigned long)(fps/10),(unsigned long)(fps%10),controller.connected?"ON":"OFF",(unsigned long)vblankPercent);
   textLine(4,line,0x07ff);
-  snprintf(line,sizeof(line),"Run %lu Draw %lu Copy %lu ms/frame",(unsigned long)runMs,(unsigned long)drawMs,(unsigned long)copyMs);
+  snprintf(line,sizeof(line),"Run %lu Draw %lu Copy %lu Wait %lu ms/f",(unsigned long)runMs,(unsigned long)drawMs,(unsigned long)copyMs,(unsigned long)waitMs);
   textLine(18,line);
   const uint32_t missesPerSecond=uint64_t(rom->misses-lastProfileMisses)*1000/elapsed;
   const uint32_t inflateMsPerSecond=uint32_t(rom->inflateUs-lastProfileInflate)/elapsed;
@@ -278,6 +288,39 @@ void presentGame() {
     (unsigned long)emulator->cpu().state().regs[15],unsigned((~emulator->bus().keyinput())&0x03ffu),
     (unsigned long)emulator->bus().keyinput_read_count());
   textLine(228,line,0x8410);
+  if((now/6000u)%2u) {
+    snprintf(line,sizeof(line),"Dep ns: S32 %lu P32 %lu P256 %lu",
+      (unsigned long)memoryResults[0].dependentReadNs,(unsigned long)memoryResults[1].dependentReadNs,
+      (unsigned long)memoryResults[2].dependentReadNs);
+    textLine(228,line,0xffe0);
+  }
+}
+void measureMemory() {
+  beginBootStage(13);
+  textLine(94,"Memory ns/op; HDMI ON, includes loop/IRQs");
+  textLine(108,"Window       SeqR    DepR    SeqW   RandW");
+  auto sram=emulator->bus().iwram();
+  auto psram=emulator->bus().ewram();
+  memoryResults[0]=benchmarkMemory(reinterpret_cast<volatile uint32_t*>(sram.data()),8192);
+  watchdog_update();pollController();
+  memoryResults[1]=benchmarkMemory(reinterpret_cast<volatile uint32_t*>(psram.data()),8192);
+  watchdog_update();pollController();
+  memoryResults[2]=benchmarkMemory(reinterpret_cast<volatile uint32_t*>(psram.data()),65536);
+  watchdog_update();pollController();
+  const char* names[]={"SRAM 32K","PSRAM32K","PSRAM256"};
+  for(unsigned i=0;i<3;++i) {
+    const auto& r=memoryResults[i];char line[80];
+    snprintf(line,sizeof(line),"%-8s %7lu %7lu %7lu %7lu",names[i],
+      (unsigned long)r.sequentialReadNs,(unsigned long)r.dependentReadNs,
+      (unsigned long)r.sequentialWriteNs,(unsigned long)r.scatteredWriteNs);
+    textLine(124+i*14,line,0xffe0);
+  }
+  textLine(174,"DepR: dependent 32-bit pointer-chain reads");
+  textLine(188,"Photo these results; game starts in 15 sec");
+  for(unsigned i=0;i<1500;++i) {
+    serviceVideo();watchdog_update();pollController();busy_wait_ms(10);
+  }
+  // The normal reset below clears IWRAM/EWRAM before guest code executes.
 }
 void setup() {
   // Also retain diagnostics across a manual RESET if automatic recovery fails.
@@ -298,7 +341,7 @@ void setup() {
   videoReady=true;
   videoBackup=static_cast<uint8_t*>(gbaPsramAllocate(VIDEO_BYTES));
   if(!videoBackup)fail("Cannot allocate video recovery buffer");
-  textLine(22,"BOOT v24 - SONIC / VBLANK WAIT",0x07e0);
+  textLine(22,"BOOT v28 - SONIC / VIDEO WRITES",0x07e0);
   if(recovered) {
     textLine(48,"PREVIOUS RUN STOPPED AT:",0xf800);
     textLine(68,bootStageName(failedStage),0xffe0);
@@ -355,6 +398,7 @@ void setup() {
   emulator=new(coreStorage) gba::Emulator();
   gbaBootTrace(36);
   gbaBootTraceHook=nullptr;
+  measureMemory();
   emulator->cartridge().set_scan_progress(cartridgeScanProgress);
   beginBootStage(3);
   emulator->set_rom_provider(std::unique_ptr<gba::RomProvider>(rom));
@@ -369,6 +413,7 @@ void setup() {
   emulator->reset(false); // MIT-licensed replacement BIOS, no Nintendo BIOS dump.
   emulator->apu().set_synthesis_enabled(false);
   emulator->cpu().set_idle_acceleration(true);
+  emulator->cpu().set_fast_fetch(true);
   // Restart after all save/BIOS allocations and bulk memory initialization.
   restartVideo(true);
   snprintf(bootInfo,sizeof(bootInfo),"PSRAM %lu /7680 KiB | SRAM free %d",(unsigned long)(gbaPsramUsed()/1024),rp2040.getFreeHeap());
@@ -379,6 +424,11 @@ void setup() {
   while(!renderCoreReady.load(std::memory_order_acquire))__wfe();
   emulator->set_render_backend(renderWorker.backend());
   display.fillScreen(0);
+  // Match the RGB565 conversion of the PPU's reset-white framebuffer. Clean
+  // rows retain their last display pixels, including after HDMI recovery.
+  display.fillRect(40,48,240,160,0xffdf);
+  renderWorker.set_video_target(display.getBuffer()+48*320+40,320);
+  directVideoReady=true;
   textLine(34,"Experimental core / no audio / volatile saves",0x8410);
   textLine(228,"X=A O=B Options=Start Create=Select",0x8410);
   lastFps=millis();

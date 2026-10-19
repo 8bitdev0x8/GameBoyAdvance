@@ -4,6 +4,7 @@
 #include "src/tinf/tinf.h"
 #include <Arduino.h>
 #include "src/psram_arena.h"
+#include "src/esp_attr.h"
 
 class CompressedRom final : public gba::RomProvider {
   static constexpr uint32_t SLOTS=GBA_ROM_BACKING_BYTES/ROM_PAGE_SIZE;
@@ -17,9 +18,11 @@ class CompressedRom final : public gba::RomProvider {
   mutable uint32_t clockHand=0;
   mutable uint32_t hotTags[HOT_LINES];
   mutable uint8_t hotVictim[HOT_LINES/2];
-  static gba::u8 fastByte(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read_byte(a);}
-  static gba::u16 fast16(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read16(a);}
-  static gba::u32 fast32(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read32(a);}
+  // Cache-hit callbacks execute beside the interpreter in internal SRAM.
+  // Cache fill/decompression remains on the existing flash path.
+  static gba::u8 IRAM_ATTR fastByte(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read_byte(a);}
+  static gba::u16 IRAM_ATTR fast16(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read16(a);}
+  static gba::u32 IRAM_ATTR fast32(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read32(a);}
 #ifdef __GNUC__
   __attribute__((noinline))
 #endif

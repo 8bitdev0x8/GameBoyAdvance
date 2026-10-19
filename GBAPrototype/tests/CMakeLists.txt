@@ -16,10 +16,24 @@ if(MSVC)
   target_compile_options(gba_loader_test PRIVATE /O2 /wd4068)
 endif()
 
+add_executable(gba_core_audit core_audit.cpp video_audit.cpp portable_cpu.cpp ${CORE_SOURCES}
+  ../GBAFeather/src/psram_arena.cpp)
+target_include_directories(gba_core_audit PRIVATE stubs ../GBAFeather ../GBAFeather/src)
+target_compile_definitions(gba_core_audit PRIVATE GBA_HOST_TEST GBA_PLATFORM_RP2350 GBA_ENABLE_HLE_BIOS)
+if(GBA_TIMER_REFERENCE_DIR)
+  target_sources(gba_core_audit PRIVATE timer_compare.cpp ${GBA_TIMER_REFERENCE_DIR}/timers_reference.cpp)
+  target_include_directories(gba_core_audit PRIVATE ${GBA_TIMER_REFERENCE_DIR})
+  target_compile_definitions(gba_core_audit PRIVATE GBA_TIMER_AUDIT)
+endif()
+if(MSVC)
+  target_compile_options(gba_core_audit PRIVATE /O2 /wd4068)
+endif()
+
 if(GBA_PPU_REFERENCE_DIR)
   add_executable(gba_ppu_compare ppu_compare.cpp
     ${GBA_PPU_REFERENCE_DIR}/ppu_reference.cpp
     ../GBAFeather/src/core/ppu.cpp ../GBAFeather/src/core/irq.cpp
+    ../GBAFeather/src/core/render_worker.cpp
     ../GBAFeather/src/psram_arena.cpp)
   target_include_directories(gba_ppu_compare PRIVATE stubs ../GBAFeather/src ${GBA_PPU_REFERENCE_DIR})
   target_compile_definitions(gba_ppu_compare PRIVATE GBA_HOST_TEST GBA_PLATFORM_RP2350)

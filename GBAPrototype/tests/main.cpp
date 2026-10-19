@@ -137,6 +137,35 @@ void testVblankWait() {
   }
   std::cout<<"PASS: BEQ/BNE VBlank waits, event boundary slices, prefetch on/off, HBlank/VBlank/timer IRQs, exact CPU/bus/PPU parity and other-status-mask rejection\n";
 }
+void testDirectWorker() {
+  gba::Ppu ppu;ppu.reset();
+  gba::ScanlineWorker worker;
+  auto backend=worker.backend();
+  std::vector<uint8_t> vram(gba::kVramSize),palette(gba::kPaletteSize),oam(gba::kOamSize);
+  std::vector<uint16_t> first(320*240,0xdead),second(320*240,0xbeef);
+  uint32_t elapsed=0;
+  auto submit=[&](int line) { backend.submit(backend.context,ppu,line,vram,palette,oam,&elapsed); };
+  worker.set_video_target(first.data()+48*320+40,320);
+  submit(0);check(worker.run_one(),"Dirty row dispatched");worker.wait();
+  for(unsigned x=0;x<320;++x)
+    check(first[48*320+x]==(x>=40 && x<280?0xffdf:0xdead),"Forced blank converts to RGB565 without touching margins");
+  const auto completed=worker.completed();
+  submit(0);check(!worker.run_one() && worker.completed()==completed,"Clean row avoids worker wake and retains pixels");
+  ppu.mark_dirty(1);submit(1);
+  std::atomic<bool> rebinding{false};
+  std::thread rebind([&] { rebinding.store(true,std::memory_order_release);worker.set_video_target(nullptr,0); });
+  while(!rebinding.load(std::memory_order_acquire))std::this_thread::yield();
+  const bool finished=worker.run_one();rebind.join();
+  check(finished,"Pending row finished before target detach");
+  for(unsigned x=40;x<280;++x)check(first[49*320+x]==0xffdf,"Pending job used old live allocation");
+  std::fill(first.begin(),first.end(),0xaaaa); // Model retired display storage.
+  worker.set_video_target(second.data()+48*320+40,320);
+  ppu.mark_dirty(2);submit(2);check(worker.run_one(),"Row dispatched after target rebind");worker.wait();
+  check(std::all_of(first.begin(),first.end(),[](uint16_t v){return v==0xaaaa;}),"Rebound worker never writes retired target");
+  for(unsigned y=0;y<240;++y)for(unsigned x=0;x<320;++x)
+    check(second[y*320+x]==(y==50 && x>=40 && x<280?0xffdf:0xbeef),"Rebound output preserves other rows and margins");
+  std::cout<<"PASS: direct worker forced blank, clean-row suppression, pending-job detach and target lifetime/rebind\n";
+}
 void testTileCacheWrap() {
   for(bool eightBit:{false,true}) {
   gba::Ppu ppu;ppu.reset();
@@ -263,6 +292,7 @@ int main(int argc,char**argv) {
     if(argc!=4)throw std::runtime_error("Arguments: original.gba romblocks.bin output.ppm");
     testRamWait();
     testVblankWait();
+    testDirectWorker();
     testTextMapBlocks();
     testTileCacheWrap();
     testVideoInvalidation();
@@ -377,10 +407,16 @@ int main(int argc,char**argv) {
     }
     std::cout<<"PASS: EEPROM 6/14-bit addressing and serial round-trip\n";
     const bool threaded=getenv("GBA_TEST_THREADED")!=nullptr;
+    const bool directVideo=getenv("GBA_TEST_DIRECT_VIDEO")!=nullptr;
+    check(!directVideo || threaded,"Direct output requires threaded renderer");
+    std::vector<uint16_t> videoPixels;
     gba::ScanlineWorker worker;
     HostRenderThread renderThread(worker,threaded);
     gba::Emulator memory,compressed;
     compressed.cpu().set_idle_acceleration(true);
+    compressed.cpu().set_fast_fetch(true);
+    memory.bus().optimize_video_writes=false;
+    memory.ppu().optimize_video_writes=false;
     memory.load_rom(original);
     auto provider=std::make_unique<CompressedRom>();auto* stats=provider.get();
     compressed.cartridge().set_scan_progress(scanProgress);
@@ -398,9 +434,22 @@ int main(int argc,char**argv) {
     memory.reset(!replacement);compressed.reset(!replacement);
     if(getenv("GBA_TEST_PC_PROFILE"))compressed.cpu().profile_hook=samplePc;
     if(getenv("GBA_TEST_MUTE"))compressed.apu().set_synthesis_enabled(false);
+    if(directVideo) {
+      videoPixels.assign(320*240,0xdead);
+      for(unsigned y=48;y<208;++y)std::fill_n(videoPixels.data()+y*320+40,240,0xffdf);
+      worker.set_video_target(videoPixels.data()+48*320+40,320);
+    }
     if(threaded)compressed.set_render_backend(worker.backend());
     const unsigned frames=getenv("GBA_TEST_FRAMES")?unsigned(std::stoul(getenv("GBA_TEST_FRAMES"))):1200;
     for(unsigned frame=0;frame<frames;++frame) {
+      if(directVideo && frame==3000) {
+        // Model HDMI restart: drain/detach, preserve pixels, retire old storage,
+        // restore the allocation and bind it before submitting another job.
+        worker.set_video_target(nullptr,0);
+        auto replacement=videoPixels;
+        worker.set_video_target(replacement.data()+48*320+40,320);
+        videoPixels.swap(replacement);
+      }
       uint16_t keys=0;
       if(frame>=300 && frame<305)keys=1; // A: select English.
       if(frame>=800 && frame<805)keys=1<<3; // Start: exercise title input.
@@ -423,31 +472,50 @@ int main(int argc,char**argv) {
       check(memory.cpu().state()==compressed.cpu().state(),"Full CPU/banked register/flag parity with idle acceleration");
       check(memory.cpu().current_cycle()==compressed.cpu().current_cycle(),"Exact cycle parity with idle acceleration");
       check(memory.bus().idle_bus_state()==compressed.bus().idle_bus_state(),"Bus/prefetch/latch parity with idle acceleration");
-      check(hashFrame(memory.framebuffer())==hashFrame(compressed.framebuffer()),"Framebuffer parity");
+      compressed.flush_render();
+      if(directVideo) {
+        const auto expected=memory.framebuffer();
+        for(unsigned y=0;y<240;++y)for(unsigned x=0;x<320;++x) {
+          uint16_t color=0xdead;
+          if(y>=48 && y<208 && x>=40 && x<280) {
+            const uint16_t v=expected[(y-48)*240+x-40];
+            color=uint16_t(((v&31)<<11)|(((v>>5)&31)<<6)|((v>>10)&31));
+          }
+          check(videoPixels[y*320+x]==color,"Direct RGB565 pixels and protected margins match ordinary framebuffer path");
+        }
+      } else check(hashFrame(memory.framebuffer())==hashFrame(compressed.framebuffer()),"Framebuffer parity");
       check(std::equal(memory.bus().ewram().begin(),memory.bus().ewram().end(),compressed.bus().ewram().begin()),"EWRAM parity");
       check(std::equal(memory.bus().iwram().begin(),memory.bus().iwram().end(),compressed.bus().iwram().begin()),"IWRAM parity");
       check(!stats->failed,"Runtime decompression");
       if(frame%300==299) {
-        std::cout<<"Frame "<<frame+1<<" PC "<<std::hex<<compressed.cpu().state().regs[15]<<" DISPCNT "<<compressed.ppu().dispcnt()<<" HASH "<<hashFrame(compressed.framebuffer())<<std::dec<<" KEYREADS "<<compressed.bus().keyinput_read_count()<<std::endl;
+        std::cout<<"Frame "<<frame+1<<" PC "<<std::hex<<compressed.cpu().state().regs[15]<<" DISPCNT "<<compressed.ppu().dispcnt()<<" HASH "<<hashFrame(directVideo?memory.framebuffer():compressed.framebuffer())<<std::dec<<" KEYREADS "<<compressed.bus().keyinput_read_count()<<std::endl;
         if(const char* dir=getenv("GBA_TEST_CAPTURE_DIR"))
-          writeFrame(std::string(dir)+"/frame-"+std::to_string(frame+1)+".ppm",compressed.framebuffer());
+          writeFrame(std::string(dir)+"/frame-"+std::to_string(frame+1)+".ppm",directVideo?memory.framebuffer():compressed.framebuffer());
       }
     }
     std::cout<<"PASS: compressed vs original ROM CPU/frame parity for "<<frames<<" emulated frames with input\n";
+    if(directVideo)std::cout<<"PASS: direct RGB565 output and protected margins every frame, including display target replacement at frame 3000\n";
     if(threaded) {
       compressed.flush_render();check(worker.completed()>0,"Real render worker exercised");
       std::cout<<"PASS: threaded renderer completed "<<worker.completed()<<" scanlines\n";
     }
     std::cout<<"Idle cycles skipped "<<compressed.cpu().idle_skipped_cycles()<<" of "<<compressed.cpu().current_cycle()<<"\n";
     std::cout<<"VBlank polling cycles skipped "<<compressed.cpu().vblank_skipped_cycles()<<"\n";
+    std::cout<<"Instruction fast reads "<<compressed.bus().code_fetch_fast_hits<<" of "<<compressed.bus().code_fetch_attempts<<"\n";
+    std::cout<<"Thumb base-in-list cases: loads "<<compressed.cpu().base_load_corrections<<" stores "<<compressed.cpu().base_store_corrections<<"\n";
+    std::cout<<"Video writes "<<compressed.bus().video_writes<<" unchanged "<<compressed.bus().unchanged_video_writes
+      <<" register halves "<<compressed.ppu().register_writes<<" unchanged "<<compressed.ppu().unchanged_register_writes<<"\n";
+    std::cout<<"Tile cache optimized hits "<<compressed.ppu().tile_hits<<" misses "<<compressed.ppu().tile_misses
+      <<" reference hits "<<memory.ppu().tile_hits<<" misses "<<memory.ppu().tile_misses
+      <<" partial invalidations "<<compressed.ppu().partial_invalidations<<"\n";
     // Individual ROMs need not contain the specific safely recognized RAM wait.
     // testRamWait() verifies both acceleration and wake-up independently.
     const uint64_t reads=uint64_t(stats->hotHits)+stats->hotMisses;
     std::cout<<"SRAM ROM cache: hits "<<stats->hotHits<<" misses "<<stats->hotMisses
       <<" hit percent "<<(reads?100.0*stats->hotHits/reads:0.0)
       <<" backing page misses "<<stats->misses<<"\n";
-    writeFrame(argv[3],compressed.framebuffer());
-    std::cout<<"Frame hash "<<std::hex<<hashFrame(compressed.framebuffer())<<" PC "<<compressed.cpu().state().regs[15]<<"\n";
+    writeFrame(argv[3],directVideo?memory.framebuffer():compressed.framebuffer());
+    std::cout<<"Frame hash "<<std::hex<<hashFrame(directVideo?memory.framebuffer():compressed.framebuffer())<<" PC "<<compressed.cpu().state().regs[15]<<"\n";
     if(pcSampleCount) {
       std::vector<std::pair<uint32_t,PcSample>> sorted(pcSamples.begin(),pcSamples.end());
       std::sort(sorted.begin(),sorted.end(),[](auto& a,auto& b){return a.second.count>b.second.count;});

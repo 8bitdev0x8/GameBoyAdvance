@@ -102,7 +102,43 @@ The new HUD showed `VBskip %`. The user then confirmed the build worked and repo
 
 V24 is a working hardware result, not the end of the performance problem. It confirms a particular accelerator is active; it does not demonstrate 30 or 60 FPS or complete game compatibility.
 
-## 8. Prepare an educational publication
+## 8. Reduce CPU overhead and isolate direct rendering: v25-v26
+
+V25 kept the working startup, clocks, HDMI driver, linker and renderer while reducing repeated calls in the interpreter. Tiny IRQ, DMA-deadline, halt, prefetch and cartridge-size helpers were inlined with the same behavior. Three hot ROM-cache callbacks moved into SRAM; decompression and cache fills kept their existing path. Assembly showed 20 static call sites becoming 12 in the inspected CPU loop. That is a code-generation result, not a 40% speedup claim.
+
+The next report was about 6 FPS, Run 144, Draw 37, Copy 10 ms/frame, VBskip 12%, ROM misses 0-8/s and decode 0 ms/s. The report followed v25 delivery but did not name the flashed version, so its association with v25 is inferred. The screen and measurement duration were unspecified.
+
+V26 reintroduced only the direct-render pipeline from the failed v22 bundle. Core 1 renders a dirty row into 480 bytes of SRAM, converts RGB555 to RGB565 and writes the HDMI game rectangle. Core 0 no longer copies the complete game framebuffer, avoiding the PSRAM framebuffer write/read trip. The old PPU framebuffer allocation remains reserved but is stale during direct output. Clean rows preserve existing display pixels. No guest frames are deliberately skipped.
+
+Recovery drains the worker and detaches its display pointer before freeing HDMI storage, then restores and rebinds the new target before execution resumes. Targeted tests covered pending work, forced blank, clean rows and replacement of the display allocation. A 6000-frame real-thread comparison checked every displayed RGB565 pixel and protected margin against the ordinary synchronous framebuffer path, including replacement at frame 3000. Another 240 fixtures compared the renderer with the preserved v21 implementation.
+
+Unlike the complete v22 bundle, this isolated change booted on the board. The explicitly identified v26 report was 6-7 FPS, PAD ON, VBskip 6-12%, Draw 49, Copy 0 and Wait 26 ms/frame; ROM misses were 0 and decode 0-19 ms/s. Run and the exact scene were not supplied. Copy reaching zero confirms removal of that presentation step; conversion work now belongs to Draw. It does not mean all pixel movement disappeared or establish the cause of v22's startup failure.
+
+## 9. Audit CPU semantics and common hot paths: v27
+
+Instruction tests reproduced two nonempty-list Thumb transfer defects: LDMIA could overwrite a loaded base register with address writeback, and STMIA could store the wrong base value when the base appeared later in the list. The fixes passed 8160 list/base/load/store/RAM-region cases. Neither corrected case executed in the scripted Sonic sequence, so they are accuracy improvements rather than an explanation for its low FPS or earlier physical game stalls.
+
+Performance work specialized common IWRAM/EWRAM and active GamePak-prefetch instruction reads, while retaining the ordinary reader for unusual states and peripherals. A compact value/cycle return avoids an unnecessary general access-result buffer. The earliest timer event is cached, with an inline deadline guard before entering the large timer handler. FIFO-request checks and prefetch bookkeeping stay inline to avoid small hot calls into flash. Clocks, direct rendering and the installed HDMI driver remain unchanged.
+
+Validation compared 30000 mixed instruction fetches with ordinary reads and 60000 randomized timer operations with a separately compiled preserved v26 timer implementation. The 6000-frame Sonic comparison retained exact CPU, timing, bus, RAM and displayed-pixel parity and all 20 checkpoints. Fast fetch served about 81.7% of instruction reads in that test; coverage is not a speedup percentage. The [core audit](core-audit-v27.md) records the fixes and remaining instruction edge cases.
+
+The user identified v27 at approximately 7 FPS average, PAD ON, VBskip 10%, Run 121, Draw 33, Copy 0 and Wait 32 ms/frame. HDMI resets were 5 and IRQ/s 31495; ROM misses/decode were usually zero with occasional spikes. The scene and duration were unspecified. The reset count is cumulative, including two planned startup resets; it is not a measured runtime reset rate.
+
+## 10. Avoid redundant video writes and add board measurements: v28
+
+The renderer was still completing almost every visible scanline in the scripted sequence. Investigation found coarse invalidation: repeated writes could join the renderer, dirty all scanlines and discard decoded tile rows even when stored values had not changed. V28 compares effective palette/VRAM/OAM values, respecting alignment, mirrors and byte-write rules. Unchanged writes retain guest bus cycles and bookkeeping while avoiding the shared-memory change, join and invalidation. Actual changes retain synchronization. Storage-only display-register writes avoid redundant dirty marking; their barrier and existing register model remain, and DISPSTAT handling is unchanged.
+
+Small changed VRAM ranges now invalidate overlapping decoded tile rows, with a conservative global fallback for large or unknown ranges. Fast VRAM DMA drains the renderer before its burst and aggregates changed bytes for one invalidation afterward. Generic in-range memory accesses also avoid unnecessary modulo operations. These are local emulator changes described here in prose; the excluded core and its patches are not redistributed.
+
+The native 6000-frame sequence counted 4,141,934 unchanged writes out of 4,196,721 video writes (98.69%) and 1,039,108 unchanged halves out of 1,154,176 storage-register half writes (90.03%). Decoded tile-row misses fell from 8,011,631 in the conservative reference to 3,848,078, about 51.97% fewer. Worker jobs changed only from 958,816 to 958,723. This establishes less redundant work in that sequence, not a corresponding FPS multiplier or elimination of most scanline rendering.
+
+V28 also adds a startup SRAM/PSRAM access benchmark and the original HDMI handler's elapsed time in ms/s. The memory table covers 32 KiB SRAM, 32 KiB PSRAM and 256 KiB PSRAM, using sequential and dependent/scattered accesses. It measures CPU-observed cached loop costs with HDMI running, rather than raw PSRAM chip latency or contention during active emulation. No board table values have yet been reported.
+
+The latest user report is **7 FPS, PAD ON, VBskip 12%, Run 113, Draw 22, Copy 0 and Wait 14 ms/frame**. The screen and duration were unspecified. The Run/Draw/Wait readings are lower than the preceding v27 report, but FPS remains about 7 and these are not controlled same-scene measurements. Wait is included in Run, and Draw overlaps Run, so these times must not be added. V28 ROM miss/decode, HDMI resets, IRQ time and memory results were not supplied. Neither 30 nor 60 FPS has been demonstrated.
+
+On-board PC sampling, DWT cycle/stall measurements, XIP/bus counters and controlled headless/UART-off experiments are proposed next profiling steps. Dynamic translation or a decoded-instruction cache, interpolator-assisted rendering and a different scanout backend are possible larger changes, not implemented v28 features. The existing backend interprets guest instructions; on-demand ROM decompression is not ROM recompilation. The [v28 findings and profiling plan](performance-v28.md) explain these distinctions.
+
+## 11. Prepare and update an educational publication
 
 The user requested a full architecture/history/debugging README and a `develop` branch in `8bitdev0x8/GameBoyAdvance`. The existing repository already had a GPLv3 file and reference documents. Those were preserved.
 
