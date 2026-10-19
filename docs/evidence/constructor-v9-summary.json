@@ -1,0 +1,9 @@
+{
+  "version": 9,
+  "flash_bytes": 3210888,
+  "static_sram_bytes": 15600,
+  "uf2_bytes": 6465024,
+  "sha256": "72f8bec0520ae45313ee20287954dc1ce3d45cca7f4f8b1b98a13974e64ac26c",
+  "native_tests": "passed: ROM integrity, EEPROM, scan progress, 1200-frame parity",
+  "hardware_tested": false
+}

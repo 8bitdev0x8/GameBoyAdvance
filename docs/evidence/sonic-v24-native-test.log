@@ -1,0 +1,68 @@
+PASS: RAM wait event slices, EWRAM/IWRAM, prefetch on/off, flag wake, MMIO rejection
+PASS: BEQ/BNE VBlank waits, event boundary slices, prefetch on/off, HBlank/VBlank/timer IRQs, exact CPU/bus/PPU parity and other-status-mask rejection
+PASS: text background 32x32, 64x32, 32x64 and 64x64 block addressing
+PASS: 4bpp/8bpp tile cache invalidation wraparound
+PASS: independent palette, VRAM and OAM invalidation
+PASS: short UART press delivery, release, held key, disconnect and frame rollover
+PASS: maximum save allocation reused, EEPROM/SRAM/Flash sizes, Flash64 ID/program/erase/load
+PASS: silent APU preserves register/status reads, FIFO DMA requests and event times under randomized sound writes
+PASS: video DMA idle timing and timer wrap
+PASS: video IRQ progress timeout and counter/time wrap
+PASS: fixed 7.5 MiB arena capacity, alignment, overflow rejection
+PASS: SRAM ROM cache line boundaries, direct callbacks, hits and two-way conflicts
+PASS: associative backing cache avoids direct-map conflicts
+PASS: all 1024 blocks, 10000 random reads, boundaries, corrupt input
+PASS: EEPROM 6/14-bit addressing and serial round-trip
+PASS: cartridge scan progress, cached scan, save/RTC detection; save type 2
+Frame 300 PC 80bc1fc DISPCNT 1341 HASH 1dcf7d33 KEYREADS 461
+Frame 600 PC 80bc190 DISPCNT 7340 HASH 806bc991 KEYREADS 1061
+Frame 900 PC 80bcca0 DISPCNT 7340 HASH 4437b1a3 KEYREADS 1661
+Frame 1200 PC 80bcc9e DISPCNT 7340 HASH f77d2074 KEYREADS 2261
+Frame 1500 PC 80bcc9e DISPCNT 7340 HASH 5489f6b9 KEYREADS 2861
+Frame 1800 PC 80bcc9e DISPCNT 7340 HASH 8f89bd76 KEYREADS 3461
+Frame 2100 PC 80bcca0 DISPCNT 7340 HASH c7d48efd KEYREADS 4061
+Frame 2400 PC 80bcc9e DISPCNT 7340 HASH fcdd7cde KEYREADS 4661
+Frame 2700 PC 80bcca0 DISPCNT 7340 HASH d0a66d36 KEYREADS 5261
+Frame 3000 PC 80bcc9e DISPCNT 7340 HASH ff205170 KEYREADS 5861
+Frame 3300 PC 80bcca0 DISPCNT 7340 HASH 4437b1a3 KEYREADS 6461
+Frame 3600 PC 80bcc74 DISPCNT 7340 HASH f77d2074 KEYREADS 7061
+Frame 3900 PC 80bc1fc DISPCNT 7340 HASH 83eace48 KEYREADS 7661
+Frame 4200 PC 124 DISPCNT 7340 HASH 789c7aad KEYREADS 8261
+Frame 4500 PC 80bc99a DISPCNT 7340 HASH a8a3550d KEYREADS 8861
+Frame 4800 PC 80bc208 DISPCNT 7340 HASH d9bcc39 KEYREADS 9461
+Frame 5100 PC 80bcca0 DISPCNT 7340 HASH 3bfa22d KEYREADS 10061
+Frame 5400 PC 80bc890 DISPCNT 7340 HASH d8f55ad6 KEYREADS 10660
+Frame 5700 PC 80bc24c DISPCNT 7340 HASH 7de6b4b KEYREADS 11261
+Frame 6000 PC 80bcca6 DISPCNT 7340 HASH 5ba30470 KEYREADS 11861
+PASS: compressed vs original ROM CPU/frame parity for 6000 emulated frames with input
+PASS: threaded renderer completed 959978 scanlines
+Idle cycles skipped 347342144 of 1685292894
+VBlank polling cycles skipped 347342144
+SRAM ROM cache: hits 117386291 misses 187416 hit percent 99.8406 backing page misses 1048
+Frame hash 5ba30470 PC 80bcca6
+Executed instruction samples 424372 (native guest-code distribution, not board wall time)
+PC 80bc1e0 Thumb samples 95072 pct 22.403 r0=1 r1=19 r2=4000004 r3=1
+PC 8093490 Thumb samples 24715 pct 5.8239 r0=10c5 r1=c5 r2=fff2 r3=10
+PC 8093480 Thumb samples 20310 pct 4.7859 r0=c50000 r1=c5 r2=fff2 r3=10
+PC 8093410 Thumb samples 17675 pct 4.16498 r0=14000000 r1=c5 r2=fff2 r3=10
+PC 8093450 Thumb samples 13011 pct 3.06594 r0=2f000000 r1=c5 r2=fff2 r3=10
+PC 80c1140 Thumb samples 5203 pct 1.22605 r0=ffffffff r1=3002b50 r2=ff000000 r3=6
+PC 80c1180 Thumb samples 5133 pct 1.20955 r0=15 r1=24 r2=15000000 r3=30037f0
+PC 80c0550 Thumb samples 4864 pct 1.14616 r0=40 r1=f9ff0000 r2=1000 r3=5
+PC 80c0580 Thumb samples 4818 pct 1.13532 r0=7e r1=15 r2=3fff r3=1
+PC 80c0590 Thumb samples 4790 pct 1.12873 r0=1ff r1=8060 r2=40000d4 r3=1ff
+PC 80c1160 Thumb samples 4766 pct 1.12307 r0=1f r1=0 r2=1f r3=3003840
+PC 80c1170 Thumb samples 4760 pct 1.12166 r0=19 r1=18 r2=3003b88 r3=3003790
+PC 80c0660 Thumb samples 4736 pct 1.116 r0=3 r1=f9ff0000 r2=1010 r3=3004090
+PC 80c0570 Thumb samples 4728 pct 1.11412 r0=7 r1=3fff r2=3fff r3=8e25104
+PC 80c0610 Thumb samples 4718 pct 1.11176 r0=ff r1=4000 r2=30 r3=30
+PC 80c0620 Thumb samples 4704 pct 1.10846 r0=80b4 r1=8000 r2=401c r3=0
+PC 80c0630 Thumb samples 4689 pct 1.10493 r0=80a8 r1=0 r2=4060 r3=0
+PC 80c05a0 Thumb samples 4674 pct 1.10139 r0=fe00 r1=4000 r2=4000 r3=8000
+PC 80c1100 Thumb samples 4660 pct 1.09809 r0=18 r1=17 r2=3006211 r3=3003750
+PC 80c10f0 Thumb samples 4310 pct 1.01562 r0=3003880 r1=ff r2=3006210 r3=3003750
+PC 80c0560 Thumb samples 4245 pct 1.0003 r0=3003780 r1=80c0563 r2=3006211 r3=3003750
+PC 80c1090 Thumb samples 3992 pct 0.940684 r0=0 r1=7c0 r2=7c0 r3=7
+PC 80c0650 Thumb samples 3547 pct 0.835823 r0=0 r1=f9ff0000 r2=0 r3=3004158
+PC 80c0670 Thumb samples 3292 pct 0.775734 r0=3 r1=f9ff0000 r2=6010 r3=7
+PC 80c10e0 Thumb samples 3162 pct 0.745101 r0=40 r1=8 r2=3002b51 r3=3003750

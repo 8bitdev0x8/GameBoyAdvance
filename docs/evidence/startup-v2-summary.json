@@ -1,0 +1,12 @@
+{
+  "GBAFeather-v2.uf2": {
+    "bytes": 6459904,
+    "sha256": "94cefc2cdc3329a3d53cc7a61219155fa2506ca3aa27ac24658c65d223c4ba14",
+    "uf2_check": "PASS"
+  },
+  "HDMIPSRAMTest-v2.uf2": {
+    "bytes": 217600,
+    "sha256": "2ea448449d29b11556f7e89b7a33cb3118575e26e1365857184ce655907bedd1",
+    "uf2_check": "PASS"
+  }
+}

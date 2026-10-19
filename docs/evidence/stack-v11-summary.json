@@ -1,0 +1,14 @@
+{
+  "version": 11,
+  "flash_bytes": 3210984,
+  "static_sram_bytes": 15600,
+  "main_stack_bytes": 16384,
+  "main_stack_bottom": "0x2007c000",
+  "main_stack_top": "0x20080000",
+  "heap_limit": "0x2007c000",
+  "arena_used_bytes": 1520704,
+  "uf2_bytes": 6465536,
+  "sha256": "f1d0339b2fac2fafdd0a9be3ee7abcbb1b5ead0851368940f689259afd0ff051",
+  "hardware_tested": false,
+  "core_regression": "unchanged from v10, 1200-frame parity previously passed"
+}

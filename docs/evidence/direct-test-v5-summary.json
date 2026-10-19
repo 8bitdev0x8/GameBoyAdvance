@@ -1,0 +1,7 @@
+{
+  "sha256": "4cd34dfe82be1e5937a1e1eae203fad6be37c72049df0da049925245808d9e5a",
+  "flash_bytes": 88220,
+  "static_sram_bytes": 13308,
+  "reserved_psram_bytes": 2097152,
+  "hardware_status": "awaiting direct/allocator stage result"
+}

@@ -1,0 +1,9 @@
+{
+  "version": 7,
+  "flash_bytes": 3210040,
+  "static_sram_bytes": 15596,
+  "uf2_bytes": 6463488,
+  "main_blocks": 12623,
+  "sha256": "6ab5a4b373db428418d19b102d70202126a5da73ecbbd953de3140ecd4f21bf8",
+  "hardware_tested": false
+}

@@ -1,0 +1,17 @@
+{
+  "version": 12,
+  "flash_bytes": 3196340,
+  "static_sram_bytes": 10428,
+  "main_stack_bytes": 16384,
+  "main_stack_bottom": "0x2007c000",
+  "main_stack_top": "0x20080000",
+  "heap_limit": "0x2007c000",
+  "arena_used_bytes": 1520704,
+  "usb": "disabled: usbstack=nousb",
+  "uart": "Serial1 230400 baud RX GPIO1 TX GPIO0",
+  "main_vector_sp_verified": true,
+  "uf2_bytes": 6432256,
+  "sha256": "286489412b7c82d0d9d3c7dae2afffb1a4b5a2286fdcb3e42951325a0d42adac",
+  "hardware_tested": false,
+  "native_core_build": "passed after firmware-only logging guard"
+}

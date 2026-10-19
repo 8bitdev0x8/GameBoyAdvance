@@ -1,0 +1,8 @@
+{
+  "sha256": "0069002b1758c12000c8d5c7bc7503c5fe1b536d57390f08382807e0646ad63a",
+  "flash_bytes": 87508,
+  "static_ram_bytes": 13296,
+  "cpu_hz": 120000000,
+  "psram_hz": 30000000,
+  "hardware_status": "awaiting stage report"
+}
