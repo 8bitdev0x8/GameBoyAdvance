@@ -1,0 +1,50 @@
+{
+  "version": 18,
+  "build": "Arduino CLI --clean, -O3",
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "arduino_reported_program_bytes": 3210484,
+  "uf2_flash_address_span_bytes": 3266816,
+  "static_sram_bytes": 212412,
+  "sram_increase_over_v17_bytes": 35640,
+  "heap_capacity_before_dynamic_allocations": 295484,
+  "main_stack_bytes": 16384,
+  "ram_initialized_load_bytes_verified_against_elf": 43796,
+  "uf2_bounds_and_vector_verified": true,
+  "hot_symbols_in_sram": {
+    "gba::Arm7tdmi::execute_thumb(unsigned short)": "0x20002344",
+    "gba::Arm7tdmi::execute_arm(unsigned long)": "0x20003808",
+    "gba::Arm7tdmi::cpu_run_until(unsigned long long)": "0x20005030",
+    "gba::Bus::read(unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)": "0x20000920",
+    "gba::Bus::write(unsigned long, unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)": "0x200011f0",
+    "gba::Cartridge::read_rom(unsigned long, gba::BusWidth) const": "0x20001594",
+    "gba::Ppu::render_scanline(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned short*)": "0x200076f0",
+    "gba::DmaEngine::service_due(unsigned long long, gba::Bus&, gba::IrqController&)": "0x200053fc",
+    "gba::Apu::advance_to(unsigned long long)": "0x2000018c",
+    "gba::(anonymous namespace)::kCondLut": "0x200052fc"
+  },
+  "video_irq_wrapper_source_identical_to_v17": true,
+  "clock_and_linker_identical_to_v17": true,
+  "uf2_bytes": 6534144,
+  "sha256": "05714e256fa0dc11e3070f80910520001d63838bc19e3d15a504b69c88617def",
+  "baseline": "v17 user-confirmed about 3 FPS, decode 100-200 ms/s, misses 6-10/s, HDMI reset count 2",
+  "main_timing": "Run includes Draw; Copy is separate; all use elapsed wall microseconds including interrupts",
+  "hardware_tested": true,
+  "hardware_fps": null,
+  "frame_skipping": false,
+  "native_validation": "PASS: 1200-frame sliced CPU/banked register, exact cycle, bus/prefetch/latch, EWRAM/IWRAM and framebuffer parity, with RAM wait, MMIO rejection, cache, video and EEPROM checks",
+  "limits": "No demonstrated Feather speedup or 60 FPS; about 30 KiB expected remaining after dynamic startup allocations, not a hardware free-heap measurement",
+  "hardware_fps_about": 4.6,
+  "hardware_run_ms_per_frame_range": [
+    150,
+    600
+  ],
+  "hardware_draw_ms_per_frame_range": [
+    68,
+    120
+  ],
+  "hardware_copy_ms_per_frame_about": 10,
+  "hardware_decode_ms_per_second_about": 210,
+  "hardware_misses_per_second_about": 10,
+  "hardware_stall_report": "After main screen: about 2.8 FPS, LED blinking, Run updates, Draw 0, Copy 10, decode/misses 0, PAD ON, sprite appears stuck/not properly rendered"
+}

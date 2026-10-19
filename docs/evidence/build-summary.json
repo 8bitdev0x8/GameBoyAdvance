@@ -1,0 +1,10 @@
+{
+  "status": "compiled; not hardware-tested",
+  "firmware_flash_bytes": 3207724,
+  "static_ram_bytes": 13924,
+  "rom_packed_bytes": 3033341,
+  "rom_original_bytes": 8388608,
+  "cache_psram_bytes": 2097152,
+  "native_test_frames": 1200,
+  "uf2_bytes": 6458880
+}

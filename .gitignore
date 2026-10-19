@@ -1,0 +1,33 @@
+# Private assets and local build products
+/build/
+/publish/
+/GBAPrototype/rom/
+/GBAPrototype/upstream/
+/GBAPrototype/output/
+/GBAPrototype/GBAFeather/src/generated/
+/GBAPrototype/tests/portable_cpu.cpp
+
+# Unlicensed upstream-derived core: intentionally absent from this publication
+/GBAPrototype/GBAFeather/src/core/
+/GBAPrototype/GBAFeather/src/gba/
+
+# Do not commit ROMs, binary firmware or source archives containing the core
+*.gba
+*.gb
+*.gbc
+*.uf2
+*.elf
+*.bin
+*.map
+*.o
+*.a
+*.zip
+*.zlib
+*.ppm
+*.png
+*.jpg
+*.jpeg
+*.pyc
+__pycache__/
+.env
+.env.*

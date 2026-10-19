@@ -1,0 +1,40 @@
+{
+  "version": 17,
+  "build": "Arduino CLI --clean",
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "flash_bytes": 3245284,
+  "static_sram_bytes": 176712,
+  "main_stack_bytes": 16384,
+  "heap_capacity_before_dynamic_allocations": 331184,
+  "uf2_bytes": 6532096,
+  "sha256": "409ac644b66b11255c9014efc53a9cc24ffaf8a7e25a6370bef13615938b2e87",
+  "uf2_bounds_and_reset_vector_verified": true,
+  "irq_profiling_removed_verified": true,
+  "working_v15_hash_verified": true,
+  "restored_v15_files": [
+    "CompressedRom.h",
+    "src/core/emulator.cpp",
+    "src/gba/core/emulator.hpp"
+  ],
+  "startup_and_linker_identical_to_v15": true,
+  "sketch_changes_from_v15": [
+    "boot version and recovery marker",
+    "enable idle acceleration after CPU reset"
+  ],
+  "native_regression": "PASS: 1200 frames with 1024-cycle slices; full CPU, exact cycle, bus, EWRAM, IWRAM and framebuffer parity; synthetic wait/MMIO/cache/video/EEPROM checks",
+  "hardware_tested": true,
+  "v16_report": "No HDMI signal throughout; onboard LED stays off",
+  "cause": "Unconfirmed; v17 restores working startup/video code and removes profiling changes",
+  "fallback": "GBAFeather-v15.uf2",
+  "hardware_fps_about": 3,
+  "hardware_decode_ms_per_second": [
+    100,
+    200
+  ],
+  "hardware_misses_per_second": [
+    6,
+    10
+  ],
+  "hardware_hdmi_resets_reported": 2
+}

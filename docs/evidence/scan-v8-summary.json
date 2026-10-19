@@ -1,0 +1,10 @@
+{
+  "version": 8,
+  "flash_bytes": 3210192,
+  "static_sram_bytes": 15596,
+  "uf2_bytes": 6464000,
+  "main_blocks": 12624,
+  "sha256": "777044c61c44e2cc37e325f5a1c742803c45998c3a2a41f4de26447b7fb52797",
+  "native_tests": "passed: scan progress, ROM integrity, EEPROM, 1200-frame parity",
+  "hardware_tested": false
+}

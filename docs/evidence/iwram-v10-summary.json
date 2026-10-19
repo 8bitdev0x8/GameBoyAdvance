@@ -1,0 +1,12 @@
+{
+  "version": 10,
+  "flash_bytes": 3210872,
+  "static_sram_bytes": 15600,
+  "fixed_psram_bytes": 2097152,
+  "arena_used_bytes": 1520704,
+  "arena_remaining_bytes": 576448,
+  "uf2_bytes": 6465024,
+  "sha256": "6a199ed26a13869cfbcd168bdbdd73e5013cfef0789ccd9c269604e31bd8fded",
+  "native_tests": "passed: full allocation budget, ROM integrity, EEPROM, scan progress, 1200-frame CPU/framebuffer parity",
+  "hardware_tested": false
+}

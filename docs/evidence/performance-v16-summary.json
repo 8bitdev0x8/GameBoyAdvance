@@ -1,0 +1,45 @@
+{
+  "version": 16,
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "optimization": "-O3",
+  "change": "Stable read-only Thumb RAM wait-loop acceleration bounded by scheduled events; hardware profiling and fractional FPS",
+  "flash_bytes": 3245988,
+  "static_sram_bytes": 176772,
+  "main_stack_bytes": 16384,
+  "heap_capacity_before_dynamic_allocations": 331132,
+  "uf2_bytes": 6533632,
+  "sha256": "3ca2c41bfcf5e2d4a8d21d961a242c2c9f004cddd1a10d27c762f70534da9d89",
+  "uf2_framing_flash_range_stack_vector_verified": true,
+  "ram_video_irq_wrapper_verified": true,
+  "scratch_x_video_handler_verified": true,
+  "native_frames_per_mode": 1200,
+  "native_modes": [
+    "run_frame",
+    "1024-cycle slices"
+  ],
+  "native_parity": [
+    "full CPU/banked registers/flags",
+    "exact cycle",
+    "bus/prefetch/latches",
+    "EWRAM",
+    "IWRAM",
+    "framebuffer"
+  ],
+  "native_whole_frame_skipped_guest_cycles": 210601472,
+  "native_whole_frame_guest_cycles": 337272321,
+  "native_sliced_skipped_guest_cycles": 204117344,
+  "native_sliced_guest_cycles": 337272709,
+  "native_synthetic_tests": [
+    "EWRAM/IWRAM polling",
+    "prefetch enabled/disabled",
+    "RAM flag wake",
+    "short execution boundaries",
+    "MMIO polling rejection"
+  ],
+  "hardware_tested": true,
+  "hardware_fps": null,
+  "limits": "60 FPS not demonstrated; guest-cycle skip percentage is not hardware speedup; no frame skipping; full gameplay correctness not established",
+  "baseline": "v15 boots game at 1-2 FPS; v14 and v15 UF2/source archives preserved",
+  "hardware_result": "User reports no HDMI signal throughout and onboard LED stays off; superseded by v17"
+}

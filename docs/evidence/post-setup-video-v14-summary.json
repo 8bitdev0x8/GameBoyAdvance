@@ -1,0 +1,16 @@
+{
+  "version": 14,
+  "flash_bytes": 3197460,
+  "static_sram_bytes": 10512,
+  "main_stack_bytes": 16384,
+  "heap_limit": "0x2007c000",
+  "arena_used_bytes": 1674304,
+  "arena_remaining_bytes": 422848,
+  "video_recovery": "planned resets after scan and emulator reset; automatic recovery on idle DMA or no completed video IRQ for 100ms",
+  "usb": "disabled",
+  "main_vector_sp_verified": true,
+  "uf2_bytes": 6434304,
+  "sha256": "80b884bb35b3deb336aa08f0fd0adc1cd49420a35e27d733b67dc901840b193b",
+  "native_tests": "passed video IRQ progress and DMA idle timing including wrap, full arena budget, ROM integrity, EEPROM, scan progress, 1200-frame parity",
+  "hardware_tested": false
+}

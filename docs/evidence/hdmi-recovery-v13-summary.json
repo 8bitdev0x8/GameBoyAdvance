@@ -1,0 +1,17 @@
+{
+  "version": 13,
+  "flash_bytes": 3196980,
+  "static_sram_bytes": 10452,
+  "main_stack_bytes": 16384,
+  "heap_limit": "0x2007c000",
+  "arena_used_bytes": 1674304,
+  "arena_remaining_bytes": 422848,
+  "video_recovery_buffer_bytes": 153600,
+  "video_recovery": "restart HSTX when DMA 0/1/2 all persistently idle for 20ms; at most once per second",
+  "usb": "disabled",
+  "main_vector_sp_verified": true,
+  "uf2_bytes": 6433280,
+  "sha256": "020a74a88dc75c0955079f0554c956f2b2327628cff1aa8c777bab811e02af82",
+  "native_tests": "passed DMA idle/timer wrap, full arena budget, ROM integrity, EEPROM, scan progress, 1200-frame parity",
+  "hardware_tested": false
+}

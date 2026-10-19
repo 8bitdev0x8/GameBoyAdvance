@@ -1,0 +1,54 @@
+{
+  "version": 19,
+  "build": "Arduino CLI --clean, -O3",
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "arduino_reported_program_bytes": 3211156,
+  "uf2_flash_address_span_bytes": 3267840,
+  "static_sram_bytes": 212936,
+  "heap_capacity_before_dynamic_allocations": 294960,
+  "main_stack_bytes": 16384,
+  "ram_initialized_load_bytes_verified_against_elf": 44276,
+  "uf2_bounds_and_vector_verified": true,
+  "hot_symbols_in_sram": {
+    "gba::Arm7tdmi::execute_thumb(unsigned short)": "0x20002354",
+    "gba::Arm7tdmi::execute_arm(unsigned long)": "0x20003818",
+    "gba::Bus::read(unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)": "0x20000920",
+    "gba::Bus::write(unsigned long, unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)": "0x200011f0",
+    "gba::Ppu::render_scanline(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned short*)": "0x200078d4",
+    "gba::Ppu::mark_memory_dirty(unsigned long)": "0x2000721c",
+    "gba::Ppu::invalidate_tile_cache()": "0x200071d8"
+  },
+  "video_irq_wrapper_source_identical_to_v18": true,
+  "clock_and_linker_identical_to_v18": true,
+  "uf2_bytes": 6536192,
+  "sha256": "f98cbac197874f1dab362acb6f76229447c9ca9a42d2c0eeaaad5c7985bf7065",
+  "changes": [
+    "Clear 4bpp/8bpp cache keys before 12-bit generation reuse",
+    "Correct 32x64 tile-map vertical block index",
+    "Independent palette/VRAM/OAM invalidation and reuse of sprite membership",
+    "Retain short UART button edges through a complete guest frame",
+    "Display PC, delivered key bits and KEYINPUT read count"
+  ],
+  "native_validation": "PASS: 6000-frame sliced compressed/accelerated vs original/unaccelerated full CPU, cycle, bus, RAM and framebuffer parity; final 1200-frame run also passes all targeted graphics, input, cache, EEPROM and video tests",
+  "native_extended_last_frame_hash": "492ef131",
+  "native_graphics_targeted_regressions": [
+    "32x64 map block selection failed before fix",
+    "4096 invalidations reproduced stale decoded tile before fix",
+    "4bpp and 8bpp cache wrap pass",
+    "all four text background layouts pass",
+    "palette, VRAM, OAM and sprite-pixel invalidation pass"
+  ],
+  "native_input_tests": [
+    "short press retention",
+    "physical hold",
+    "release expiry",
+    "disconnect",
+    "frame rollover"
+  ],
+  "hardware_tested": false,
+  "hardware_fps": null,
+  "multicore": false,
+  "frame_skipping": false,
+  "limits": "Exact user-reported board stall not reproduced; changes do not establish a complete fix or 60 FPS. Extended scripted captures are unchanged by the confirmed latent PPU fixes; original and compressed paths share the emulator core, so parity does not prove full-game correctness."
+}

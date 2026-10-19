@@ -1,0 +1,9 @@
+{
+  "sha256": "7c95b83d0ddea710bd2b687790d2a07aa23ac22fd1bf7cd6173131688a89fedf",
+  "flash_bytes": 3208132,
+  "static_ram_bytes": 15636,
+  "tinf_uncompress_stack_before_bytes": 1632,
+  "tinf_uncompress_stack_after_bytes": 48,
+  "regression_frames": 1200,
+  "hardware_status": "awaiting user test"
+}

@@ -1,0 +1,12 @@
+{
+  "sha256": "a37d396d64e9a83fd624e011ef84a6cf3bc7189693833779aec44fbfb2735f13",
+  "flash_bytes": 3208328,
+  "static_sram_bytes": 15568,
+  "reserved_psram_bytes": 2097152,
+  "rom_cache_bytes": 1048576,
+  "planned_arena_used_bytes": 1485824,
+  "cpu_hz": 120000000,
+  "psram_hz": 30000000,
+  "native_frames": 1200,
+  "hardware_status": "awaiting user test"
+}
