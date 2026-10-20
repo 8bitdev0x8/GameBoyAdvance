@@ -1,3 +1,14 @@
+# V46 candidate checkpoint
+
+[V46 firmware validation](performance-v46-summary.json),
+[6,000-frame regression](sonic-v46-direct-test.log),
+[14-group core audit](core-v46-test.log),
+[14 protocol tests](decoder-v46-test.log), and
+[exact map](pc-profile-map-v46.json) now accompany the earlier work-in-progress
+snapshot. The candidate is packaged locally, with no measured board gain.
+The [V46 report](../performance-v46.md) explains full-histogram capture and A/B.
+Earlier checkpoint notes below retain their historical context.
+
 # Evidence index through V45 and unfinished V46 work
 
 Current board evidence: [V45 captures](log-analysis-v45.json),

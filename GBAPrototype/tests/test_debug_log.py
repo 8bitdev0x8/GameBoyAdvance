@@ -116,11 +116,35 @@ class ProtocolTests(unittest.TestCase):
             self.skipTest('Supply the synthetic gba_debug_log_test fixture for C++/Python round-trip')
         header,frames,profiles=debug.decode(fixture_path.read_bytes())
         self.assertEqual(header['dependent_psram256_ns'],1188)
+        self.assertEqual(header['histogram_chunks'],3)
+        self.assertEqual(header['complete_histogram_windows'],1)
+        self.assertEqual(len(header['cpu_histograms']),13)
+        self.assertEqual([r['hits'] for r in header['cpu_histograms']],list(range(1,14)))
         self.assertEqual((len(frames),len(profiles)),(1,1))
         self.assertEqual(frames[0]['run_ms'],53)
         self.assertEqual(frames[0]['draw_ms'],18.3)
         self.assertEqual(frames[0]['partition_valid'],1)
         self.assertEqual(profiles[0]['function1'],'none')
+
+    def test_histogram_padding_boundaries_and_partial_eviction(self):
+        first=[0]*16;first[:4]=[50,5000,100,4];first[4:8]=[7,12,9,8]
+        end=[0]*16;end[:4]=[50,5000,100,8]
+        header,frames,profiles=debug.decode(packet([record(3,first),record(3,end)]))
+        self.assertEqual((len(frames),len(profiles)),(0,0))
+        self.assertEqual(header['complete_histogram_windows'],1)
+        self.assertEqual([r['function_id'] for r in header['cpu_histograms']],[7,9])
+        self.assertTrue(all(r['window_complete'] for r in header['cpu_histograms']))
+        summary=debug.summarize(header,frames,profiles)
+        self.assertEqual(summary['native_cpu_profile_samples'],100)
+        self.assertEqual([r['percent'] for r in summary['native_cpu_functions']],[12,8])
+        first[3]=0
+        partial,_,_=debug.decode(packet([record(3,first),record(3,end)]))
+        self.assertEqual(partial['complete_histogram_windows'],0)
+        self.assertTrue(all(not r['window_complete'] for r in partial['cpu_histograms']))
+        self.assertEqual(debug.summarize(partial,[],[])['native_cpu_profile_samples'],0)
+        first[3]=6
+        contaminated,_,_=debug.decode(packet([record(3,first),record(3,end)]))
+        self.assertEqual(debug.summarize(contaminated,[],[])['native_cpu_functions'],[])
 
     def test_varint_boundaries_and_mask_bit31(self):
         values=[0,1,127,128,16383,16384,0x1fffff,0x200000,0xfffffff,0x10000000,0xffffffff]*3

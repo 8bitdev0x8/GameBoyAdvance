@@ -6,7 +6,8 @@ Bluetooth and forwards input over UART. The Feather runs the game and
 generates the monitor signal through HSTX. Arduino provides the build and
 board environment; the emulator itself is C++.
 
-The latest board-measured baseline is V45; V46 inline-fetch work is in progress.
+The latest board-measured baseline is V45; V46 is an inline-fetch/CPU-profile
+board-trial candidate with unmeasured hardware FPS.
 V44's predecoded blocks and V45's uncached burst default off.
 The architecture below describes the system rather than claiming an untested
 board speedup. See PROJECT-HISTORY.md for the complete sequence.

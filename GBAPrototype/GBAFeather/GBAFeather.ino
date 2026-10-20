@@ -486,7 +486,21 @@ void presentGame() {
   lastInstructionHits=instructionHits;lastInstructionFills=instructionFills;
 #endif
 #ifdef GBA_ENABLE_PC_PROFILE
+#ifdef GBA_DEBUG_USB
+  gbaPcProfileUpdate([](unsigned index,unsigned count,bool last) {
+    static GbaDebug::HistogramWriter writer;
+    static bool collecting=false;
+    if(!collecting) {
+      const auto& window=gbaPcProfileSnapshot();
+      writer.begin(emulatedFrames,window.elapsedMs,window.samples,debugPcExportGap?2u:0u);
+      collecting=true;
+    }
+    if(count)writer.add(debugRecorder,index,count);
+    if(last){writer.finish(debugRecorder);collecting=false;}
+  });
+#else
   gbaPcProfileUpdate();
+#endif
   const auto& profile=gbaPcProfileSnapshot();
   if(!profile.active)textLine(34,"PC0 profiler unavailable: no free alarm",0xf800);
   else if(!profile.samples)textLine(34,"PC0 collecting a 5-second sample window",0xffe0);

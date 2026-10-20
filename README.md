@@ -16,11 +16,12 @@ Seven V45 captures contain 2,213 unique frames after removing overlap, covering
 entry/menu windows do not establish smooth gameplay. There is no controlled
 same-scene V44/V45 speedup measurement. Read the [V45 board analysis](docs/v45-board-results.md).
 
-V45 is the latest packaged private firmware. Original integration/support files
-also record an **unfinished V46 CPU-fetch trial**. Its focused native tests pass,
-but full firmware readiness and board FPS are not established. Core dispatch,
-fetch/bus cost and event servicing need deeper investigation; render-only changes
-cannot close the current gap. The modified core and private assets are excluded.
+V46 is now a **packaged local CPU-fetch/profile trial**, with exact native
+regressions and firmware checks passed; V45 remains the latest board-measured
+build. The full mapped PC histogram preserves the functions that older logs
+omitted. Host fetch timings are modest and mixed; no board gain or 60 FPS result
+is established. Read [the V46 trial and A/B commands](docs/performance-v46.md).
+The modified core and private assets remain excluded.
 
 The workspace began on **18 October 2026 at 22:50:09 Dublin time**; its first
 surviving original sketch was created at **22:54:53**. The [history](docs/development-history.md)
@@ -162,8 +163,7 @@ Board PC sampling, renderer phase timing, PSRAM benchmark loops and USB binary
 capture are now implemented. Recent logs place CPU dispatch/fetch ahead of explicit
 renderer waits. The next work examines the full execution/bus/scheduler path and
 more complete native/guest workload profiles, with controlled same-scene board
-A/B runs. V46's cached-fetch leaf is an unfinished experiment, not a demonstrated
-solution. Its first host comparison is modest/mixed, including a later-scene
+A/B runs. V46's cached-fetch leaf is a board-trial candidate, not a demonstrated solution. Its first host comparison is modest/mixed, including a later-scene
 regression. Native JIT translation, DWT/XIP/bus attribution and a new scanout
 backend remain unimplemented proposals. The 60 FPS target is the acceptance
 criterion, not a claimed result.

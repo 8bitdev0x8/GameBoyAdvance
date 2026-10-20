@@ -7,7 +7,7 @@ Slow gameplay remains around seven FPS: the latest window is 7.24 FPS over 45.6
 retained seconds, Run 131.48 / Draw 35.76 / Wait 14.70 ms/frame. Renderer waits
 are only part of Run. Smooth 60 FPS is not achieved. See the
 [V45 board report](v45-board-results.md) and [V45 validation](performance-v45.md).
-V46 is unfinished source work with focused fetch tests, not a tested release.
+V46 is now packaged as a private board trial: focused/full native and UF2/map checks pass, while hardware boot and FPS remain unmeasured. See [V46 validation](performance-v46.md).
 
 ## Historical V28 hardware result
 

@@ -21,6 +21,9 @@ enum ProfileField : size_t {
   PcFrame,PcUptimeMs,PcWindowMs,PcSamples,PcBad,PcUnmapped,PcHandlerUs,
   PcIrqSamples,PcFlags,PcId1,PcPercent1,PcId2,PcPercent2,PcId3,PcPercent3,PcFreeHeap,ProfileFieldCount
 };
+// Type 3: exact full native-PC histogram, six ID/count pairs per chunk.
+// A window's chunks share frame/window/samples/flags. Zero-count pairs are padding.
+enum HistogramField : size_t {HistFrame,HistWindowMs,HistSamples,HistFlags,HistId1,HistHits1};
 enum Flag : uint32_t {PadOn=1,BiosSram=2,TimingValid=4,UsbAttached=16,BlocksOn=32,AluBurstOn=64,LeafFetchOn=128};
 using Counters=std::array<uint32_t,FieldCount>;
 using Profile=std::array<uint32_t,ProfileFieldCount>;
@@ -94,7 +97,7 @@ public:
   }
   bool append(uint8_t type,std::span<const uint32_t> values) {
     if(!available() || exporting_ || !((type==1 && values.size()==FieldCount) ||
-       (type==2 && values.size()==ProfileFieldCount)))return false;
+       ((type==2 || type==3) && values.size()==ProfileFieldCount)))return false;
     uint32_t mask=0;
     for(unsigned i=0;i<values.size();++i)if(values[i])mask|=1u<<i;
     scratch_[2]=type;put32(scratch_.data()+3,mask);size_t length=7;
@@ -147,6 +150,30 @@ public:
     cursor_+=bytes;pending_=0;
     if(cursor_==HeaderBytes+used_+sizeof(End))exporting_=false;
   }
+};
+class HistogramWriter {
+  Profile chunk_{};
+  unsigned pairs_=0;
+  void flush(Recorder& recorder,bool last) {
+    if(last)chunk_[HistFlags]|=8u;
+    recorder.append(3,chunk_);
+    chunk_[HistFlags]&=~12u;
+    for(unsigned n=4;n<16;++n)chunk_[n]=0;
+    pairs_=0;
+  }
+public:
+  void begin(uint32_t frame,uint32_t windowMs,uint32_t samples,uint32_t flags) {
+    chunk_.fill(0);pairs_=0;
+    chunk_[HistFrame]=frame;chunk_[HistWindowMs]=windowMs;
+    chunk_[HistSamples]=samples;chunk_[HistFlags]=flags|4u;
+  }
+  void add(Recorder& recorder,unsigned index,unsigned count) {
+    if(!count)return;
+    chunk_[4+pairs_*2]=index;chunk_[5+pairs_*2]=count;
+    if(++pairs_==6)flush(recorder,false);
+  }
+  // Always emit an end marker, even when the last data chunk was exactly full.
+  void finish(Recorder& recorder) {flush(recorder,true);}
 };
 }
 #endif

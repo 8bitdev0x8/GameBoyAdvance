@@ -10,7 +10,10 @@ struct GbaPcProfileSnapshot {
 };
 #ifdef GBA_ENABLE_PC_PROFILE
 void gbaPcProfileStart();
-void gbaPcProfileUpdate();
+// Called from normal core-0 code, never the sampling ISR. The final callback
+// has last=true and flushes a partial histogram chunk.
+using GbaPcHistogramSink=void (*)(unsigned index,unsigned hits,bool last);
+void gbaPcProfileUpdate(GbaPcHistogramSink sink=nullptr);
 const GbaPcProfileSnapshot& gbaPcProfileSnapshot();
 #else
 inline void gbaPcProfileStart(){}

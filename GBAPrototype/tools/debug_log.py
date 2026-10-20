@@ -23,6 +23,8 @@ PROFILE_FIELDS = (
     "frame,uptime_ms,window_ms,samples,bad,unmapped,handler_us,irq_samples,flags,"
     "id1,percent1,id2,percent2,id3,percent3,free_heap"
 ).split(",")
+HISTOGRAM_FIELDS = ["frame", "window_ms", "samples", "flags"] + [
+    field for rank in range(1, 7) for field in (f"id{rank}", f"hits{rank}")]
 HEADER_FIELDS = (
     "payload_bytes,records,dropped_records,cpu_hz,psram_hz,map_fingerprint,"
     "dependent_sram_ns,dependent_psram32_ns,dependent_psram256_ns,flags,uptime_ms"
@@ -122,7 +124,7 @@ def decode(data: bytes, map_path: Path | None = None) -> tuple[dict, list[dict],
         if binascii.crc_hqx(data[offset:end - 2], 0xFFFF) != expected_crc:
             raise ValueError("Record CRC mismatch")
         kind = data[offset + 2]
-        fields = FRAME_FIELDS if kind == 1 else PROFILE_FIELDS if kind == 2 else None
+        fields = FRAME_FIELDS if kind == 1 else PROFILE_FIELDS if kind == 2 else HISTOGRAM_FIELDS if kind == 3 else None
         if fields is None:
             raise ValueError("Unknown record type")
         mask = struct.unpack_from("<I", data, offset + 3)[0]
@@ -153,7 +155,7 @@ def decode(data: bytes, map_path: Path | None = None) -> tuple[dict, list[dict],
             row["alu_burst_on"] = int(bool(row["flags"] & 64))
             row["leaf_fetch_on"] = int(bool(row["flags"] & 128))
             frames.append(row)
-        else:
+        elif kind == 2:
             for rank in range(1, 4):
                 index = row[f"id{rank}"]
                 if index == 0xFFFF:
@@ -167,15 +169,52 @@ def decode(data: bytes, map_path: Path | None = None) -> tuple[dict, list[dict],
                 row[f"function{rank}"] = name
             row["includes_export_pause"] = int(bool(row["flags"] & 2))
             profiles.append(row)
+        else:
+            key=(row["frame"],row["window_ms"],row["samples"])
+            windows=header.setdefault("_histogram_windows",{})
+            windows[key]=windows.get(key,0)|row["flags"]
+            for rank in range(1,7):
+                index,hits=row[f"id{rank}"],row[f"hits{rank}"]
+                if not hits:continue
+                if functions is not None and index>=len(functions):
+                    raise ValueError("Histogram function ID outside matching map")
+                name=functions[index]["name"] if functions is not None else f"id:{index}"
+                header.setdefault("cpu_histograms",[]).append(dict(
+                    frame=row["frame"],window_ms=row["window_ms"],samples=row["samples"],
+                    flags=row["flags"],function_id=index,hits=hits,function=name,
+                    percent=100*hits/row["samples"] if row["samples"] else 0,
+                    includes_export_pause=int(bool(row["flags"]&2))))
+            header["histogram_chunks"]=header.get("histogram_chunks",0)+1
         offset = end
-    if len(frames) + len(profiles) != header["records"]:
+    if len(frames) + len(profiles) + header.get("histogram_chunks",0) != header["records"]:
         raise ValueError("Record count mismatch")
+    windows=header.pop("_histogram_windows",{})
+    for row in header.get("cpu_histograms",[]):
+        row["window_complete"]=int((windows[(row["frame"],row["window_ms"],row["samples"])]&12)==12)
+    if windows:
+        header["histogram_windows"]=len(windows)
+        header["complete_histogram_windows"]=sum((flags&12)==12 for flags in windows.values())
+        header["cpu_histogram_windows"]=[dict(frame=key[0],window_ms=key[1],samples=key[2],
+            flags=flags,complete=int((flags&12)==12),includes_export_pause=int(bool(flags&2)))
+            for key,flags in windows.items()]
     return header, frames, profiles
 
 def summarize(header: dict, frames: list[dict], profiles: list[dict]) -> dict:
     summary = dict(header, retained_frames=len(frames), retained_profiles=len(profiles),
         invalid_frame_partitions=sum(not (f["partition_valid"] and f["device_valid"]) for f in frames),
         note="Diagnostic build; USB/logging overhead is not isolated. Run, Draw and Wait overlap.")
+    windows=header.get("cpu_histogram_windows",[])
+    eligible={(w["frame"],w["window_ms"],w["samples"]) for w in windows
+        if w["complete"] and not w["includes_export_pause"]}
+    if windows:
+        samples=sum(key[2] for key in eligible)
+        totals={}
+        for row in header.get("cpu_histograms",[]):
+            if (row["frame"],row["window_ms"],row["samples"]) in eligible:
+                name=row["function"];totals[name]=totals.get(name,0)+row["hits"]
+        summary["native_cpu_profile_samples"]=samples
+        summary["native_cpu_functions"]=[dict(function=name,hits=hits,percent=100*hits/samples if samples else 0)
+            for name,hits in sorted(totals.items(),key=lambda item:-item[1])]
     if frames:
         wall = sum(f["wall_us"] for f in frames)
         summary.update(first_frame=frames[0]["frame"], last_frame=frames[-1]["frame"],
@@ -259,6 +298,9 @@ def main() -> None:
     stem = path.with_suffix("")
     write_csv(stem.with_name(stem.name + "-frames.csv"), frames, FRAME_FIELDS)
     write_csv(stem.with_name(stem.name + "-profiles.csv"), profiles, PROFILE_FIELDS)
+    if header.get("cpu_histograms"):
+        write_csv(stem.with_name(stem.name + "-cpu-histogram.csv"), header["cpu_histograms"],
+            ["frame","window_ms","samples","flags","function_id","hits","function","percent","includes_export_pause","window_complete"])
     summary = summarize(header, frames, profiles)
     summary["capture_file"] = path.name
     summary["capture_local_time"] = captured.isoformat()

@@ -509,6 +509,7 @@ int main(int argc,char**argv) {
       c[GbaDebug::GuestPc]=compressed.cpu().state().regs[15];
       c[GbaDebug::Flags]=compressed.cpu().block_execution()?GbaDebug::BlocksOn:0u;
       if(compressed.cpu().alu_burst() && !compressed.cpu().block_execution())c[GbaDebug::Flags]|=GbaDebug::AluBurstOn;
+      if(compressed.cpu().leaf_fetch())c[GbaDebug::Flags]|=GbaDebug::LeafFetchOn;
       c[GbaDebug::Keys]=uint32_t((~compressed.bus().keyinput())&0x03ffu);
       c[GbaDebug::KeyReads]=compressed.bus().keyinput_read_count();return c;
     };
@@ -612,6 +613,7 @@ int main(int argc,char**argv) {
     std::cout<<"Instruction fast reads "<<compressed.bus().code_fetch_fast_hits<<" of "<<compressed.bus().code_fetch_attempts<<"\n";
     std::cout<<"Thumb ALU fast executions "<<compressed.cpu().fast_thumb_alu_count<<"\n";
     std::cout<<"Instruction window hits "<<compressed.cartridge().instruction_hits()<<" fills "<<compressed.cartridge().instruction_fills()<<"\n";
+    std::cout<<"Inline instruction fetch hits "<<compressed.bus().code_line_leaf_hits<<"\n";
     std::cout<<"Thumb base-in-list cases: loads "<<compressed.cpu().base_load_corrections<<" stores "<<compressed.cpu().base_store_corrections<<"\n";
     std::cout<<"Video writes "<<compressed.bus().video_writes<<" unchanged "<<compressed.bus().unchanged_video_writes
       <<" register halves "<<(compressed.ppu().register_writes+compressed.ppu().skipped_register_halves)

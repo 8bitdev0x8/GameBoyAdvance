@@ -418,6 +418,29 @@ The publication update records completed work through V45 and explicitly labels
 V46 as unfinished. It follows the earlier decision to publish documentation and
 original support code while excluding the modified core and private game assets.
 
+## 20. V46 candidate validation after the publication checkpoint
+
+The V46 inline fetch path passes a 6,000-frame replay with the same twenty
+CPU/video checkpoints and handles 79,003,085 cached fetches. Its first host
+timing comparison is modest and mixed: 3.07% less CPU-only time, 1.60% less
+total time in one rendered sequence, and 3.43% more in a later sequence.
+Those sequences are not the reported slow gameplay scene and cannot establish
+board speed. The engine remains runtime-switchable for a controlled board A/B.
+
+The larger diagnostic change retains every nonzero mapped native-PC sample bin,
+instead of only three rounded percentages. Six ID/count pairs fit each sparse
+binary record; start/end markers detect incomplete overwritten windows. It
+reuses the existing histogram and log ring, with a small fixed chunk writer.
+Serialization happens outside the sampling ISR. The updated decoder exports
+exact full function names/counts and marks contaminated or incomplete windows.
+
+Fourteen protocol tests, native writer boundary tests and the full replay pass.
+The final 1,038-function map and UF2 layout checks pass; V46 is packaged locally
+with V45 preserved. Static SRAM rises 1,112 bytes. Board boot, runtime overhead
+and FPS gain are unmeasured. The 60 FPS target remains unmet; the new evidence
+is intended to locate the remaining dispatch/bus/device work before larger
+execution-backend changes. See [PERFORMANCE-v46.md](performance-v46.md).
+
 ## Current state and next evidence needed
 
 The Feather boots Sonic, receives the DualSense through the ESP32/UART bridge,

@@ -69,7 +69,7 @@ void gbaPcProfileStart() {
   irq_set_enabled(samplerIrq,true);
 }
 
-void gbaPcProfileUpdate() {
+void gbaPcProfileUpdate(GbaPcHistogramSink sink) {
   if(alarmNumber<0)return;
   const uint32_t now=millis();
   if(uint32_t(now-lastSnapshot)<5000u)return;
@@ -81,11 +81,13 @@ void gbaPcProfileUpdate() {
   uint32_t best[3]{};unsigned indices[3]{};
   for(unsigned index=0;index<gbaPcRangeCount;++index) {
     const uint32_t count=hits[index];hits[index]=0;
+    if(sink && count)sink(index,count,false);
     for(unsigned rank=0;rank<3;++rank)if(count>best[rank]) {
       for(unsigned move=2;move>rank;--move){best[move]=best[move-1];indices[move]=indices[move-1];}
       best[rank]=count;indices[rank]=index;break;
     }
   }
+  if(sink)sink(0,0,true);
   irq_set_enabled(samplerIrq,true);
   for(unsigned rank=0;rank<3;++rank) {
     snapshot.rangeIndex[rank]=best[rank]?uint16_t(indices[rank]):uint16_t(0xffffu);

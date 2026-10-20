@@ -70,6 +70,13 @@ int main(int argc,char** argv) {
     }
     check(records==recorder.count(),"Record count");
     recorder.clear();check(recorder.used()==0 && recorder.count()==0 && recorder.dropped()==0,"Clear ring");
+    for(unsigned count:{0u,1u,6u,12u,13u}) {
+      HistogramWriter writer;writer.begin(1,5000,100,0);
+      for(unsigned i=0;i<count;++i)writer.add(recorder,i,i+1);
+      writer.finish(recorder);
+      check(recorder.count()==count/6+1,"Histogram boundaries retain an end marker, including empty/full final chunks");
+      recorder.clear();
+    }
     Counters frame{};frame[FrameNo]=7;frame[UptimeMs]=700;frame[WallUs]=100000;
     frame[RunUs]=53000;frame[DrawUs]=frame[WorkerUs]=18300;
     frame[BgUs]=2600;frame[ObjUs]=800;frame[MixUs]=11600;
@@ -81,6 +88,11 @@ int main(int argc,char** argv) {
     Profile profile{};profile[PcFrame]=7;profile[PcSamples]=2500;profile[PcWindowMs]=5000;
     profile[PcFlags]=1;profile[PcId1]=profile[PcId2]=profile[PcId3]=0xffff;
     check(recorder.append(2,profile),"Fixture profile");
+    HistogramWriter histogram;
+    histogram.begin(7,5000,100,0);
+    for(unsigned i=0;i<13;++i)histogram.add(recorder,400+i,i+1);
+    histogram.finish(recorder);
+    check(recorder.count()==5,"Thirteen histogram functions use three complete-record chunks");
     auto fixture=dump(recorder);
     if(argc==2) {std::ofstream file(argv[1],std::ios::binary);file.write(reinterpret_cast<const char*>(fixture.data()),fixture.size());check(bool(file),"Write protocol fixture");}
     std::cout<<"PASS: binary CRC vectors, counter wrap, sparse/max varints, bounded ring eviction and lossless chronological decode\n";

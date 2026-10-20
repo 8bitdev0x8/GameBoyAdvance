@@ -1,3 +1,7 @@
+> Later V46 adds type-3 full native-PC histogram chunks and fetch-mode flag 128.
+> Use the updated decoder for those captures; see [V46 format and limits](performance-v46.md).
+> The original V41 format description below retains its historical context.
+
 # v41: compact binary frame logging over USB
 
 V41 adds measurement storage and export to the running v40 emulator. There

@@ -123,3 +123,12 @@ The `--map` option can explicitly select a matching saved JSON map. Local BIOS
 preparation requires a separately supplied 16 KiB file and writes an ignored
 header; no private BIOS bytes are distributed. V46 `--engine fetch` commands
 are source-level work in progress and are not available in the V45 firmware.
+
+## V46 full CPU histograms
+
+Use the updated decoder after flashing the local V46 candidate. It also writes
+`*-cpu-histogram.csv` with exact mapped function counts and marks incomplete or
+export-contaminated windows. Older decoder versions reject V46 type-3 records.
+`--engine fetch --mode on|off|status` controls the cached-fetch trial for a
+same-scene comparison. These commands are unavailable in V45. The [V46 report](performance-v46.md)
+distinguishes native validation from unmeasured board FPS.
