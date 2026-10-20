@@ -1,6 +1,6 @@
 # Core audit and performance work, v27
 
-Two Thumb multiple-transfer correctness defects were reproduced and fixed. V27 also reduces instruction-fetch and timer-service overhead while retaining v26's direct-render pipeline, clocks, HDMI driver, IRQ wrapper and linker. The user subsequently confirmed v27 at approximately 7 FPS average, Run 121, Draw 33, Copy 0, Wait 32 ms/frame and VBskip 10%; scene/duration were not specified. Follow-up work and proposed real-board profiling are in [performance-v28.md](performance-v28.md).
+Two Thumb multiple-transfer correctness defects were reproduced and fixed. V27 also reduces instruction-fetch and timer-service overhead while retaining v26's direct-render pipeline, clocks, HDMI driver, IRQ wrapper and linker. The user subsequently confirmed v27 at approximately 7 FPS average, Run 121, Draw 33, Copy 0, Wait 32 ms/frame and VBskip 10%; scene/duration were not specified. Follow-up work and proposed real-board profiling are in [PERFORMANCE-v28.md](performance-v28.md).
 
 The latest explicitly identified v26 hardware report is approximately **6-7 FPS**, **VBskip 6-12%**, **Draw 49 ms/frame**, **Copy 0**, **Wait 26 ms/frame**, ROM misses 0 and decode 0-19 ms/s. The game scene and Run timing were not supplied. Draw includes conversion/presentation, Wait is included in Run, and Draw can overlap Run. This is the comparison baseline, not a controlled same-scene benchmark.
 
@@ -11,7 +11,7 @@ The latest explicitly identified v26 hardware report is approximately **6-7 FPS*
 | Thumb LDMIA with its base in the register list | Loaded base overwritten by address writeback; a single-register `LDMIA r0!, {r0}` returned the advanced address rather than loaded data | Retain the loaded base value; exhaustive nonempty-list/base-register cases |
 | Thumb STMIA with its base later in the register list | Stored the old base rather than ARM7's updated base value | Store the final base for that case, retaining the old base when it is first |
 
-The expectations follow the ARMv4 Thumb behavior described in [GBATEK's multiple-transfer section (mirror)](https://rust-console.github.io/gbatek-gbaonly/). No ROM patch is involved. Before-fix evidence: [STMIA failure](evidence/core-v26-before-fix.log) and [LDMIA failure](evidence/core-v26-ldm-before-fix.log).
+The expectations follow the ARMv4 Thumb behavior described in [GBATEK's multiple-transfer section (mirror)](https://rust-console.github.io/gbatek-gbaonly/). No ROM patch is involved. Before-fix logs are saved as `output/core-v26-before-fix.log` and `output/core-v26-ldm-before-fix.log`.
 
 The independent instruction test covers **8160 cases**: all 255 nonempty lists, eight base registers, load/store, EWRAM/IWRAM, base first/later/absent, unlisted registers and flags. Both old-code defects were observed before the change; the corrected implementation passes. The implementation visits selected registers instead of scanning all eight positions and calculates a population count only for the exceptional store-base case.
 
@@ -70,4 +70,4 @@ cmake --build build/gba-host --config Release --parallel 1
 build/gba-host/Release/gba_core_audit.exe
 ```
 
-The 6000-frame test additionally uses `GBA_TEST_THREADED=1`, `GBA_TEST_SLICED=1`, `GBA_TEST_AUTO_INPUT=1`, `GBA_TEST_MUTE=1`, `GBA_TEST_DIRECT_VIDEO=1` and `GBA_TEST_FRAMES=6000`, with locally supplied ROM and generated page data. V27 and v28 are subsequently confirmed working; this section describes the v27 audit workflow. Do not publish core source archives or firmware containing the game.
+The 6000-frame test additionally uses `GBA_TEST_THREADED=1`, `GBA_TEST_SLICED=1`, `GBA_TEST_AUTO_INPUT=1`, `GBA_TEST_MUTE=1`, `GBA_TEST_DIRECT_VIDEO=1` and `GBA_TEST_FRAMES=6000`, with locally supplied ROM and generated page data. V26 remains the confirmed-working fallback. Do not publish core source archives or firmware containing the game.

@@ -4,19 +4,40 @@ An educational hardware experiment: emulate a Game Boy Advance on an **Adafruit 
 
 This project grew from a simple question: can I read every controller value on an ESP32? It became a UART bridge, an HDMI input viewer, a memory and video debugging exercise, and finally a running GBA interpreter on the Feather. This repository documents the working pieces, the failed attempts, and the limits of the current result.
 
-**Current hardware result, v28, reported 19 October 2026:** Sonic Advance 3 runs with controller input and HDMI output at approximately **7 emulated FPS**, **PAD ON**, **VBskip 12%**, **Run 113 / Draw 22 / Copy 0 / Wait 14 ms/frame**. The scene and test duration were not specified. PSRAM benchmark values, HDMI IRQ cost and ROM miss/decode figures were not supplied for v28. The 30 FPS minimum and 60 FPS goal remain unmet. A 60 Hz monitor signal does not mean 60 emulated FPS.
+**Latest board-measured build: V45, 20 October 2026.** Sonic runs with
+DualSense input and HSTX output, but slow gameplay remains around **7 FPS**.
+The latest 45.6-second retained window measures **7.24 FPS**, Run **131.48**,
+Draw **35.76** and Wait **14.70 ms/frame**. About 89% of Run is outside explicit
+renderer waiting. The **60 FPS gameplay target remains unmet**; a 60 Hz monitor
+signal is not 60 emulated FPS.
 
-Wait is included in Run, and rendering overlaps CPU work; do not add these times. V27 reported 7 FPS, Run 121, Draw 33 and Wait 32 ms/frame. The later report shows lower Draw/Wait values, but the reports do not establish a controlled same-scene FPS speedup.
+Seven V45 captures contain 2,213 unique frames after removing overlap, covering
+185.672 seconds at a weighted 11.92 FPS across different retained scenes. Faster
+entry/menu windows do not establish smooth gameplay. There is no controlled
+same-scene V44/V45 speedup measurement. Read the [V45 board analysis](docs/v45-board-results.md).
+
+V45 is the latest packaged private firmware. Original integration/support files
+also record an **unfinished V46 CPU-fetch trial**. Its focused native tests pass,
+but full firmware readiness and board FPS are not established. Core dispatch,
+fetch/bus cost and event servicing need deeper investigation; render-only changes
+cannot close the current gap. The modified core and private assets are excluded.
+
+The workspace began on **18 October 2026 at 22:50:09 Dublin time**; its first
+surviving original sketch was created at **22:54:53**. The [history](docs/development-history.md)
+distinguishes folder, session, first-code and emulator-subfolder timestamps.
 
 ## Read the development story
 
 - [Architecture](docs/architecture.md): boards, data flow, CPU cores, timing, caches, memory and video.
-- [Complete development history](docs/development-history.md): from controller experiments through emulator v28, including failed builds.
+- [Complete development history](docs/development-history.md): from controller experiments through V45 and the unfinished V46 investigation, including failed builds.
 - [Debugging guide](docs/debugging.md): how black screens, allocator failures, startup stages and apparent game stalls were investigated.
 - [Validation and current state](docs/validation.md): what passed, what was measured on hardware, and what remains unproven.
 - [Build and wiring guide](docs/building.md): reproducible support-sketch setup and the prerequisites for the private emulator build.
+- [AI development metrics](docs/ai-project-metrics.md): auditable token/time counts, API cost estimates and reproducible JSON/CSV.
+- [Memory layout](docs/memory-layout.md) and [interactive treemap source/UX](docs/memory-explorer.md).
+- [Binary USB logging](docs/debug-log-v41.md), [on-board PC sampling](docs/profiling-v31.md), and [renderer profile fields](docs/profiling-v40.md).
 - [Third-party provenance and publication boundaries](THIRD_PARTY_NOTICES.md).
-- [Text evidence](docs/evidence/README.md): build summaries, hardware reports and native test logs through v28.
+- [Text evidence](docs/evidence/README.md): build summaries, hardware reports and native test logs through V45, with explicitly labeled V46 work in progress.
 - [Core audit, v27](docs/core-audit-v27.md): reproduced Thumb transfer bugs, fetch/timer work and remaining accuracy gaps.
 - [Performance and profiling, v28](docs/performance-v28.md): video writes, caches, PSRAM/IRQ measurement, acceleration candidates and proposed PC sampling.
 
@@ -76,25 +97,25 @@ The diagnostic receiver can show sticks, buttons, triggers, touch contacts, raw 
 
 | Area | State |
 | --- | --- |
-| Hardware startup | v28 confirmed working by the project author |
+| Hardware startup | V45 confirmed by valid board captures; earlier intermittent video recovery remains documented |
 | Game tested in current build | Sonic Advance 3, European version; supplied locally, not distributed |
 | Earlier game | Super Mario Advance 3: Yoshi's Island, European version |
 | Execution | Cycle-scheduled ARM/Thumb interpreter, not a native game port or dynamic recompiler |
 | CPU cores | Core 0: interpreter, scheduling, UART, HUD and video IRQ; core 1: scanline rendering and direct RGB565 output |
 | Video | 240x160 game image centered in a 320x240 RGB565 buffer; 640x480/60 Hz DVI-compatible output |
-| Measured speed | About 7 emulated FPS in the latest user report; full-speed play remains unresolved |
-| VBlank accelerator | Active; 12% of guest cycles bypassed in the latest report; this is not utilization |
+| Measured speed | Latest slow V45 capture 7.24 FPS over 45.6 retained seconds; full-speed play remains unresolved |
+| VBlank accelerator | Active for recognized event-bounded polling loops; bypassed guest cycles are not host utilization |
 | ROM storage | Independently compressed pages in Feather flash, decoded on demand into PSRAM |
 | Saves | EEPROM/SRAM/Flash emulation; volatile RAM only, no persistence after reset |
 | Sound | No audio output; silent APU mode preserves relevant register/FIFO/event behavior |
 | Rendering | Direct scanline output; repeated writes avoid joins/invalidation; one display buffer can tear; no intentional frame skipping |
 | Compatibility | Experimental; no claim of complete gameplay or original-hardware accuracy |
 
-The latest native test completed **6000 emulated frames** with matching CPU/banked state, exact guest cycles, bus/prefetch/latch state, RAM and every converted RGB565 pixel/display margin between accelerated/compressed/threaded execution and an ordinary synchronous/original-ROM path with conservative video invalidation. It also replaces the display allocation at frame 3000. These paths share the emulator core. Agreement is useful regression evidence, not proof that both are correct against a real GBA.
+The V45 native test completed **6000 emulated frames** with matching CPU/banked state, exact guest cycles, bus/prefetch/latch state, RAM and every converted RGB565 pixel/display margin between accelerated/compressed/threaded execution and an ordinary synchronous/original-ROM path with conservative video invalidation. It also replaces the display allocation at frame 3000. These paths share the emulator core. Agreement is useful regression evidence, not proof that both are correct against a real GBA.
 
 ## Performance history at a glance
 
-All entries are user reports, with unspecified scene/duration. Times are ms/frame; `—` means not supplied. The v25 identification is inferred from the build sequence, not explicitly named in that report.
+The V24–V28 entries are user reports with unspecified scene/duration; V45 is a retained binary capture. Times are ms/frame; `—` means not supplied. The v25 identification is inferred from the build sequence, not explicitly named in that report.
 
 | Build | FPS | Run | Draw | Copy | Wait | Main work |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
@@ -103,6 +124,7 @@ All entries are user reports, with unspecified scene/duration. Times are ms/fram
 | v26 | 6-7 | — | 49 | 0 | 26 | Core-1 direct video output; full-frame copy removed |
 | v27 | about 7 | 121 | 33 | 0 | 32 | Thumb correctness fixes, specialized fetches and cached timer deadlines |
 | v28 | about 7 | 113 | 22 | 0 | 14 | Unchanged-write suppression and selective tile-cache invalidation |
+| V45 slow capture | 7.24 | 131.48 | 35.76 | ~0 | 14.70 | Packed renderer math; native PC sampling and per-frame binary evidence |
 
 V28's scripted native run found 4,141,934 of 4,196,721 video writes unchanged. Decoded tile-row cache misses fell from 8,011,631 to 3,848,078, while almost all scanlines still rendered. Those work counts are not hardware speedup percentages. Read the [full history](docs/development-history.md) for earlier 1-5 FPS builds, black-screen failures and subsequent corrections.
 
@@ -136,7 +158,15 @@ Emulator Development/ Existing reference documents retained from main
 
 ## Where development can go next
 
-The next performance work needs board measurements: per-core PC samples and busy/wait/idle timing, DWT cycle/stall counters, XIP/bus counters and controlled A/B runs. V28 already displays a startup SRAM/PSRAM benchmark and times the original HDMI handler; those measured values have not yet been reported. PC sampling, DWT/bus profiling, a decoded-instruction cache, dynamic recompilation, interpolator rendering and a new DMA scanout design remain proposals. A faster CPU backend would be substantial engineering work. The failed v22 experiment is a reminder that passing desktop tests does not establish embedded startup safety.
+Board PC sampling, renderer phase timing, PSRAM benchmark loops and USB binary
+capture are now implemented. Recent logs place CPU dispatch/fetch ahead of explicit
+renderer waits. The next work examines the full execution/bus/scheduler path and
+more complete native/guest workload profiles, with controlled same-scene board
+A/B runs. V46's cached-fetch leaf is an unfinished experiment, not a demonstrated
+solution. Its first host comparison is modest/mixed, including a later-scene
+regression. Native JIT translation, DWT/XIP/bus attribution and a new scanout
+backend remain unimplemented proposals. The 60 FPS target is the acceptance
+criterion, not a claimed result.
 
 Before a complete public emulator release, the core needs redistribution permission or replacement with a suitably licensed implementation. Save persistence, sound, broader game compatibility and stable gameplay also remain open work.
 

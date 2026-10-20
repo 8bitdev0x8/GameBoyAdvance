@@ -1,0 +1,2 @@
+PASS: Cortex-M33 secure thread/IRQ, MSP/PSP, basic/FP frame PC, invalid frame rejection
+PASS: binary PC lookup vs linear reference across 66 addresses, gaps, bounds, SRAM and empty table

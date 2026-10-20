@@ -1,0 +1,5829 @@
+{
+  "capacity": 1024,
+  "functions": [
+    {
+      "begin": 268448364,
+      "end": 268448368,
+      "label": "arduino::Print::availab",
+      "name": "arduino::Print::availableForWrite()",
+      "symbol": "_ZN7arduino5Print17availableForWriteEv"
+    },
+    {
+      "begin": 268448368,
+      "end": 268448370,
+      "label": "arduino::Print::flush",
+      "name": "arduino::Print::flush()",
+      "symbol": "_ZN7arduino5Print5flushEv"
+    },
+    {
+      "begin": 268448372,
+      "end": 268448380,
+      "label": "RomProvider::contiguous",
+      "name": "gba::RomProvider::contiguous_span() const",
+      "symbol": "_ZNK3gba11RomProvider15contiguous_spanEv"
+    },
+    {
+      "begin": 268448380,
+      "end": 268448388,
+      "label": "RomProvider::direct_rea",
+      "name": "gba::RomProvider::direct_read_span() const",
+      "symbol": "_ZNK3gba11RomProvider16direct_read_spanEv"
+    },
+    {
+      "begin": 268448388,
+      "end": 268448394,
+      "label": "CompressedRom::size",
+      "name": "CompressedRom::size() const",
+      "symbol": "_ZNK13CompressedRom4sizeEv"
+    },
+    {
+      "begin": 268448396,
+      "end": 268448436,
+      "label": "CompressedRom::fast_acc",
+      "name": "CompressedRom::fast_access() const",
+      "symbol": "_ZNK13CompressedRom11fast_accessEv"
+    },
+    {
+      "begin": 268448436,
+      "end": 268448464,
+      "label": "CompressedRom::~Compres",
+      "name": "CompressedRom::~CompressedRom()",
+      "symbol": "_ZN13CompressedRomD1Ev"
+    },
+    {
+      "begin": 268448464,
+      "end": 268448504,
+      "label": "CompressedRom::~Compres",
+      "name": "CompressedRom::~CompressedRom()",
+      "symbol": "_ZN13CompressedRomD0Ev"
+    },
+    {
+      "begin": 268448504,
+      "end": 268448844,
+      "label": "gbaKeys",
+      "name": "gbaKeys() [clone .part.0]",
+      "symbol": "_Z7gbaKeysv.part.0"
+    },
+    {
+      "begin": 268448844,
+      "end": 268449352,
+      "label": "CompressedRom::read_byt",
+      "name": "CompressedRom::read_bytes(unsigned long, std::span<unsigned char, 4294967295u>) const",
+      "symbol": "_ZNK13CompressedRom10read_bytesEmSt4spanIhLj4294967295EE"
+    },
+    {
+      "begin": 268449352,
+      "end": 268449856,
+      "label": "restartVideo",
+      "name": "restartVideo(bool) [clone .part.0]",
+      "symbol": "_Z12restartVideob.part.0"
+    },
+    {
+      "begin": 268449856,
+      "end": 268450068,
+      "label": "serviceVideo",
+      "name": "serviceVideo() [clone .part.0]",
+      "symbol": "_Z12serviceVideov.part.0"
+    },
+    {
+      "begin": 268450068,
+      "end": 268450320,
+      "label": "constructorProgress",
+      "name": "constructorProgress(unsigned long)",
+      "symbol": "_Z19constructorProgressm"
+    },
+    {
+      "begin": 268450320,
+      "end": 268450836,
+      "label": "CompressedRom::fillHotL",
+      "name": "CompressedRom::fillHotLine(unsigned long, unsigned long, unsigned long) const",
+      "symbol": "_ZNK13CompressedRom11fillHotLineEmmm"
+    },
+    {
+      "begin": 268450836,
+      "end": 268451002,
+      "label": "CompressedRom::read_byt",
+      "name": "CompressedRom::read_byte(unsigned long) const",
+      "symbol": "_ZNK13CompressedRom9read_byteEm"
+    },
+    {
+      "begin": 268451004,
+      "end": 268451184,
+      "label": "CompressedRom::read16",
+      "name": "CompressedRom::read16(unsigned long) const",
+      "symbol": "_ZNK13CompressedRom6read16Em"
+    },
+    {
+      "begin": 268451184,
+      "end": 268451364,
+      "label": "CompressedRom::read32",
+      "name": "CompressedRom::read32(unsigned long) const",
+      "symbol": "_ZNK13CompressedRom6read32Em"
+    },
+    {
+      "begin": 268451364,
+      "end": 268451840,
+      "label": "runtimeProgress",
+      "name": "runtimeProgress()",
+      "symbol": "_Z15runtimeProgressv"
+    },
+    {
+      "begin": 268451840,
+      "end": 268451952,
+      "label": "textLine",
+      "name": "textLine(int, char const*, unsigned short)",
+      "symbol": "_Z8textLineiPKct"
+    },
+    {
+      "begin": 268451952,
+      "end": 268452112,
+      "label": "fail",
+      "name": "fail(char const*)",
+      "symbol": "_Z4failPKc"
+    },
+    {
+      "begin": 268452112,
+      "end": 268452296,
+      "label": "beginBootStage",
+      "name": "beginBootStage(unsigned long)",
+      "symbol": "_Z14beginBootStagem"
+    },
+    {
+      "begin": 268452296,
+      "end": 268454016,
+      "label": "presentGame",
+      "name": "presentGame()",
+      "symbol": "_Z11presentGamev"
+    },
+    {
+      "begin": 268454016,
+      "end": 268454092,
+      "label": "_GLOBAL__sub_I__Z13boot",
+      "name": "_GLOBAL__sub_I__Z13bootStageNamem",
+      "symbol": "_GLOBAL__sub_I__Z13bootStageNamem"
+    },
+    {
+      "begin": 268454092,
+      "end": 268454984,
+      "label": "pollController",
+      "name": "pollController()",
+      "symbol": "_Z14pollControllerv"
+    },
+    {
+      "begin": 268454984,
+      "end": 268455128,
+      "label": "cartridgeScanProgress",
+      "name": "cartridgeScanProgress(unsigned int, unsigned int)",
+      "symbol": "_Z21cartridgeScanProgressjj"
+    },
+    {
+      "begin": 268455128,
+      "end": 268455904,
+      "label": "measureMemory",
+      "name": "measureMemory()",
+      "symbol": "_Z13measureMemoryv"
+    },
+    {
+      "begin": 268455904,
+      "end": 268456488,
+      "label": "loop",
+      "name": "loop",
+      "symbol": "loop"
+    },
+    {
+      "begin": 268456488,
+      "end": 268460172,
+      "label": "setup",
+      "name": "setup",
+      "symbol": "setup"
+    },
+    {
+      "begin": 268460172,
+      "end": 268460328,
+      "label": "gbaPcProfileStart",
+      "name": "gbaPcProfileStart()",
+      "symbol": "_Z17gbaPcProfileStartv"
+    },
+    {
+      "begin": 268460328,
+      "end": 268460792,
+      "label": "gbaPcProfileUpdate",
+      "name": "gbaPcProfileUpdate()",
+      "symbol": "_Z18gbaPcProfileUpdatev"
+    },
+    {
+      "begin": 268460792,
+      "end": 268460800,
+      "label": "gbaPcProfileSnapshot",
+      "name": "gbaPcProfileSnapshot()",
+      "symbol": "_Z20gbaPcProfileSnapshotv"
+    },
+    {
+      "begin": 268460800,
+      "end": 268461638,
+      "label": "Apu::write_register",
+      "name": "gba::Apu::write_register(unsigned long, unsigned long, gba::BusWidth, unsigned long long)::{lambda(unsigned long, unsigned short)#1}::operator()(unsigned long, unsigned short) const [clone .isra.0]",
+      "symbol": "_ZZN3gba3Apu14write_registerEmmNS_8BusWidthEyENKUlmtE_clEmt.isra.0"
+    },
+    {
+      "begin": 268461640,
+      "end": 268461846,
+      "label": "Apu::reset",
+      "name": "gba::Apu::reset()",
+      "symbol": "_ZN3gba3Apu5resetEv"
+    },
+    {
+      "begin": 268461848,
+      "end": 268463544,
+      "label": "Apu::read_register",
+      "name": "gba::Apu::read_register(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba3Apu13read_registerEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268463544,
+      "end": 268463682,
+      "label": "Apu::on_timer_overflow",
+      "name": "gba::Apu::on_timer_overflow(int)",
+      "symbol": "_ZN3gba3Apu17on_timer_overflowEi"
+    },
+    {
+      "begin": 268463684,
+      "end": 268464124,
+      "label": "Apu::write_register",
+      "name": "gba::Apu::write_register(unsigned long, unsigned long, gba::BusWidth, unsigned long long)",
+      "symbol": "_ZN3gba3Apu14write_registerEmmNS_8BusWidthEy"
+    },
+    {
+      "begin": 268464124,
+      "end": 268464178,
+      "label": "Apu::next_event_cycle",
+      "name": "gba::Apu::next_event_cycle() const",
+      "symbol": "_ZNK3gba3Apu16next_event_cycleEv"
+    },
+    {
+      "begin": 268464180,
+      "end": 268464200,
+      "label": "Apu::audio_chunk_ready",
+      "name": "gba::Apu::audio_chunk_ready() const",
+      "symbol": "_ZNK3gba3Apu17audio_chunk_readyEv"
+    },
+    {
+      "begin": 268464200,
+      "end": 268464228,
+      "label": "Apu::consume_audio_chun",
+      "name": "gba::Apu::consume_audio_chunk()",
+      "symbol": "_ZN3gba3Apu19consume_audio_chunkEv"
+    },
+    {
+      "begin": 268464228,
+      "end": 268464264,
+      "label": "free_memory",
+      "name": "gba::(anonymous namespace)::free_memory(unsigned char*)",
+      "symbol": "_ZN3gba12_GLOBAL__N_111free_memoryEPh"
+    },
+    {
+      "begin": 268464264,
+      "end": 268464332,
+      "label": "gamepak_open_bus_value",
+      "name": "gba::(anonymous namespace)::gamepak_open_bus_value(unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba12_GLOBAL__N_122gamepak_open_bus_valueEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268464332,
+      "end": 268464368,
+      "label": "free_wait_tables",
+      "name": "gba::(anonymous namespace)::free_wait_tables(gba::Bus::WaitStateTables*)",
+      "symbol": "_ZN3gba12_GLOBAL__N_116free_wait_tablesEPNS_3Bus15WaitStateTablesE"
+    },
+    {
+      "begin": 268464368,
+      "end": 268464956,
+      "label": "Bus::Bus",
+      "name": "gba::Bus::Bus(gba::Cartridge&, gba::Ppu&, gba::Timers&, gba::DmaEngine&, gba::Apu&, gba::IrqController&)",
+      "symbol": "_ZN3gba3BusC1ERNS_9CartridgeERNS_3PpuERNS_6TimersERNS_9DmaEngineERNS_3ApuERNS_13IrqControllerE"
+    },
+    {
+      "begin": 268464956,
+      "end": 268464974,
+      "label": "Bus::vram",
+      "name": "gba::Bus::vram() const",
+      "symbol": "_ZNK3gba3Bus4vramEv"
+    },
+    {
+      "begin": 268464976,
+      "end": 268465004,
+      "label": "Bus::vram_write",
+      "name": "gba::Bus::vram_write()",
+      "symbol": "_ZN3gba3Bus10vram_writeEv"
+    },
+    {
+      "begin": 268465004,
+      "end": 268465030,
+      "label": "Bus::mark_video_dirty",
+      "name": "gba::Bus::mark_video_dirty(unsigned long)",
+      "symbol": "_ZN3gba3Bus16mark_video_dirtyEm"
+    },
+    {
+      "begin": 268465032,
+      "end": 268465050,
+      "label": "Bus::palette",
+      "name": "gba::Bus::palette() const",
+      "symbol": "_ZNK3gba3Bus7paletteEv"
+    },
+    {
+      "begin": 268465052,
+      "end": 268465070,
+      "label": "Bus::oam",
+      "name": "gba::Bus::oam() const",
+      "symbol": "_ZNK3gba3Bus3oamEv"
+    },
+    {
+      "begin": 268465072,
+      "end": 268465090,
+      "label": "Bus::ewram",
+      "name": "gba::Bus::ewram()",
+      "symbol": "_ZN3gba3Bus5ewramEv"
+    },
+    {
+      "begin": 268465092,
+      "end": 268465110,
+      "label": "Bus::iwram",
+      "name": "gba::Bus::iwram()",
+      "symbol": "_ZN3gba3Bus5iwramEv"
+    },
+    {
+      "begin": 268465112,
+      "end": 268465158,
+      "label": "Bus::set_keyinput",
+      "name": "gba::Bus::set_keyinput(unsigned short)",
+      "symbol": "_ZN3gba3Bus12set_keyinputEt"
+    },
+    {
+      "begin": 268465160,
+      "end": 268465166,
+      "label": "Bus::keyinput",
+      "name": "gba::Bus::keyinput() const",
+      "symbol": "_ZNK3gba3Bus8keyinputEv"
+    },
+    {
+      "begin": 268465168,
+      "end": 268465174,
+      "label": "Bus::waitcnt",
+      "name": "gba::Bus::waitcnt() const",
+      "symbol": "_ZNK3gba3Bus7waitcntEv"
+    },
+    {
+      "begin": 268465176,
+      "end": 268465182,
+      "label": "Bus::has_bios",
+      "name": "gba::Bus::has_bios() const",
+      "symbol": "_ZNK3gba3Bus8has_biosEv"
+    },
+    {
+      "begin": 268465184,
+      "end": 268465190,
+      "label": "Bus::rom_size",
+      "name": "gba::Bus::rom_size() const",
+      "symbol": "_ZNK3gba3Bus8rom_sizeEv"
+    },
+    {
+      "begin": 268465192,
+      "end": 268465214,
+      "label": "Bus::next_event_cycle",
+      "name": "gba::Bus::next_event_cycle() const",
+      "symbol": "_ZNK3gba3Bus16next_event_cycleEv"
+    },
+    {
+      "begin": 268465216,
+      "end": 268465456,
+      "label": "Bus ROM",
+      "name": "gba::Bus::read_gamepak_rom(unsigned long, gba::BusWidth, bool)",
+      "symbol": "_ZN3gba3Bus16read_gamepak_romEmNS_8BusWidthEb"
+    },
+    {
+      "begin": 268465456,
+      "end": 268465514,
+      "label": "Bus::service_dma",
+      "name": "gba::Bus::service_dma(unsigned long long)",
+      "symbol": "_ZN3gba3Bus11service_dmaEy"
+    },
+    {
+      "begin": 268465516,
+      "end": 268465536,
+      "label": "Bus::dma_vram_cycles",
+      "name": "gba::Bus::dma_vram_cycles(gba::BusWidth) const",
+      "symbol": "_ZNK3gba3Bus15dma_vram_cyclesENS_8BusWidthE"
+    },
+    {
+      "begin": 268465536,
+      "end": 268465856,
+      "label": "Bus::update_wait_state_",
+      "name": "gba::Bus::update_wait_state_table()",
+      "symbol": "_ZN3gba3Bus23update_wait_state_tableEv"
+    },
+    {
+      "begin": 268465856,
+      "end": 268466056,
+      "label": "Bus::reset",
+      "name": "gba::Bus::reset()",
+      "symbol": "_ZN3gba3Bus5resetEv"
+    },
+    {
+      "begin": 268466056,
+      "end": 268467484,
+      "label": "Bus::peek_word",
+      "name": "gba::Bus::peek_word(unsigned long) const",
+      "symbol": "_ZNK3gba3Bus9peek_wordEm"
+    },
+    {
+      "begin": 268467484,
+      "end": 268469722,
+      "label": "Bus IO read",
+      "name": "gba::Bus::read_io(unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)",
+      "symbol": "_ZN3gba3Bus7read_ioEmNS_8BusWidthENS_10AccessTypeEy"
+    },
+    {
+      "begin": 268469724,
+      "end": 268471516,
+      "label": "Bus IO write",
+      "name": "gba::Bus::write_io(unsigned long, unsigned long, gba::BusWidth, unsigned long long)",
+      "symbol": "_ZN3gba3Bus8write_ioEmmNS_8BusWidthEy"
+    },
+    {
+      "begin": 268471516,
+      "end": 268471524,
+      "label": "MemoryRomProvider::size",
+      "name": "gba::MemoryRomProvider::size() const",
+      "symbol": "_ZNK3gba17MemoryRomProvider4sizeEv"
+    },
+    {
+      "begin": 268471524,
+      "end": 268472336,
+      "label": "Cartridge::scan_rom_fea",
+      "name": "gba::Cartridge::scan_rom_features() const [clone .part.0]",
+      "symbol": "_ZNK3gba9Cartridge17scan_rom_featuresEv.part.0"
+    },
+    {
+      "begin": 268472336,
+      "end": 268472398,
+      "label": "Cartridge::set_bios",
+      "name": "gba::Cartridge::set_bios(std::vector<unsigned char, std::allocator<unsigned char> >)",
+      "symbol": "_ZN3gba9Cartridge8set_biosESt6vectorIhSaIhEE"
+    },
+    {
+      "begin": 268472400,
+      "end": 268472412,
+      "label": "Cartridge::has_bios",
+      "name": "gba::Cartridge::has_bios() const",
+      "symbol": "_ZNK3gba9Cartridge8has_biosEv"
+    },
+    {
+      "begin": 268472412,
+      "end": 268472576,
+      "label": "Cartridge::read_bios",
+      "name": "gba::Cartridge::read_bios(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba9Cartridge9read_biosEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268472576,
+      "end": 268472588,
+      "label": "ROM prefetch",
+      "name": "gba::Cartridge::prefetch_rom(unsigned long, unsigned int) const",
+      "symbol": "_ZNK3gba9Cartridge12prefetch_romEmj"
+    },
+    {
+      "begin": 268472588,
+      "end": 268472760,
+      "label": "Cartridge::read_save",
+      "name": "gba::Cartridge::read_save(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba9Cartridge9read_saveEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268472760,
+      "end": 268472940,
+      "label": "Cartridge::flash_handle",
+      "name": "gba::Cartridge::flash_handle_command(unsigned long, unsigned char)",
+      "symbol": "_ZN3gba9Cartridge20flash_handle_commandEmh"
+    },
+    {
+      "begin": 268472940,
+      "end": 268473102,
+      "label": "Cartridge::write_save",
+      "name": "gba::Cartridge::write_save(unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba9Cartridge10write_saveEmmNS_8BusWidthE"
+    },
+    {
+      "begin": 268473104,
+      "end": 268473122,
+      "label": "Cartridge::bios",
+      "name": "gba::Cartridge::bios() const",
+      "symbol": "_ZNK3gba9Cartridge4biosEv"
+    },
+    {
+      "begin": 268473124,
+      "end": 268473564,
+      "label": "Cartridge::resize_save_",
+      "name": "gba::Cartridge::resize_save_storage()",
+      "symbol": "_ZN3gba9Cartridge19resize_save_storageEv"
+    },
+    {
+      "begin": 268473564,
+      "end": 268473748,
+      "label": "Cartridge::auto_detect_",
+      "name": "gba::Cartridge::auto_detect_save_type()",
+      "symbol": "_ZN3gba9Cartridge21auto_detect_save_typeEv"
+    },
+    {
+      "begin": 268473748,
+      "end": 268473848,
+      "label": "Cartridge::auto_detect_",
+      "name": "gba::Cartridge::auto_detect_rtc()",
+      "symbol": "_ZN3gba9Cartridge15auto_detect_rtcEv"
+    },
+    {
+      "begin": 268473848,
+      "end": 268474040,
+      "label": "Cartridge::set_rom_prov",
+      "name": "gba::Cartridge::set_rom_provider(std::unique_ptr<gba::RomProvider, std::default_delete<gba::RomProvider> >)",
+      "symbol": "_ZN3gba9Cartridge16set_rom_providerESt10unique_ptrINS_11RomProviderESt14default_deleteIS2_EE"
+    },
+    {
+      "begin": 268474040,
+      "end": 268474196,
+      "label": "Cartridge::rtc_receive_",
+      "name": "gba::Cartridge::rtc_receive_buffer()",
+      "symbol": "_ZN3gba9Cartridge18rtc_receive_bufferEv"
+    },
+    {
+      "begin": 268474196,
+      "end": 268474968,
+      "label": "Cartridge::rtc_read_reg",
+      "name": "gba::Cartridge::rtc_read_register()",
+      "symbol": "_ZN3gba9Cartridge17rtc_read_registerEv"
+    },
+    {
+      "begin": 268474968,
+      "end": 268475172,
+      "label": "Cartridge::rtc_receive_",
+      "name": "gba::Cartridge::rtc_receive_command()",
+      "symbol": "_ZN3gba9Cartridge19rtc_receive_commandEv"
+    },
+    {
+      "begin": 268475172,
+      "end": 268475452,
+      "label": "Cartridge::write_gpio_b",
+      "name": "gba::Cartridge::write_gpio_byte(unsigned long, unsigned char)",
+      "symbol": "_ZN3gba9Cartridge15write_gpio_byteEmh"
+    },
+    {
+      "begin": 268475452,
+      "end": 268475546,
+      "label": "Cartridge::write_rom",
+      "name": "gba::Cartridge::write_rom(unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba9Cartridge9write_romEmmNS_8BusWidthE"
+    },
+    {
+      "begin": 268475548,
+      "end": 268476376,
+      "label": "hle_lz77_uncomp",
+      "name": "gba::(anonymous namespace)::hle_lz77_uncomp(gba::Arm7tdmi&, gba::Bus&, bool)",
+      "symbol": "_ZN3gba12_GLOBAL__N_115hle_lz77_uncompERNS_8Arm7tdmiERNS_3BusEb"
+    },
+    {
+      "begin": 268476376,
+      "end": 268476756,
+      "label": "hle_diff_8bit_unfilter",
+      "name": "gba::(anonymous namespace)::hle_diff_8bit_unfilter(gba::Arm7tdmi&, gba::Bus&, bool)",
+      "symbol": "_ZN3gba12_GLOBAL__N_122hle_diff_8bit_unfilterERNS_8Arm7tdmiERNS_3BusEb"
+    },
+    {
+      "begin": 268476756,
+      "end": 268476872,
+      "label": "ROM prefetch",
+      "name": "gba::(anonymous namespace)::exception_prefetch_adjust(unsigned long, unsigned long) [clone .part.0]",
+      "symbol": "_ZN3gba12_GLOBAL__N_125exception_prefetch_adjustEmm.part.0"
+    },
+    {
+      "begin": 268476872,
+      "end": 268477072,
+      "label": "CPU shift",
+      "name": "gba::(anonymous namespace)::apply_shift(unsigned long, unsigned long, unsigned long, bool, bool)",
+      "symbol": "_ZN3gba12_GLOBAL__N_111apply_shiftEmmmbb"
+    },
+    {
+      "begin": 268477072,
+      "end": 268477860,
+      "label": "hle_rl_uncomp",
+      "name": "gba::(anonymous namespace)::hle_rl_uncomp(gba::Arm7tdmi&, gba::Bus&, bool)",
+      "symbol": "_ZN3gba12_GLOBAL__N_113hle_rl_uncompERNS_8Arm7tdmiERNS_3BusEb"
+    },
+    {
+      "begin": 268477860,
+      "end": 268484472,
+      "label": "Arm7tdmi::handle_hle_sw",
+      "name": "gba::Arm7tdmi::handle_hle_swi(unsigned long) [clone .part.0]",
+      "symbol": "_ZN3gba8Arm7tdmi14handle_hle_swiEm.part.0"
+    },
+    {
+      "begin": 268484472,
+      "end": 268484640,
+      "label": "thumb_exception_refill_",
+      "name": "gba::(anonymous namespace)::thumb_exception_refill_cycles(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_129thumb_exception_refill_cyclesEmm"
+    },
+    {
+      "begin": 268484640,
+      "end": 268484804,
+      "label": "arm_exception_refill_cy",
+      "name": "gba::(anonymous namespace)::arm_exception_refill_cycles(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_127arm_exception_refill_cyclesEmm"
+    },
+    {
+      "begin": 268484804,
+      "end": 268484934,
+      "label": "Arm7tdmi::Arm7tdmi",
+      "name": "gba::Arm7tdmi::Arm7tdmi(gba::Bus&, gba::IrqController&, gba::TraceLogger*)",
+      "symbol": "_ZN3gba8Arm7tdmiC1ERNS_3BusERNS_13IrqControllerEPNS_11TraceLoggerE"
+    },
+    {
+      "begin": 268484936,
+      "end": 268485108,
+      "label": "Arm7tdmi::reset",
+      "name": "gba::Arm7tdmi::reset(bool)",
+      "symbol": "_ZN3gba8Arm7tdmi5resetEb"
+    },
+    {
+      "begin": 268485108,
+      "end": 268485112,
+      "label": "Arm7tdmi::state",
+      "name": "gba::Arm7tdmi::state()",
+      "symbol": "_ZN3gba8Arm7tdmi5stateEv"
+    },
+    {
+      "begin": 268485112,
+      "end": 268485118,
+      "label": "Arm7tdmi::current_cycle",
+      "name": "gba::Arm7tdmi::current_cycle() const",
+      "symbol": "_ZNK3gba8Arm7tdmi13current_cycleEv"
+    },
+    {
+      "begin": 268485120,
+      "end": 268485136,
+      "label": "Arm7tdmi::set_current_c",
+      "name": "gba::Arm7tdmi::set_current_cycle(unsigned long long)",
+      "symbol": "_ZN3gba8Arm7tdmi17set_current_cycleEy"
+    },
+    {
+      "begin": 268485136,
+      "end": 268486050,
+      "label": "CPU idle recognition",
+      "name": "gba::Arm7tdmi::try_skip_ram_wait(unsigned long, unsigned long long, int&, bool)",
+      "symbol": "_ZN3gba8Arm7tdmi17try_skip_ram_waitEmyRib"
+    },
+    {
+      "begin": 268486052,
+      "end": 268486190,
+      "label": "CPU fetch ARM",
+      "name": "gba::Arm7tdmi::fetch_arm()",
+      "symbol": "_ZN3gba8Arm7tdmi9fetch_armEv"
+    },
+    {
+      "begin": 268486192,
+      "end": 268486332,
+      "label": "CPU fetch Thumb",
+      "name": "gba::Arm7tdmi::fetch_thumb()",
+      "symbol": "_ZN3gba8Arm7tdmi11fetch_thumbEv"
+    },
+    {
+      "begin": 268486332,
+      "end": 268486540,
+      "label": "Arm7tdmi::switch_mode",
+      "name": "gba::Arm7tdmi::switch_mode(gba::CpuMode)",
+      "symbol": "_ZN3gba8Arm7tdmi11switch_modeENS_7CpuModeE"
+    },
+    {
+      "begin": 268486544,
+      "end": 268486696,
+      "label": "DmaEngine::reset",
+      "name": "gba::DmaEngine::reset()",
+      "symbol": "_ZN3gba9DmaEngine5resetEv"
+    },
+    {
+      "begin": 268486696,
+      "end": 268487004,
+      "label": "DmaEngine::read_registe",
+      "name": "gba::DmaEngine::read_register(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba9DmaEngine13read_registerEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268487004,
+      "end": 268487938,
+      "label": "DmaEngine::write_regist",
+      "name": "gba::DmaEngine::write_register(unsigned long, unsigned long, gba::BusWidth, unsigned long long)",
+      "symbol": "_ZN3gba9DmaEngine14write_registerEmmNS_8BusWidthEy"
+    },
+    {
+      "begin": 268487940,
+      "end": 268488182,
+      "label": "DmaEngine::request_vbla",
+      "name": "gba::DmaEngine::request_vblank(unsigned long long)",
+      "symbol": "_ZN3gba9DmaEngine14request_vblankEy"
+    },
+    {
+      "begin": 268488184,
+      "end": 268488426,
+      "label": "DmaEngine::request_hbla",
+      "name": "gba::DmaEngine::request_hblank(unsigned long long)",
+      "symbol": "_ZN3gba9DmaEngine14request_hblankEy"
+    },
+    {
+      "begin": 268488428,
+      "end": 268488528,
+      "label": "DmaEngine::request_fifo",
+      "name": "gba::DmaEngine::request_fifo_a(unsigned long long)",
+      "symbol": "_ZN3gba9DmaEngine14request_fifo_aEy"
+    },
+    {
+      "begin": 268488528,
+      "end": 268488632,
+      "label": "DmaEngine::request_fifo",
+      "name": "gba::DmaEngine::request_fifo_b(unsigned long long)",
+      "symbol": "_ZN3gba9DmaEngine14request_fifo_bEy"
+    },
+    {
+      "begin": 268488632,
+      "end": 268488684,
+      "label": "DmaEngine::has_pending_",
+      "name": "gba::DmaEngine::has_pending_transfer() const",
+      "symbol": "_ZNK3gba9DmaEngine20has_pending_transferEv"
+    },
+    {
+      "begin": 268488684,
+      "end": 268489120,
+      "label": "Emulator::Emulator",
+      "name": "gba::Emulator::Emulator(gba::TraceLogger*)",
+      "symbol": "_ZN3gba8EmulatorC1EPNS_11TraceLoggerE"
+    },
+    {
+      "begin": 268489120,
+      "end": 268489154,
+      "label": "Emulator::set_rom_provi",
+      "name": "gba::Emulator::set_rom_provider(std::unique_ptr<gba::RomProvider, std::default_delete<gba::RomProvider> >)",
+      "symbol": "_ZN3gba8Emulator16set_rom_providerESt10unique_ptrINS_11RomProviderESt14default_deleteIS2_EE"
+    },
+    {
+      "begin": 268489156,
+      "end": 268489204,
+      "label": "Emulator::load_bios",
+      "name": "gba::Emulator::load_bios(std::vector<unsigned char, std::allocator<unsigned char> >)",
+      "symbol": "_ZN3gba8Emulator9load_biosESt6vectorIhSaIhEE"
+    },
+    {
+      "begin": 268489204,
+      "end": 268489254,
+      "label": "Emulator::set_render_ba",
+      "name": "gba::Emulator::set_render_backend(gba::RenderBackend)",
+      "symbol": "_ZN3gba8Emulator18set_render_backendENS_13RenderBackendE"
+    },
+    {
+      "begin": 268489256,
+      "end": 268489290,
+      "label": "Emulator::consume_frame",
+      "name": "gba::Emulator::consume_frame_ready()",
+      "symbol": "_ZN3gba8Emulator19consume_frame_readyEv"
+    },
+    {
+      "begin": 268489292,
+      "end": 268489310,
+      "label": "Emulator::set_keys",
+      "name": "gba::Emulator::set_keys(unsigned short)",
+      "symbol": "_ZN3gba8Emulator8set_keysEt"
+    },
+    {
+      "begin": 268489312,
+      "end": 268489322,
+      "label": "Emulator::bus",
+      "name": "gba::Emulator::bus()",
+      "symbol": "_ZN3gba8Emulator3busEv"
+    },
+    {
+      "begin": 268489324,
+      "end": 268489334,
+      "label": "Emulator::cpu",
+      "name": "gba::Emulator::cpu()",
+      "symbol": "_ZN3gba8Emulator3cpuEv"
+    },
+    {
+      "begin": 268489336,
+      "end": 268489508,
+      "label": "Emulator::reset",
+      "name": "gba::Emulator::reset(bool)",
+      "symbol": "_ZN3gba8Emulator5resetEb"
+    },
+    {
+      "begin": 268489508,
+      "end": 268489618,
+      "label": "Event dispatch",
+      "name": "gba::Emulator::run_until(unsigned long long)",
+      "symbol": "_ZN3gba8Emulator9run_untilEy"
+    },
+    {
+      "begin": 268489624,
+      "end": 268489672,
+      "label": "IrqController::reset",
+      "name": "gba::IrqController::reset()",
+      "symbol": "_ZN3gba13IrqController5resetEv"
+    },
+    {
+      "begin": 268489672,
+      "end": 268489824,
+      "label": "IrqController::read_reg",
+      "name": "gba::IrqController::read_register(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba13IrqController13read_registerEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268489824,
+      "end": 268490168,
+      "label": "IrqController::write_re",
+      "name": "gba::IrqController::write_register(unsigned long, unsigned long, gba::BusWidth, unsigned long long)",
+      "symbol": "_ZN3gba13IrqController14write_registerEmmNS_8BusWidthEy"
+    },
+    {
+      "begin": 268490168,
+      "end": 268490198,
+      "label": "IrqController::request",
+      "name": "gba::IrqController::request(unsigned short)",
+      "symbol": "_ZN3gba13IrqController7requestEt"
+    },
+    {
+      "begin": 268490200,
+      "end": 268490262,
+      "label": "IrqController::raise_de",
+      "name": "gba::IrqController::raise_delayed(unsigned short, unsigned long long, unsigned long long)",
+      "symbol": "_ZN3gba13IrqController13raise_delayedEtyy"
+    },
+    {
+      "begin": 268490264,
+      "end": 268490306,
+      "label": "IrqController::next_eve",
+      "name": "gba::IrqController::next_event_cycle() const",
+      "symbol": "_ZNK3gba13IrqController16next_event_cycleEv"
+    },
+    {
+      "begin": 268490308,
+      "end": 268490340,
+      "label": "IrqController::acknowle",
+      "name": "gba::IrqController::acknowledge(unsigned short)",
+      "symbol": "_ZN3gba13IrqController11acknowledgeEt"
+    },
+    {
+      "begin": 268490340,
+      "end": 268490364,
+      "label": "IrqController::recomput",
+      "name": "gba::IrqController::recompute_line()",
+      "symbol": "_ZN3gba13IrqController14recompute_lineEv"
+    },
+    {
+      "begin": 268490364,
+      "end": 268490400,
+      "label": "free_video_memory",
+      "name": "gba::(anonymous namespace)::free_video_memory(unsigned short*)",
+      "symbol": "_ZN3gba12_GLOBAL__N_117free_video_memoryEPt"
+    },
+    {
+      "begin": 268490400,
+      "end": 268491032,
+      "label": "Ppu::write_register",
+      "name": "gba::Ppu::write_register(unsigned long, unsigned long, gba::BusWidth)::{lambda(unsigned long, unsigned short)#1}::operator()(unsigned long, unsigned short) const [clone .isra.0]",
+      "symbol": "_ZZN3gba3Ppu14write_registerEmmNS_8BusWidthEENKUlmtE_clEmt.isra.0"
+    },
+    {
+      "begin": 268491032,
+      "end": 268491456,
+      "label": "Ppu::Ppu",
+      "name": "gba::Ppu::Ppu()",
+      "symbol": "_ZN3gba3PpuC1Ev"
+    },
+    {
+      "begin": 268491456,
+      "end": 268491720,
+      "label": "Ppu::reset",
+      "name": "gba::Ppu::reset()",
+      "symbol": "_ZN3gba3Ppu5resetEv"
+    },
+    {
+      "begin": 268491720,
+      "end": 268494088,
+      "label": "Ppu::read_register",
+      "name": "gba::Ppu::read_register(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba3Ppu13read_registerEmNS_8BusWidthE"
+    },
+    {
+      "begin": 268494088,
+      "end": 268494736,
+      "label": "Ppu::write_register",
+      "name": "gba::Ppu::write_register(unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba3Ppu14write_registerEmmNS_8BusWidthE"
+    },
+    {
+      "begin": 268494736,
+      "end": 268494742,
+      "label": "Ppu::next_event_cycle",
+      "name": "gba::Ppu::next_event_cycle() const",
+      "symbol": "_ZNK3gba3Ppu16next_event_cycleEv"
+    },
+    {
+      "begin": 268494744,
+      "end": 268494750,
+      "label": "Ppu::is_hblank",
+      "name": "gba::Ppu::is_hblank() const",
+      "symbol": "_ZNK3gba3Ppu9is_hblankEv"
+    },
+    {
+      "begin": 268494752,
+      "end": 268494758,
+      "label": "Ppu::is_vblank",
+      "name": "gba::Ppu::is_vblank() const",
+      "symbol": "_ZNK3gba3Ppu9is_vblankEv"
+    },
+    {
+      "begin": 268494760,
+      "end": 268494792,
+      "label": "Ppu::is_video_memory_co",
+      "name": "gba::Ppu::is_video_memory_contended() const",
+      "symbol": "_ZNK3gba3Ppu25is_video_memory_contendedEv"
+    },
+    {
+      "begin": 268494792,
+      "end": 268494816,
+      "label": "Ppu::consume_scanline_r",
+      "name": "gba::Ppu::consume_scanline_ready()",
+      "symbol": "_ZN3gba3Ppu22consume_scanline_readyEv"
+    },
+    {
+      "begin": 268494816,
+      "end": 268494830,
+      "label": "Ppu::consume_frame_read",
+      "name": "gba::Ppu::consume_frame_ready()",
+      "symbol": "_ZN3gba3Ppu19consume_frame_readyEv"
+    },
+    {
+      "begin": 268494832,
+      "end": 268494846,
+      "label": "Ppu::is_dirty",
+      "name": "gba::Ppu::is_dirty(int) const",
+      "symbol": "_ZNK3gba3Ppu8is_dirtyEi"
+    },
+    {
+      "begin": 268494848,
+      "end": 268495160,
+      "label": "Ppu::rebuild_sprite_cac",
+      "name": "gba::Ppu::rebuild_sprite_cache(std::span<unsigned char const, 4294967295u>)",
+      "symbol": "_ZN3gba3Ppu20rebuild_sprite_cacheESt4spanIKhLj4294967295EE"
+    },
+    {
+      "begin": 268495160,
+      "end": 268495162,
+      "label": "ROM prefetch",
+      "name": "gba::RomProvider::prefetch(unsigned long, unsigned int) const",
+      "symbol": "_ZNK3gba11RomProvider8prefetchEmj"
+    },
+    {
+      "begin": 268495164,
+      "end": 268495180,
+      "label": "RomProvider::frame_stat",
+      "name": "gba::RomProvider::frame_stats() const",
+      "symbol": "_ZNK3gba11RomProvider11frame_statsEv"
+    },
+    {
+      "begin": 268495180,
+      "end": 268495182,
+      "label": "RomProvider::reset_fram",
+      "name": "gba::RomProvider::reset_frame_stats() const",
+      "symbol": "_ZNK3gba11RomProvider17reset_frame_statsEv"
+    },
+    {
+      "begin": 268495184,
+      "end": 268496584,
+      "label": "MemoryRomProvider::touc",
+      "name": "gba::MemoryRomProvider::touch_page(unsigned long, bool, bool) const",
+      "symbol": "_ZNK3gba17MemoryRomProvider10touch_pageEmbb"
+    },
+    {
+      "begin": 268496584,
+      "end": 268496930,
+      "label": "MemoryRomProvider::touc",
+      "name": "gba::MemoryRomProvider::touch_range(unsigned long, unsigned int, bool) const [clone .part.0] [clone .constprop.0]",
+      "symbol": "_ZNK3gba17MemoryRomProvider11touch_rangeEmjb.part.0.constprop.0"
+    },
+    {
+      "begin": 268496932,
+      "end": 268497064,
+      "label": "RomProvider::read16",
+      "name": "gba::RomProvider::read16(unsigned long) const",
+      "symbol": "_ZNK3gba11RomProvider6read16Em"
+    },
+    {
+      "begin": 268497064,
+      "end": 268497336,
+      "label": "RomProvider::read32",
+      "name": "gba::RomProvider::read32(unsigned long) const",
+      "symbol": "_ZNK3gba11RomProvider6read32Em"
+    },
+    {
+      "begin": 268497336,
+      "end": 268497816,
+      "label": "Timers::reset",
+      "name": "gba::Timers::reset()",
+      "symbol": "_ZN3gba6Timers5resetEv"
+    },
+    {
+      "begin": 268497816,
+      "end": 268498708,
+      "label": "Timers::read_register",
+      "name": "gba::Timers::read_register(unsigned long, gba::BusWidth, unsigned long long)",
+      "symbol": "_ZN3gba6Timers13read_registerEmNS_8BusWidthEy"
+    },
+    {
+      "begin": 268498708,
+      "end": 268498908,
+      "label": "Timers::read_word_regis",
+      "name": "gba::Timers::read_word_register_split(unsigned long, unsigned long long, unsigned long long)",
+      "symbol": "_ZN3gba6Timers24read_word_register_splitEmyy"
+    },
+    {
+      "begin": 268498908,
+      "end": 268499736,
+      "label": "Timers::write_register",
+      "name": "gba::Timers::write_register(unsigned long, unsigned long, gba::BusWidth, unsigned long long, gba::IrqController&, gba::Apu&)",
+      "symbol": "_ZN3gba6Timers14write_registerEmmNS_8BusWidthEyRNS_13IrqControllerERNS_3ApuE"
+    },
+    {
+      "begin": 268499736,
+      "end": 268499960,
+      "label": "Timers::overflow",
+      "name": "gba::Timers::overflow(int, gba::IrqController&, gba::Apu&, unsigned long long)",
+      "symbol": "_ZN3gba6Timers8overflowEiRNS_13IrqControllerERNS_3ApuEy"
+    },
+    {
+      "begin": 268499960,
+      "end": 268500012,
+      "label": "gbaPsramAllocate",
+      "name": "gbaPsramAllocate(unsigned int)",
+      "symbol": "_Z16gbaPsramAllocatej"
+    },
+    {
+      "begin": 268500012,
+      "end": 268500014,
+      "label": "gbaPsramRelease",
+      "name": "gbaPsramRelease(void*)",
+      "symbol": "_Z15gbaPsramReleasePv"
+    },
+    {
+      "begin": 268500016,
+      "end": 268500048,
+      "label": "gbaPsramOwns",
+      "name": "gbaPsramOwns(void const*)",
+      "symbol": "_Z12gbaPsramOwnsPKv"
+    },
+    {
+      "begin": 268500048,
+      "end": 268500060,
+      "label": "gbaPsramUsed",
+      "name": "gbaPsramUsed()",
+      "symbol": "_Z12gbaPsramUsedv"
+    },
+    {
+      "begin": 268500060,
+      "end": 268500188,
+      "label": "gbaCoreBufferAllocate",
+      "name": "gbaCoreBufferAllocate(unsigned int)",
+      "symbol": "_Z21gbaCoreBufferAllocatej"
+    },
+    {
+      "begin": 268500188,
+      "end": 268500220,
+      "label": "gbaFastOwns",
+      "name": "gbaFastOwns(void const*)",
+      "symbol": "_Z11gbaFastOwnsPKv"
+    },
+    {
+      "begin": 268500220,
+      "end": 268500228,
+      "label": "gbaRomHotAllocate",
+      "name": "gbaRomHotAllocate()",
+      "symbol": "_Z17gbaRomHotAllocatev"
+    },
+    {
+      "begin": 268500228,
+      "end": 268500230,
+      "label": "gbaRomHotRelease",
+      "name": "gbaRomHotRelease(void*)",
+      "symbol": "_Z16gbaRomHotReleasePv"
+    },
+    {
+      "begin": 268500232,
+      "end": 268500288,
+      "label": "_GLOBAL__sub_I_gbaPsram",
+      "name": "_GLOBAL__sub_I_gbaPsramStorage",
+      "symbol": "_GLOBAL__sub_I_gbaPsramStorage"
+    },
+    {
+      "begin": 268500288,
+      "end": 268500352,
+      "label": "tinf_crc32",
+      "name": "tinf_crc32",
+      "symbol": "tinf_crc32"
+    },
+    {
+      "begin": 268500352,
+      "end": 268500380,
+      "label": "tinf_decode_symbol.part",
+      "name": "tinf_decode_symbol.part.0",
+      "symbol": "tinf_decode_symbol.part.0"
+    },
+    {
+      "begin": 268500380,
+      "end": 268500920,
+      "label": "tinf_build_tree",
+      "name": "tinf_build_tree",
+      "symbol": "tinf_build_tree"
+    },
+    {
+      "begin": 268500920,
+      "end": 268501156,
+      "label": "tinf_decode_symbol.cons",
+      "name": "tinf_decode_symbol.constprop.0",
+      "symbol": "tinf_decode_symbol.constprop.0"
+    },
+    {
+      "begin": 268501156,
+      "end": 268501904,
+      "label": "tinf_inflate_block_data",
+      "name": "tinf_inflate_block_data.constprop.0",
+      "symbol": "tinf_inflate_block_data.constprop.0"
+    },
+    {
+      "begin": 268501904,
+      "end": 268503788,
+      "label": "tinf_uncompress",
+      "name": "tinf_uncompress",
+      "symbol": "tinf_uncompress"
+    },
+    {
+      "begin": 268503788,
+      "end": 268503812,
+      "label": "dvhstx_width",
+      "name": "dvhstx_width(DVHSTXResolution)",
+      "symbol": "_Z12dvhstx_width16DVHSTXResolution"
+    },
+    {
+      "begin": 268503812,
+      "end": 268503836,
+      "label": "dvhstx_height",
+      "name": "dvhstx_height(DVHSTXResolution)",
+      "symbol": "_Z13dvhstx_height16DVHSTXResolution"
+    },
+    {
+      "begin": 268503836,
+      "end": 268503900,
+      "label": "pimoroni::DVHSTX::DVHST",
+      "name": "pimoroni::DVHSTX::DVHSTX()",
+      "symbol": "_ZN8pimoroni6DVHSTXC1Ev"
+    },
+    {
+      "begin": 268503900,
+      "end": 268504064,
+      "label": "pimoroni::DVHSTX::reset",
+      "name": "pimoroni::DVHSTX::reset()",
+      "symbol": "_ZN8pimoroni6DVHSTX5resetEv"
+    },
+    {
+      "begin": 268504064,
+      "end": 268506288,
+      "label": "pimoroni::DVHSTX::init",
+      "name": "pimoroni::DVHSTX::init(unsigned short, unsigned short, pimoroni::DVHSTX::Mode, bool, pimoroni::DVHSTXPinout const&)",
+      "symbol": "_ZN8pimoroni6DVHSTX4initEttNS0_4ModeEbRKNS_12DVHSTXPinoutE"
+    },
+    {
+      "begin": 268506288,
+      "end": 268506292,
+      "label": "_GLOBAL__sub_I.00101__Z",
+      "name": "_GLOBAL__sub_I.00101__Z15dma_irq_handlerv",
+      "symbol": "_GLOBAL__sub_I.00101__Z15dma_irq_handlerv"
+    },
+    {
+      "begin": 268506292,
+      "end": 268506294,
+      "label": "Adafruit_GFX::endWrite",
+      "name": "Adafruit_GFX::endWrite()",
+      "symbol": "_ZN12Adafruit_GFX10startWriteEv"
+    },
+    {
+      "begin": 268506296,
+      "end": 268506310,
+      "label": "Adafruit_GFX::writePixe",
+      "name": "Adafruit_GFX::writePixel(short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX10writePixelEsst"
+    },
+    {
+      "begin": 268506312,
+      "end": 268506332,
+      "label": "Adafruit_GFX::writeFast",
+      "name": "Adafruit_GFX::writeFastVLine(short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX14writeFastVLineEssst"
+    },
+    {
+      "begin": 268506332,
+      "end": 268506352,
+      "label": "Adafruit_GFX::writeFast",
+      "name": "Adafruit_GFX::writeFastHLine(short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX14writeFastHLineEssst"
+    },
+    {
+      "begin": 268506352,
+      "end": 268506354,
+      "label": "Adafruit_GFX::invertDis",
+      "name": "Adafruit_GFX::invertDisplay(bool)",
+      "symbol": "_ZN12Adafruit_GFX13invertDisplayEb"
+    },
+    {
+      "begin": 268506356,
+      "end": 268506462,
+      "label": "GFXcanvas16::drawPixel",
+      "name": "GFXcanvas16::drawPixel(short, short, unsigned short)",
+      "symbol": "_ZN11GFXcanvas169drawPixelEsst"
+    },
+    {
+      "begin": 268506464,
+      "end": 268506798,
+      "label": "GFXcanvas16::drawFastVL",
+      "name": "GFXcanvas16::drawFastVLine(short, short, short, unsigned short)",
+      "symbol": "_ZN11GFXcanvas1613drawFastVLineEssst"
+    },
+    {
+      "begin": 268506800,
+      "end": 268507146,
+      "label": "GFXcanvas16::drawFastHL",
+      "name": "GFXcanvas16::drawFastHLine(short, short, short, unsigned short)",
+      "symbol": "_ZN11GFXcanvas1613drawFastHLineEssst"
+    },
+    {
+      "begin": 268507148,
+      "end": 268507242,
+      "label": "GFXcanvas16::fillScreen",
+      "name": "GFXcanvas16::fillScreen(unsigned short)",
+      "symbol": "_ZN11GFXcanvas1610fillScreenEt"
+    },
+    {
+      "begin": 268507244,
+      "end": 268507280,
+      "label": "Adafruit_GFX::setRotati",
+      "name": "Adafruit_GFX::setRotation(unsigned char)",
+      "symbol": "_ZN12Adafruit_GFX11setRotationEh"
+    },
+    {
+      "begin": 268507280,
+      "end": 268507448,
+      "label": "Adafruit_GFX::drawLine",
+      "name": "Adafruit_GFX::drawLine(short, short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX8drawLineEsssst"
+    },
+    {
+      "begin": 268507448,
+      "end": 268507620,
+      "label": "Adafruit_GFX::fillRect",
+      "name": "Adafruit_GFX::fillRect(short, short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX8fillRectEsssst"
+    },
+    {
+      "begin": 268507620,
+      "end": 268507832,
+      "label": "Adafruit_GFX::drawRect",
+      "name": "Adafruit_GFX::drawRect(short, short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX8drawRectEsssst"
+    },
+    {
+      "begin": 268507832,
+      "end": 268508264,
+      "label": "Adafruit_GFX::writeLine",
+      "name": "Adafruit_GFX::writeLine(short, short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX9writeLineEsssst"
+    },
+    {
+      "begin": 268508264,
+      "end": 268508424,
+      "label": "Adafruit_GFX::writeFill",
+      "name": "Adafruit_GFX::writeFillRect(short, short, short, short, unsigned short)",
+      "symbol": "_ZN12Adafruit_GFX13writeFillRectEsssst"
+    },
+    {
+      "begin": 268508424,
+      "end": 268509728,
+      "label": "Adafruit_GFX::drawChar",
+      "name": "Adafruit_GFX::drawChar(short, short, unsigned char, unsigned short, unsigned short, unsigned char, unsigned char)",
+      "symbol": "_ZN12Adafruit_GFX8drawCharEsshtthh"
+    },
+    {
+      "begin": 268509728,
+      "end": 268509994,
+      "label": "Adafruit_GFX::write",
+      "name": "Adafruit_GFX::write(unsigned char)",
+      "symbol": "_ZN12Adafruit_GFX5writeEh"
+    },
+    {
+      "begin": 268509996,
+      "end": 268510018,
+      "label": "Adafruit_GFX::setTextSi",
+      "name": "Adafruit_GFX::setTextSize(unsigned char)",
+      "symbol": "_ZN12Adafruit_GFX11setTextSizeEh"
+    },
+    {
+      "begin": 268510020,
+      "end": 268510104,
+      "label": "GFXcanvas16::GFXcanvas1",
+      "name": "GFXcanvas16::GFXcanvas16(unsigned short, unsigned short, bool)",
+      "symbol": "_ZN11GFXcanvas16C1Ettb"
+    },
+    {
+      "begin": 268510104,
+      "end": 268510110,
+      "label": "SPIClassRP2040::begin",
+      "name": "SPIClassRP2040::begin()",
+      "symbol": "_ZN14SPIClassRP20405beginEv"
+    },
+    {
+      "begin": 268510112,
+      "end": 268510114,
+      "label": "SPIClassRP2040::attachI",
+      "name": "SPIClassRP2040::attachInterrupt()",
+      "symbol": "_ZN14SPIClassRP204015attachInterruptEv"
+    },
+    {
+      "begin": 268510116,
+      "end": 268510118,
+      "label": "SPIClassRP2040::detachI",
+      "name": "SPIClassRP2040::detachInterrupt()",
+      "symbol": "_ZN14SPIClassRP204015detachInterruptEv"
+    },
+    {
+      "begin": 268510120,
+      "end": 268510274,
+      "label": "SPIClassRP2040::transfe",
+      "name": "SPIClassRP2040::transfer(unsigned char)",
+      "symbol": "_ZN14SPIClassRP20408transferEh"
+    },
+    {
+      "begin": 268510276,
+      "end": 268510350,
+      "label": "SPIClassRP2040::end",
+      "name": "SPIClassRP2040::end()",
+      "symbol": "_ZN14SPIClassRP20403endEv"
+    },
+    {
+      "begin": 268510352,
+      "end": 268510404,
+      "label": "SPIClassRP2040::endTran",
+      "name": "SPIClassRP2040::endTransaction()",
+      "symbol": "_ZN14SPIClassRP204014endTransactionEv"
+    },
+    {
+      "begin": 268510404,
+      "end": 268510660,
+      "label": "SPIClassRP2040::transfe",
+      "name": "SPIClassRP2040::transfer16(unsigned short)",
+      "symbol": "_ZN14SPIClassRP204010transfer16Et"
+    },
+    {
+      "begin": 268510660,
+      "end": 268510788,
+      "label": "SPIClassRP2040::usingIn",
+      "name": "SPIClassRP2040::usingInterrupt(int)",
+      "symbol": "_ZN14SPIClassRP204014usingInterruptEi"
+    },
+    {
+      "begin": 268510788,
+      "end": 268511008,
+      "label": "SPIClassRP2040::transfe",
+      "name": "SPIClassRP2040::transfer(void*, unsigned int)",
+      "symbol": "_ZN14SPIClassRP20408transferEPvj"
+    },
+    {
+      "begin": 268511008,
+      "end": 268511246,
+      "label": "std::_Rb_tree<int, std:",
+      "name": "std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const, int> >*) [clone .isra.0]",
+      "symbol": "_ZNSt8_Rb_treeIiSt4pairIKiiESt10_Select1stIS2_ESt4lessIiESaIS2_EE8_M_eraseEPSt13_Rb_tree_nodeIS2_E.isra.0"
+    },
+    {
+      "begin": 268511248,
+      "end": 268511432,
+      "label": "SPIClassRP2040::notUsin",
+      "name": "SPIClassRP2040::notUsingInterrupt(int)",
+      "symbol": "_ZN14SPIClassRP204017notUsingInterruptEi"
+    },
+    {
+      "begin": 268511432,
+      "end": 268511472,
+      "label": "SPIClassRP2040::~SPICla",
+      "name": "SPIClassRP2040::~SPIClassRP2040()",
+      "symbol": "_ZN14SPIClassRP2040D1Ev"
+    },
+    {
+      "begin": 268511472,
+      "end": 268511520,
+      "label": "SPIClassRP2040::~SPICla",
+      "name": "SPIClassRP2040::~SPIClassRP2040()",
+      "symbol": "_ZN14SPIClassRP2040D0Ev"
+    },
+    {
+      "begin": 268511520,
+      "end": 268511860,
+      "label": "SPIClassRP2040::transfe",
+      "name": "SPIClassRP2040::transfer(void const*, void*, unsigned int)",
+      "symbol": "_ZN14SPIClassRP20408transferEPKvPvj"
+    },
+    {
+      "begin": 268511860,
+      "end": 268512624,
+      "label": "SPIClassRP2040::beginTr",
+      "name": "SPIClassRP2040::beginTransaction(arduino::SPISettings)",
+      "symbol": "_ZN14SPIClassRP204016beginTransactionEN7arduino11SPISettingsE"
+    },
+    {
+      "begin": 268512624,
+      "end": 268512812,
+      "label": "SPIClassRP2040::begin",
+      "name": "SPIClassRP2040::begin(bool)",
+      "symbol": "_ZN14SPIClassRP20405beginEb"
+    },
+    {
+      "begin": 268512812,
+      "end": 268512924,
+      "label": "_GLOBAL__sub_I__ZN14SPI",
+      "name": "_GLOBAL__sub_I__ZN14SPIClassRP2040C2EP8spi_insthhhh",
+      "symbol": "_GLOBAL__sub_I__ZN14SPIClassRP2040C2EP8spi_insthhhh"
+    },
+    {
+      "begin": 268512924,
+      "end": 268512934,
+      "label": "SerialUART::begin",
+      "name": "SerialUART::begin(unsigned long)",
+      "symbol": "_ZN10SerialUART5beginEm"
+    },
+    {
+      "begin": 268512936,
+      "end": 268512940,
+      "label": "SerialUART::operator bo",
+      "name": "SerialUART::operator bool()",
+      "symbol": "_ZN10SerialUARTcvbEv"
+    },
+    {
+      "begin": 268512940,
+      "end": 268513116,
+      "label": "SerialUART::end",
+      "name": "SerialUART::end()",
+      "symbol": "_ZN10SerialUART3endEv"
+    },
+    {
+      "begin": 268513116,
+      "end": 268513608,
+      "label": "SerialUART::begin",
+      "name": "SerialUART::begin(unsigned long, unsigned short)",
+      "symbol": "_ZN10SerialUART5beginEmt"
+    },
+    {
+      "begin": 268513608,
+      "end": 268513896,
+      "label": "SerialUART::peek",
+      "name": "SerialUART::peek()",
+      "symbol": "_ZN10SerialUART4peekEv"
+    },
+    {
+      "begin": 268513896,
+      "end": 268514204,
+      "label": "SerialUART::read",
+      "name": "SerialUART::read()",
+      "symbol": "_ZN10SerialUART4readEv"
+    },
+    {
+      "begin": 268514204,
+      "end": 268514328,
+      "label": "SerialUART::flush",
+      "name": "SerialUART::flush()",
+      "symbol": "_ZN10SerialUART5flushEv"
+    },
+    {
+      "begin": 268514328,
+      "end": 268514472,
+      "label": "SerialUART::availableFo",
+      "name": "SerialUART::availableForWrite()",
+      "symbol": "_ZN10SerialUART17availableForWriteEv"
+    },
+    {
+      "begin": 268514472,
+      "end": 268514618,
+      "label": "SerialUART::write",
+      "name": "SerialUART::write(unsigned char)",
+      "symbol": "_ZN10SerialUART5writeEh"
+    },
+    {
+      "begin": 268514620,
+      "end": 268514792,
+      "label": "SerialUART::write",
+      "name": "SerialUART::write(unsigned char const*, unsigned int)",
+      "symbol": "_ZN10SerialUART5writeEPKhj"
+    },
+    {
+      "begin": 268514792,
+      "end": 268514948,
+      "label": "SerialUART::setRX",
+      "name": "SerialUART::setRX(unsigned char)",
+      "symbol": "_ZN10SerialUART5setRXEh"
+    },
+    {
+      "begin": 268514948,
+      "end": 268515104,
+      "label": "SerialUART::setTX",
+      "name": "SerialUART::setTX(unsigned char)",
+      "symbol": "_ZN10SerialUART5setTXEh"
+    },
+    {
+      "begin": 268515104,
+      "end": 268515124,
+      "label": "SerialUART::setFIFOSize",
+      "name": "SerialUART::setFIFOSize(unsigned int)",
+      "symbol": "_ZN10SerialUART11setFIFOSizeEj"
+    },
+    {
+      "begin": 268515124,
+      "end": 268515272,
+      "label": "SerialUART::_pumpFIFO",
+      "name": "SerialUART::_pumpFIFO()",
+      "symbol": "_ZN10SerialUART9_pumpFIFOEv"
+    },
+    {
+      "begin": 268515272,
+      "end": 268515430,
+      "label": "SerialUART::available",
+      "name": "SerialUART::available()",
+      "symbol": "_ZN10SerialUART9availableEv"
+    },
+    {
+      "begin": 268515432,
+      "end": 268515620,
+      "label": "arduino::serialEvent1Ru",
+      "name": "arduino::serialEvent1Run()",
+      "symbol": "_ZN7arduino15serialEvent1RunEv"
+    },
+    {
+      "begin": 268515620,
+      "end": 268515808,
+      "label": "arduino::serialEvent2Ru",
+      "name": "arduino::serialEvent2Run()",
+      "symbol": "_ZN7arduino15serialEvent2RunEv"
+    },
+    {
+      "begin": 268515808,
+      "end": 268515956,
+      "label": "_GLOBAL__sub_I__ZN10Ser",
+      "name": "_GLOBAL__sub_I__ZN10SerialUART5setRXEh",
+      "symbol": "_GLOBAL__sub_I__ZN10SerialUART5setRXEh"
+    },
+    {
+      "begin": 268515956,
+      "end": 268515998,
+      "label": "arduino::Print::write",
+      "name": "arduino::Print::write(unsigned char const*, unsigned int)",
+      "symbol": "_ZN7arduino5Print5writeEPKhj"
+    },
+    {
+      "begin": 268516000,
+      "end": 268516092,
+      "label": "arduino::Print::print",
+      "name": "arduino::Print::print(char const*)",
+      "symbol": "_ZN7arduino5Print5printEPKc"
+    },
+    {
+      "begin": 268516092,
+      "end": 268516228,
+      "label": "arduino::Print::printNu",
+      "name": "arduino::Print::printNumber(unsigned long, unsigned char)",
+      "symbol": "_ZN7arduino5Print11printNumberEmh"
+    },
+    {
+      "begin": 268516228,
+      "end": 268516244,
+      "label": "arduino::Print::print",
+      "name": "arduino::Print::print(unsigned long, int)",
+      "symbol": "_ZN7arduino5Print5printEmi"
+    },
+    {
+      "begin": 268516244,
+      "end": 268516252,
+      "label": "delay",
+      "name": "delay",
+      "symbol": "delay"
+    },
+    {
+      "begin": 268516252,
+      "end": 268516288,
+      "label": "millis",
+      "name": "millis",
+      "symbol": "millis"
+    },
+    {
+      "begin": 268516288,
+      "end": 268516296,
+      "label": "micros",
+      "name": "micros",
+      "symbol": "micros"
+    },
+    {
+      "begin": 268516296,
+      "end": 268516408,
+      "label": "main1",
+      "name": "main1()",
+      "symbol": "_Z5main1v"
+    },
+    {
+      "begin": 268516408,
+      "end": 268516410,
+      "label": "initVariant",
+      "name": "initVariant",
+      "symbol": "initVariant"
+    },
+    {
+      "begin": 268516412,
+      "end": 268516692,
+      "label": "main",
+      "name": "main",
+      "symbol": "main"
+    },
+    {
+      "begin": 268516692,
+      "end": 268516720,
+      "label": "__wrap___getreent",
+      "name": "__wrap___getreent",
+      "symbol": "__wrap___getreent"
+    },
+    {
+      "begin": 268516720,
+      "end": 268516768,
+      "label": "_GLOBAL__sub_I_rp2040",
+      "name": "_GLOBAL__sub_I_rp2040",
+      "symbol": "_GLOBAL__sub_I_rp2040"
+    },
+    {
+      "begin": 268516768,
+      "end": 268516792,
+      "label": "__wrap_malloc",
+      "name": "__wrap_malloc",
+      "symbol": "__wrap_malloc"
+    },
+    {
+      "begin": 268516792,
+      "end": 268516820,
+      "label": "__wrap_calloc",
+      "name": "__wrap_calloc",
+      "symbol": "__wrap_calloc"
+    },
+    {
+      "begin": 268516820,
+      "end": 268516870,
+      "label": "__wrap_realloc",
+      "name": "__wrap_realloc",
+      "symbol": "__wrap_realloc"
+    },
+    {
+      "begin": 268516872,
+      "end": 268516914,
+      "label": "__wrap_free",
+      "name": "__wrap_free",
+      "symbol": "__wrap_free"
+    },
+    {
+      "begin": 268516916,
+      "end": 268516954,
+      "label": "__wrap_mallinfo",
+      "name": "__wrap_mallinfo",
+      "symbol": "__wrap_mallinfo"
+    },
+    {
+      "begin": 268516956,
+      "end": 268517304,
+      "label": "tlsf_add_pool",
+      "name": "tlsf_add_pool",
+      "symbol": "tlsf_add_pool"
+    },
+    {
+      "begin": 268517304,
+      "end": 268517544,
+      "label": "tlsf_create",
+      "name": "tlsf_create",
+      "symbol": "tlsf_create"
+    },
+    {
+      "begin": 268517544,
+      "end": 268518556,
+      "label": "tlsf_malloc",
+      "name": "tlsf_malloc",
+      "symbol": "tlsf_malloc"
+    },
+    {
+      "begin": 268518556,
+      "end": 268519564,
+      "label": "tlsf_free",
+      "name": "tlsf_free",
+      "symbol": "tlsf_free"
+    },
+    {
+      "begin": 268519564,
+      "end": 268520796,
+      "label": "tlsf_realloc",
+      "name": "tlsf_realloc",
+      "symbol": "tlsf_realloc"
+    },
+    {
+      "begin": 268520796,
+      "end": 268520928,
+      "label": "__psram_free",
+      "name": "__psram_free(void*)",
+      "symbol": "_Z12__psram_freePv"
+    },
+    {
+      "begin": 268520928,
+      "end": 268521088,
+      "label": "__psram_realloc",
+      "name": "__psram_realloc(void*, unsigned int)",
+      "symbol": "_Z15__psram_reallocPvj"
+    },
+    {
+      "begin": 268521424,
+      "end": 268521648,
+      "label": "pinMode",
+      "name": "pinMode",
+      "symbol": "__pinMode"
+    },
+    {
+      "begin": 268521648,
+      "end": 268521728,
+      "label": "digitalWrite",
+      "name": "digitalWrite",
+      "symbol": "__digitalWrite"
+    },
+    {
+      "begin": 268521728,
+      "end": 268521758,
+      "label": "digitalRead",
+      "name": "digitalRead",
+      "symbol": "__digitalRead"
+    },
+    {
+      "begin": 268521760,
+      "end": 268521812,
+      "label": "interrupts",
+      "name": "interrupts",
+      "symbol": "interrupts"
+    },
+    {
+      "begin": 268521812,
+      "end": 268521896,
+      "label": "noInterrupts",
+      "name": "noInterrupts",
+      "symbol": "noInterrupts"
+    },
+    {
+      "begin": 268521896,
+      "end": 268521954,
+      "label": "CoreMutex::CoreMutex",
+      "name": "CoreMutex::CoreMutex(mutex*, unsigned char)",
+      "symbol": "_ZN9CoreMutexC1EP5mutexh"
+    },
+    {
+      "begin": 268521956,
+      "end": 268521978,
+      "label": "CoreMutex::~CoreMutex",
+      "name": "CoreMutex::~CoreMutex()",
+      "symbol": "_ZN9CoreMutexD1Ev"
+    },
+    {
+      "begin": 268521980,
+      "end": 268522042,
+      "label": "arduino::String::String",
+      "name": "arduino::String::String(char const*)",
+      "symbol": "_ZN7arduino6StringC1EPKc"
+    },
+    {
+      "begin": 268522044,
+      "end": 268522100,
+      "label": "__clearADCPin",
+      "name": "__clearADCPin(unsigned char)",
+      "symbol": "_Z13__clearADCPinh"
+    },
+    {
+      "begin": 268522100,
+      "end": 268522144,
+      "label": "panic",
+      "name": "panic",
+      "symbol": "panic"
+    },
+    {
+      "begin": 268522144,
+      "end": 268522192,
+      "label": "_gpio_set_irq_enabled",
+      "name": "_gpio_set_irq_enabled",
+      "symbol": "_gpio_set_irq_enabled"
+    },
+    {
+      "begin": 268522192,
+      "end": 268522248,
+      "label": "gpio_set_function",
+      "name": "gpio_set_function",
+      "symbol": "gpio_set_function"
+    },
+    {
+      "begin": 268522248,
+      "end": 268522266,
+      "label": "gpio_get_function",
+      "name": "gpio_get_function",
+      "symbol": "gpio_get_function"
+    },
+    {
+      "begin": 268522268,
+      "end": 268522304,
+      "label": "gpio_set_pulls",
+      "name": "gpio_set_pulls",
+      "symbol": "gpio_set_pulls"
+    },
+    {
+      "begin": 268522304,
+      "end": 268522334,
+      "label": "gpio_set_inover",
+      "name": "gpio_set_inover",
+      "symbol": "gpio_set_inover"
+    },
+    {
+      "begin": 268522334,
+      "end": 268522364,
+      "label": "gpio_set_outover",
+      "name": "gpio_set_outover",
+      "symbol": "gpio_set_outover"
+    },
+    {
+      "begin": 268522364,
+      "end": 268522396,
+      "label": "gpio_set_drive_strength",
+      "name": "gpio_set_drive_strength",
+      "symbol": "gpio_set_drive_strength"
+    },
+    {
+      "begin": 268522396,
+      "end": 268522428,
+      "label": "gpio_set_irq_enabled",
+      "name": "gpio_set_irq_enabled",
+      "symbol": "gpio_set_irq_enabled"
+    },
+    {
+      "begin": 268522428,
+      "end": 268522446,
+      "label": "gpio_init",
+      "name": "gpio_init",
+      "symbol": "gpio_init"
+    },
+    {
+      "begin": 268522448,
+      "end": 268522484,
+      "label": "set_raw_irq_handler_and",
+      "name": "set_raw_irq_handler_and_unlock",
+      "symbol": "set_raw_irq_handler_and_unlock"
+    },
+    {
+      "begin": 268522484,
+      "end": 268522516,
+      "label": "runtime_init_per_core_i",
+      "name": "runtime_init_per_core_irq_priorities",
+      "symbol": "runtime_init_per_core_irq_priorities"
+    },
+    {
+      "begin": 268522516,
+      "end": 268522560,
+      "label": "irq_set_enabled",
+      "name": "irq_set_enabled",
+      "symbol": "irq_set_enabled"
+    },
+    {
+      "begin": 268522560,
+      "end": 268522592,
+      "label": "irq_is_enabled",
+      "name": "irq_is_enabled",
+      "symbol": "irq_is_enabled"
+    },
+    {
+      "begin": 268522592,
+      "end": 268522608,
+      "label": "irq_get_vtable_handler",
+      "name": "irq_get_vtable_handler",
+      "symbol": "irq_get_vtable_handler"
+    },
+    {
+      "begin": 268522608,
+      "end": 268522684,
+      "label": "irq_set_exclusive_handl",
+      "name": "irq_set_exclusive_handler",
+      "symbol": "irq_set_exclusive_handler"
+    },
+    {
+      "begin": 268522684,
+      "end": 268522764,
+      "label": "irq_get_exclusive_handl",
+      "name": "irq_get_exclusive_handler",
+      "symbol": "irq_get_exclusive_handler"
+    },
+    {
+      "begin": 268522764,
+      "end": 268523232,
+      "label": "irq_add_shared_handler",
+      "name": "irq_add_shared_handler",
+      "symbol": "irq_add_shared_handler"
+    },
+    {
+      "begin": 268523232,
+      "end": 268523608,
+      "label": "irq_remove_handler",
+      "name": "irq_remove_handler",
+      "symbol": "irq_remove_handler"
+    },
+    {
+      "begin": 268523608,
+      "end": 268523646,
+      "label": "irq_set_priority",
+      "name": "irq_set_priority",
+      "symbol": "irq_set_priority"
+    },
+    {
+      "begin": 268523648,
+      "end": 268523816,
+      "label": "irq_add_tail_to_free_li",
+      "name": "irq_add_tail_to_free_list",
+      "symbol": "irq_add_tail_to_free_list"
+    },
+    {
+      "begin": 268523816,
+      "end": 268523842,
+      "label": "mutex_init",
+      "name": "mutex_init",
+      "symbol": "mutex_init"
+    },
+    {
+      "begin": 268523842,
+      "end": 268523868,
+      "label": "recursive_mutex_init",
+      "name": "recursive_mutex_init",
+      "symbol": "recursive_mutex_init"
+    },
+    {
+      "begin": 268523868,
+      "end": 268523912,
+      "label": "runtime_init_mutex",
+      "name": "runtime_init_mutex",
+      "symbol": "runtime_init_mutex"
+    },
+    {
+      "begin": 268523912,
+      "end": 268523972,
+      "label": "sleep_until_callback",
+      "name": "sleep_until_callback",
+      "symbol": "sleep_until_callback"
+    },
+    {
+      "begin": 268523976,
+      "end": 268524664,
+      "label": "alarm_pool_irq_handler",
+      "name": "alarm_pool_irq_handler",
+      "symbol": "alarm_pool_irq_handler"
+    },
+    {
+      "begin": 268524664,
+      "end": 268524804,
+      "label": "alarm_pool_post_alloc_i",
+      "name": "alarm_pool_post_alloc_init",
+      "symbol": "alarm_pool_post_alloc_init"
+    },
+    {
+      "begin": 268524804,
+      "end": 268524856,
+      "label": "runtime_init_default_al",
+      "name": "runtime_init_default_alarm_pool",
+      "symbol": "runtime_init_default_alarm_pool"
+    },
+    {
+      "begin": 268524856,
+      "end": 268524892,
+      "label": "time_reached",
+      "name": "time_reached",
+      "symbol": "time_reached"
+    },
+    {
+      "begin": 268524892,
+      "end": 268525080,
+      "label": "alarm_pool_add_alarm_at",
+      "name": "alarm_pool_add_alarm_at_force_in_context",
+      "symbol": "alarm_pool_add_alarm_at_force_in_context"
+    },
+    {
+      "begin": 268525080,
+      "end": 268525138,
+      "label": "alarm_pool_add_alarm_at",
+      "name": "alarm_pool_add_alarm_at",
+      "symbol": "alarm_pool_add_alarm_at"
+    },
+    {
+      "begin": 268525140,
+      "end": 268525304,
+      "label": "sleep_until",
+      "name": "sleep_until",
+      "symbol": "sleep_until"
+    },
+    {
+      "begin": 268525304,
+      "end": 268525350,
+      "label": "sleep_us",
+      "name": "sleep_us",
+      "symbol": "sleep_us"
+    },
+    {
+      "begin": 268525350,
+      "end": 268525362,
+      "label": "sleep_ms",
+      "name": "sleep_ms",
+      "symbol": "sleep_ms"
+    },
+    {
+      "begin": 268525364,
+      "end": 268525400,
+      "label": "timer_hardware_alarm_cl",
+      "name": "timer_hardware_alarm_claim",
+      "symbol": "timer_hardware_alarm_claim"
+    },
+    {
+      "begin": 268525400,
+      "end": 268525444,
+      "label": "timer_hardware_alarm_cl",
+      "name": "timer_hardware_alarm_claim_unused",
+      "symbol": "timer_hardware_alarm_claim_unused"
+    },
+    {
+      "begin": 268525444,
+      "end": 268525456,
+      "label": "hardware_alarm_claim_un",
+      "name": "hardware_alarm_claim_unused",
+      "symbol": "hardware_alarm_claim_unused"
+    },
+    {
+      "begin": 268525456,
+      "end": 268525472,
+      "label": "timer_time_us_64",
+      "name": "timer_time_us_64",
+      "symbol": "timer_time_us_64"
+    },
+    {
+      "begin": 268525472,
+      "end": 268525494,
+      "label": "timer_busy_wait_until",
+      "name": "timer_busy_wait_until",
+      "symbol": "timer_busy_wait_until"
+    },
+    {
+      "begin": 268525494,
+      "end": 268525540,
+      "label": "timer_busy_wait_us",
+      "name": "timer_busy_wait_us",
+      "symbol": "timer_busy_wait_us"
+    },
+    {
+      "begin": 268525540,
+      "end": 268525552,
+      "label": "time_us_64",
+      "name": "time_us_64",
+      "symbol": "time_us_64"
+    },
+    {
+      "begin": 268525552,
+      "end": 268525568,
+      "label": "busy_wait_us",
+      "name": "busy_wait_us",
+      "symbol": "busy_wait_us"
+    },
+    {
+      "begin": 268525568,
+      "end": 268525592,
+      "label": "timer_busy_wait_us_32",
+      "name": "timer_busy_wait_us_32",
+      "symbol": "timer_busy_wait_us_32"
+    },
+    {
+      "begin": 268525592,
+      "end": 268525620,
+      "label": "timer_busy_wait_ms",
+      "name": "timer_busy_wait_ms",
+      "symbol": "timer_busy_wait_ms"
+    },
+    {
+      "begin": 268525620,
+      "end": 268525632,
+      "label": "busy_wait_ms",
+      "name": "busy_wait_ms",
+      "symbol": "busy_wait_ms"
+    },
+    {
+      "begin": 268525632,
+      "end": 268525648,
+      "label": "busy_wait_until",
+      "name": "busy_wait_until",
+      "symbol": "busy_wait_until"
+    },
+    {
+      "begin": 268525648,
+      "end": 268525800,
+      "label": "clock_configure_interna",
+      "name": "clock_configure_internal",
+      "symbol": "clock_configure_internal"
+    },
+    {
+      "begin": 268525800,
+      "end": 268525832,
+      "label": "clock_stop",
+      "name": "clock_stop",
+      "symbol": "clock_stop"
+    },
+    {
+      "begin": 268525832,
+      "end": 268525914,
+      "label": "clock_configure",
+      "name": "clock_configure",
+      "symbol": "clock_configure"
+    },
+    {
+      "begin": 268525914,
+      "end": 268525930,
+      "label": "clock_configure_undivid",
+      "name": "clock_configure_undivided",
+      "symbol": "clock_configure_undivided"
+    },
+    {
+      "begin": 268525932,
+      "end": 268525944,
+      "label": "clock_get_hz",
+      "name": "clock_get_hz",
+      "symbol": "clock_get_hz"
+    },
+    {
+      "begin": 268525944,
+      "end": 268526048,
+      "label": "check_sys_clock_khz",
+      "name": "check_sys_clock_khz",
+      "symbol": "check_sys_clock_khz"
+    },
+    {
+      "begin": 268526048,
+      "end": 268526184,
+      "label": "pll_init",
+      "name": "pll_init",
+      "symbol": "pll_init"
+    },
+    {
+      "begin": 268526184,
+      "end": 268526248,
+      "label": "vreg_set_voltage",
+      "name": "vreg_set_voltage",
+      "symbol": "vreg_set_voltage"
+    },
+    {
+      "begin": 268526248,
+      "end": 268526268,
+      "label": "watchdog_update",
+      "name": "watchdog_update",
+      "symbol": "watchdog_update"
+    },
+    {
+      "begin": 268526268,
+      "end": 268526360,
+      "label": "_watchdog_enable",
+      "name": "_watchdog_enable",
+      "symbol": "_watchdog_enable"
+    },
+    {
+      "begin": 268526360,
+      "end": 268526380,
+      "label": "watchdog_enable",
+      "name": "watchdog_enable",
+      "symbol": "watchdog_enable"
+    },
+    {
+      "begin": 268526380,
+      "end": 268526396,
+      "label": "watchdog_disable",
+      "name": "watchdog_disable",
+      "symbol": "watchdog_disable"
+    },
+    {
+      "begin": 268526396,
+      "end": 268526480,
+      "label": "watchdog_caused_reboot",
+      "name": "watchdog_caused_reboot",
+      "symbol": "watchdog_caused_reboot"
+    },
+    {
+      "begin": 268526480,
+      "end": 268526500,
+      "label": "tick_start",
+      "name": "tick_start",
+      "symbol": "tick_start"
+    },
+    {
+      "begin": 268526500,
+      "end": 268526520,
+      "label": "runtime_init_bootrom_lo",
+      "name": "runtime_init_bootrom_locking_enable",
+      "symbol": "runtime_init_bootrom_locking_enable"
+    },
+    {
+      "begin": 268526520,
+      "end": 268526548,
+      "label": "boot_locks_reset",
+      "name": "boot_locks_reset",
+      "symbol": "boot_locks_reset"
+    },
+    {
+      "begin": 268526548,
+      "end": 268526552,
+      "label": "runtime_init_boot_locks",
+      "name": "runtime_init_boot_locks_reset",
+      "symbol": "runtime_init_boot_locks_reset"
+    },
+    {
+      "begin": 268526552,
+      "end": 268526572,
+      "label": "dma_channel_claim",
+      "name": "dma_channel_claim",
+      "symbol": "dma_channel_claim"
+    },
+    {
+      "begin": 268526572,
+      "end": 268526598,
+      "label": "dma_claim_mask",
+      "name": "dma_claim_mask",
+      "symbol": "dma_claim_mask"
+    },
+    {
+      "begin": 268526600,
+      "end": 268526616,
+      "label": "exception_get_vtable_ha",
+      "name": "exception_get_vtable_handler",
+      "symbol": "exception_get_vtable_handler"
+    },
+    {
+      "begin": 268526616,
+      "end": 268526688,
+      "label": "exception_set_exclusive",
+      "name": "exception_set_exclusive_handler",
+      "symbol": "exception_set_exclusive_handler"
+    },
+    {
+      "begin": 268526688,
+      "end": 268526732,
+      "label": "spi_deinit",
+      "name": "spi_deinit",
+      "symbol": "spi_deinit"
+    },
+    {
+      "begin": 268526732,
+      "end": 268526878,
+      "label": "spi_set_baudrate",
+      "name": "spi_set_baudrate",
+      "symbol": "spi_set_baudrate"
+    },
+    {
+      "begin": 268526880,
+      "end": 268526988,
+      "label": "spi_init",
+      "name": "spi_init",
+      "symbol": "spi_init"
+    },
+    {
+      "begin": 268526988,
+      "end": 268527072,
+      "label": "uart_write_lcr_bits_mas",
+      "name": "uart_write_lcr_bits_masked",
+      "symbol": "uart_write_lcr_bits_masked"
+    },
+    {
+      "begin": 268527072,
+      "end": 268527100,
+      "label": "uart_deinit",
+      "name": "uart_deinit",
+      "symbol": "uart_deinit"
+    },
+    {
+      "begin": 268527100,
+      "end": 268527182,
+      "label": "uart_set_baudrate",
+      "name": "uart_set_baudrate",
+      "symbol": "uart_set_baudrate"
+    },
+    {
+      "begin": 268527184,
+      "end": 268527308,
+      "label": "uart_init",
+      "name": "uart_init",
+      "symbol": "uart_init"
+    },
+    {
+      "begin": 268527308,
+      "end": 268527346,
+      "label": "uart_set_format",
+      "name": "uart_set_format",
+      "symbol": "uart_set_format"
+    },
+    {
+      "begin": 268528016,
+      "end": 268528034,
+      "label": "multicore_fifo_pop_bloc",
+      "name": "multicore_fifo_pop_blocking_inline",
+      "symbol": "multicore_fifo_pop_blocking_inline"
+    },
+    {
+      "begin": 268528034,
+      "end": 268528036,
+      "label": "core1_trampoline",
+      "name": "core1_trampoline",
+      "symbol": "core1_trampoline"
+    },
+    {
+      "begin": 268528036,
+      "end": 268528052,
+      "label": "core1_wrapper",
+      "name": "core1_wrapper",
+      "symbol": "core1_wrapper"
+    },
+    {
+      "begin": 268528052,
+      "end": 268528068,
+      "label": "multicore_fifo_push_blo",
+      "name": "multicore_fifo_push_blocking_inline",
+      "symbol": "multicore_fifo_push_blocking_inline"
+    },
+    {
+      "begin": 268528068,
+      "end": 268528188,
+      "label": "multicore_doorbell_clai",
+      "name": "multicore_doorbell_claim_under_lock",
+      "symbol": "multicore_doorbell_claim_under_lock"
+    },
+    {
+      "begin": 268528188,
+      "end": 268528298,
+      "label": "multicore_launch_core1_",
+      "name": "multicore_launch_core1_raw",
+      "symbol": "multicore_launch_core1_raw"
+    },
+    {
+      "begin": 268528300,
+      "end": 268528344,
+      "label": "multicore_launch_core1_",
+      "name": "multicore_launch_core1_with_stack",
+      "symbol": "multicore_launch_core1_with_stack"
+    },
+    {
+      "begin": 268528344,
+      "end": 268528372,
+      "label": "multicore_launch_core1",
+      "name": "multicore_launch_core1",
+      "symbol": "multicore_launch_core1"
+    },
+    {
+      "begin": 268528372,
+      "end": 268528428,
+      "label": "multicore_doorbell_clai",
+      "name": "multicore_doorbell_claim_unused",
+      "symbol": "multicore_doorbell_claim_unused"
+    },
+    {
+      "begin": 268528428,
+      "end": 268528430,
+      "label": "first_per_core_initiali",
+      "name": "first_per_core_initializer",
+      "symbol": "first_per_core_initializer"
+    },
+    {
+      "begin": 268528432,
+      "end": 268528444,
+      "label": "hard_assertion_failure",
+      "name": "hard_assertion_failure",
+      "symbol": "hard_assertion_failure"
+    },
+    {
+      "begin": 268528444,
+      "end": 268528472,
+      "label": "runtime_run_initializer",
+      "name": "runtime_run_initializers",
+      "symbol": "runtime_run_initializers"
+    },
+    {
+      "begin": 268528472,
+      "end": 268528500,
+      "label": "runtime_run_per_core_in",
+      "name": "runtime_run_per_core_initializers",
+      "symbol": "runtime_run_per_core_initializers"
+    },
+    {
+      "begin": 268528500,
+      "end": 268528544,
+      "label": "runtime_init_early_rese",
+      "name": "runtime_init_early_resets",
+      "symbol": "runtime_init_early_resets"
+    },
+    {
+      "begin": 268528544,
+      "end": 268528572,
+      "label": "runtime_init_usb_power_",
+      "name": "runtime_init_usb_power_down",
+      "symbol": "runtime_init_usb_power_down"
+    },
+    {
+      "begin": 268528572,
+      "end": 268528600,
+      "label": "runtime_init_per_core_e",
+      "name": "runtime_init_per_core_enable_coprocessors",
+      "symbol": "runtime_init_per_core_enable_coprocessors"
+    },
+    {
+      "begin": 268528600,
+      "end": 268528632,
+      "label": "runtime_init_post_clock",
+      "name": "runtime_init_post_clock_resets",
+      "symbol": "runtime_init_post_clock_resets"
+    },
+    {
+      "begin": 268528632,
+      "end": 268528652,
+      "label": "runtime_init_bootrom_re",
+      "name": "runtime_init_bootrom_reset",
+      "symbol": "runtime_init_bootrom_reset"
+    },
+    {
+      "begin": 268528652,
+      "end": 268528672,
+      "label": "runtime_init_per_core_b",
+      "name": "runtime_init_per_core_bootrom_reset",
+      "symbol": "runtime_init_per_core_bootrom_reset"
+    },
+    {
+      "begin": 268528672,
+      "end": 268528676,
+      "label": "runtime_init_spin_locks",
+      "name": "runtime_init_spin_locks_reset",
+      "symbol": "runtime_init_spin_locks_reset"
+    },
+    {
+      "begin": 268528676,
+      "end": 268528744,
+      "label": "runtime_init_install_ra",
+      "name": "runtime_init_install_ram_vector_table",
+      "symbol": "runtime_init_install_ram_vector_table"
+    },
+    {
+      "begin": 268528744,
+      "end": 268528956,
+      "label": "runtime_init_clocks",
+      "name": "runtime_init_clocks",
+      "symbol": "runtime_init_clocks"
+    },
+    {
+      "begin": 268528956,
+      "end": 268528992,
+      "label": "hw_claim_lock",
+      "name": "hw_claim_lock",
+      "symbol": "hw_claim_lock"
+    },
+    {
+      "begin": 268528992,
+      "end": 268529012,
+      "label": "hw_claim_unlock",
+      "name": "hw_claim_unlock",
+      "symbol": "hw_claim_unlock"
+    },
+    {
+      "begin": 268529012,
+      "end": 268529034,
+      "label": "hw_is_claimed",
+      "name": "hw_is_claimed",
+      "symbol": "hw_is_claimed"
+    },
+    {
+      "begin": 268529034,
+      "end": 268529092,
+      "label": "hw_claim_or_assert",
+      "name": "hw_claim_or_assert",
+      "symbol": "hw_claim_or_assert"
+    },
+    {
+      "begin": 268529092,
+      "end": 268529170,
+      "label": "hw_claim_unused_from_ra",
+      "name": "hw_claim_unused_from_range",
+      "symbol": "hw_claim_unused_from_range"
+    },
+    {
+      "begin": 268529172,
+      "end": 268529196,
+      "label": "next_striped_spin_lock_",
+      "name": "next_striped_spin_lock_num",
+      "symbol": "next_striped_spin_lock_num"
+    },
+    {
+      "begin": 268529196,
+      "end": 268529210,
+      "label": "spinlock_set_extexclall",
+      "name": "spinlock_set_extexclall",
+      "symbol": "spinlock_set_extexclall"
+    },
+    {
+      "begin": 268529212,
+      "end": 268529236,
+      "label": "spin_locks_reset",
+      "name": "spin_locks_reset",
+      "symbol": "spin_locks_reset"
+    },
+    {
+      "begin": 268529236,
+      "end": 268529248,
+      "label": "lock_init",
+      "name": "lock_init",
+      "symbol": "lock_init"
+    },
+    {
+      "begin": 268529248,
+      "end": 268529268,
+      "label": "rom_func_lookup",
+      "name": "rom_func_lookup",
+      "symbol": "rom_func_lookup"
+    },
+    {
+      "begin": 268529268,
+      "end": 268529308,
+      "label": "xosc_init",
+      "name": "xosc_init",
+      "symbol": "xosc_init"
+    },
+    {
+      "begin": 268529308,
+      "end": 268529316,
+      "label": "operator delete",
+      "name": "operator delete(void*, unsigned int)",
+      "symbol": "_ZdlPvj"
+    },
+    {
+      "begin": 268529316,
+      "end": 268529324,
+      "label": "operator delete[]",
+      "name": "operator delete[](void*)",
+      "symbol": "_ZdaPv"
+    },
+    {
+      "begin": 268529324,
+      "end": 268529360,
+      "label": "operator new",
+      "name": "operator new(unsigned int)",
+      "symbol": "_Znwj"
+    },
+    {
+      "begin": 268529360,
+      "end": 268529368,
+      "label": "operator new[]",
+      "name": "operator new[](unsigned int)",
+      "symbol": "_Znaj"
+    },
+    {
+      "begin": 268529368,
+      "end": 268529414,
+      "label": "std::_Rb_tree_increment",
+      "name": "std::_Rb_tree_increment(std::_Rb_tree_node_base*)",
+      "symbol": "_ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base"
+    },
+    {
+      "begin": 268529416,
+      "end": 268529462,
+      "label": "std::_Rb_tree_increment",
+      "name": "std::_Rb_tree_increment(std::_Rb_tree_node_base const*)",
+      "symbol": "_ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base"
+    },
+    {
+      "begin": 268529464,
+      "end": 268529520,
+      "label": "std::_Rb_tree_decrement",
+      "name": "std::_Rb_tree_decrement(std::_Rb_tree_node_base*)",
+      "symbol": "_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base"
+    },
+    {
+      "begin": 268529520,
+      "end": 268529908,
+      "label": "std::_Rb_tree_insert_an",
+      "name": "std::_Rb_tree_insert_and_rebalance(bool, std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::_Rb_tree_node_base&)",
+      "symbol": "_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_"
+    },
+    {
+      "begin": 268529908,
+      "end": 268530658,
+      "label": "std::_Rb_tree_rebalance",
+      "name": "std::_Rb_tree_rebalance_for_erase(std::_Rb_tree_node_base*, std::_Rb_tree_node_base&)",
+      "symbol": "_ZSt28_Rb_tree_rebalance_for_erasePSt18_Rb_tree_node_baseRS_"
+    },
+    {
+      "begin": 268530660,
+      "end": 268530666,
+      "label": "std::__throw_length_err",
+      "name": "std::__throw_length_error(char const*)",
+      "symbol": "_ZSt20__throw_length_errorPKc"
+    },
+    {
+      "begin": 268530668,
+      "end": 268530676,
+      "label": "operator delete",
+      "name": "operator delete(void*)",
+      "symbol": "_ZdlPv"
+    },
+    {
+      "begin": 268530676,
+      "end": 268530688,
+      "label": "std::get_new_handler",
+      "name": "std::get_new_handler()",
+      "symbol": "_ZSt15get_new_handlerv"
+    },
+    {
+      "begin": 268530688,
+      "end": 268530780,
+      "label": "strncpy",
+      "name": "strncpy",
+      "symbol": "strncpy"
+    },
+    {
+      "begin": 268530780,
+      "end": 268530926,
+      "label": "memset",
+      "name": "memset",
+      "symbol": "memset"
+    },
+    {
+      "begin": 268530928,
+      "end": 268530992,
+      "label": "__assert_func",
+      "name": "__assert_func",
+      "symbol": "__assert_func"
+    },
+    {
+      "begin": 268530992,
+      "end": 268531002,
+      "label": "__assert",
+      "name": "__assert",
+      "symbol": "__assert"
+    },
+    {
+      "begin": 268531004,
+      "end": 268531208,
+      "label": "_puts_r",
+      "name": "_puts_r",
+      "symbol": "_puts_r"
+    },
+    {
+      "begin": 268531208,
+      "end": 268531224,
+      "label": "puts",
+      "name": "puts",
+      "symbol": "puts"
+    },
+    {
+      "begin": 268531224,
+      "end": 268531292,
+      "label": "_setlocale_r",
+      "name": "_setlocale_r",
+      "symbol": "_setlocale_r"
+    },
+    {
+      "begin": 268531292,
+      "end": 268531308,
+      "label": "__locale_mb_cur_max",
+      "name": "__locale_mb_cur_max",
+      "symbol": "__locale_mb_cur_max"
+    },
+    {
+      "begin": 268531308,
+      "end": 268531384,
+      "label": "setlocale",
+      "name": "setlocale",
+      "symbol": "setlocale"
+    },
+    {
+      "begin": 268531384,
+      "end": 268539984,
+      "label": "_svfprintf_r",
+      "name": "_svfprintf_r",
+      "symbol": "_svfprintf_r"
+    },
+    {
+      "begin": 268539984,
+      "end": 268540006,
+      "label": "vprintf",
+      "name": "vprintf",
+      "symbol": "vprintf"
+    },
+    {
+      "begin": 268540008,
+      "end": 268540024,
+      "label": "_vprintf_r",
+      "name": "_vprintf_r",
+      "symbol": "_vprintf_r"
+    },
+    {
+      "begin": 268540024,
+      "end": 268540048,
+      "label": "_mbtowc_r",
+      "name": "_mbtowc_r",
+      "symbol": "_mbtowc_r"
+    },
+    {
+      "begin": 268540048,
+      "end": 268540092,
+      "label": "__ascii_mbtowc",
+      "name": "__ascii_mbtowc",
+      "symbol": "__ascii_mbtowc"
+    },
+    {
+      "begin": 268540092,
+      "end": 268540196,
+      "label": "strncmp",
+      "name": "strncmp",
+      "symbol": "strncmp"
+    },
+    {
+      "begin": 268540196,
+      "end": 268540288,
+      "label": "strlen",
+      "name": "strlen",
+      "symbol": "strlen"
+    },
+    {
+      "begin": 268540288,
+      "end": 268540484,
+      "label": "memmove",
+      "name": "memmove",
+      "symbol": "memmove"
+    },
+    {
+      "begin": 268540484,
+      "end": 268540512,
+      "label": "stdio_exit_handler",
+      "name": "stdio_exit_handler",
+      "symbol": "stdio_exit_handler"
+    },
+    {
+      "begin": 268540512,
+      "end": 268540572,
+      "label": "cleanup_stdio",
+      "name": "cleanup_stdio",
+      "symbol": "cleanup_stdio"
+    },
+    {
+      "begin": 268540572,
+      "end": 268540600,
+      "label": "__fp_lock",
+      "name": "__fp_lock",
+      "symbol": "__fp_lock"
+    },
+    {
+      "begin": 268540600,
+      "end": 268540628,
+      "label": "__fp_unlock",
+      "name": "__fp_unlock",
+      "symbol": "__fp_unlock"
+    },
+    {
+      "begin": 268540628,
+      "end": 268540912,
+      "label": "global_stdio_init.part.",
+      "name": "global_stdio_init.part.0",
+      "symbol": "global_stdio_init.part.0"
+    },
+    {
+      "begin": 268540912,
+      "end": 268541112,
+      "label": "__sfp",
+      "name": "__sfp",
+      "symbol": "__sfp"
+    },
+    {
+      "begin": 268541112,
+      "end": 268541168,
+      "label": "__sinit",
+      "name": "__sinit",
+      "symbol": "__sinit"
+    },
+    {
+      "begin": 268541168,
+      "end": 268541184,
+      "label": "__sfp_lock_acquire",
+      "name": "__sfp_lock_acquire",
+      "symbol": "__sfp_lock_acquire"
+    },
+    {
+      "begin": 268541184,
+      "end": 268541200,
+      "label": "__sfp_lock_release",
+      "name": "__sfp_lock_release",
+      "symbol": "__sfp_lock_release"
+    },
+    {
+      "begin": 268541200,
+      "end": 268541232,
+      "label": "__fp_lock_all",
+      "name": "__fp_lock_all",
+      "symbol": "__fp_lock_all"
+    },
+    {
+      "begin": 268541232,
+      "end": 268541264,
+      "label": "__fp_unlock_all",
+      "name": "__fp_unlock_all",
+      "symbol": "__fp_unlock_all"
+    },
+    {
+      "begin": 268541264,
+      "end": 268541284,
+      "label": "calloc",
+      "name": "calloc",
+      "symbol": "calloc"
+    },
+    {
+      "begin": 268541284,
+      "end": 268541498,
+      "label": "_fclose_r",
+      "name": "_fclose_r",
+      "symbol": "_fclose_r"
+    },
+    {
+      "begin": 268541500,
+      "end": 268541516,
+      "label": "fclose",
+      "name": "fclose",
+      "symbol": "fclose"
+    },
+    {
+      "begin": 268541516,
+      "end": 268541530,
+      "label": "abort",
+      "name": "abort",
+      "symbol": "abort"
+    },
+    {
+      "begin": 268541532,
+      "end": 268541558,
+      "label": "_printf_r",
+      "name": "_printf_r",
+      "symbol": "_printf_r"
+    },
+    {
+      "begin": 268541560,
+      "end": 268541596,
+      "label": "printf",
+      "name": "printf",
+      "symbol": "printf"
+    },
+    {
+      "begin": 268541596,
+      "end": 268541760,
+      "label": "_calloc_r",
+      "name": "_calloc_r",
+      "symbol": "_calloc_r"
+    },
+    {
+      "begin": 268541760,
+      "end": 268541780,
+      "label": "realloc",
+      "name": "realloc",
+      "symbol": "realloc"
+    },
+    {
+      "begin": 268541780,
+      "end": 268541804,
+      "label": "_fiprintf_r",
+      "name": "_fiprintf_r",
+      "symbol": "_fiprintf_r"
+    },
+    {
+      "begin": 268541804,
+      "end": 268541842,
+      "label": "fiprintf",
+      "name": "fiprintf",
+      "symbol": "fiprintf"
+    },
+    {
+      "begin": 268541844,
+      "end": 268541864,
+      "label": "mallinfo",
+      "name": "mallinfo",
+      "symbol": "mallinfo"
+    },
+    {
+      "begin": 268541864,
+      "end": 268541876,
+      "label": "malloc_stats",
+      "name": "malloc_stats",
+      "symbol": "malloc_stats"
+    },
+    {
+      "begin": 268541876,
+      "end": 268541896,
+      "label": "mallopt",
+      "name": "mallopt",
+      "symbol": "mallopt"
+    },
+    {
+      "begin": 268541896,
+      "end": 268541924,
+      "label": "_mstats_r",
+      "name": "_mstats_r",
+      "symbol": "_mstats_r"
+    },
+    {
+      "begin": 268541924,
+      "end": 268541956,
+      "label": "mstats",
+      "name": "mstats",
+      "symbol": "mstats"
+    },
+    {
+      "begin": 268541956,
+      "end": 268543424,
+      "label": "_malloc_r",
+      "name": "_malloc_r",
+      "symbol": "_malloc_r"
+    },
+    {
+      "begin": 268543424,
+      "end": 268543548,
+      "label": "memchr",
+      "name": "memchr",
+      "symbol": "memchr"
+    },
+    {
+      "begin": 268543548,
+      "end": 268543884,
+      "label": "quorem",
+      "name": "quorem",
+      "symbol": "quorem"
+    },
+    {
+      "begin": 268543884,
+      "end": 268548352,
+      "label": "_dtoa_r",
+      "name": "_dtoa_r",
+      "symbol": "_dtoa_r"
+    },
+    {
+      "begin": 268548352,
+      "end": 268548368,
+      "label": "strcpy",
+      "name": "strcpy",
+      "symbol": "strcpy"
+    },
+    {
+      "begin": 268548368,
+      "end": 268548548,
+      "label": "_malloc_trim_r",
+      "name": "_malloc_trim_r",
+      "symbol": "_malloc_trim_r"
+    },
+    {
+      "begin": 268548548,
+      "end": 268549044,
+      "label": "_free_r",
+      "name": "_free_r",
+      "symbol": "_free_r"
+    },
+    {
+      "begin": 268549044,
+      "end": 268549114,
+      "label": "memcmp",
+      "name": "memcmp",
+      "symbol": "memcmp"
+    },
+    {
+      "begin": 268549116,
+      "end": 268549460,
+      "label": "_strtol_l.isra.0",
+      "name": "_strtol_l.isra.0",
+      "symbol": "_strtol_l.isra.0"
+    },
+    {
+      "begin": 268549460,
+      "end": 268549468,
+      "label": "_strtol_r",
+      "name": "_strtol_r",
+      "symbol": "_strtol_r"
+    },
+    {
+      "begin": 268549468,
+      "end": 268549492,
+      "label": "strtol_l",
+      "name": "strtol_l",
+      "symbol": "strtol_l"
+    },
+    {
+      "begin": 268549492,
+      "end": 268549516,
+      "label": "strtol",
+      "name": "strtol",
+      "symbol": "strtol"
+    },
+    {
+      "begin": 268549516,
+      "end": 268549532,
+      "label": "_wctomb_r",
+      "name": "_wctomb_r",
+      "symbol": "_wctomb_r"
+    },
+    {
+      "begin": 268549532,
+      "end": 268549560,
+      "label": "__ascii_wctomb",
+      "name": "__ascii_wctomb",
+      "symbol": "__ascii_wctomb"
+    },
+    {
+      "begin": 268549560,
+      "end": 268549568,
+      "label": "__errno",
+      "name": "__errno",
+      "symbol": "__errno"
+    },
+    {
+      "begin": 268549568,
+      "end": 268549584,
+      "label": "malloc",
+      "name": "malloc",
+      "symbol": "malloc"
+    },
+    {
+      "begin": 268549584,
+      "end": 268549600,
+      "label": "free",
+      "name": "free",
+      "symbol": "free"
+    },
+    {
+      "begin": 268549600,
+      "end": 268550448,
+      "label": "_realloc_r",
+      "name": "_realloc_r",
+      "symbol": "_realloc_r"
+    },
+    {
+      "begin": 268550448,
+      "end": 268550464,
+      "label": "__malloc_lock",
+      "name": "__malloc_lock",
+      "symbol": "__malloc_lock"
+    },
+    {
+      "begin": 268550464,
+      "end": 268550480,
+      "label": "__malloc_unlock",
+      "name": "__malloc_unlock",
+      "symbol": "__malloc_unlock"
+    },
+    {
+      "begin": 268550480,
+      "end": 268550516,
+      "label": "_sbrk_r",
+      "name": "_sbrk_r",
+      "symbol": "_sbrk_r"
+    },
+    {
+      "begin": 268550516,
+      "end": 268550648,
+      "label": "strcmp",
+      "name": "strcmp",
+      "symbol": "strcmp"
+    },
+    {
+      "begin": 268550652,
+      "end": 268550684,
+      "label": "exit",
+      "name": "exit",
+      "symbol": "exit"
+    },
+    {
+      "begin": 268550684,
+      "end": 268550808,
+      "label": "_snprintf_r",
+      "name": "_snprintf_r",
+      "symbol": "_snprintf_r"
+    },
+    {
+      "begin": 268550808,
+      "end": 268550932,
+      "label": "snprintf",
+      "name": "snprintf",
+      "symbol": "snprintf"
+    },
+    {
+      "begin": 268550932,
+      "end": 268551020,
+      "label": "__ssprint_r",
+      "name": "__ssprint_r",
+      "symbol": "__ssprint_r"
+    },
+    {
+      "begin": 268551020,
+      "end": 268551568,
+      "label": "localtime_r",
+      "name": "localtime_r",
+      "symbol": "localtime_r"
+    },
+    {
+      "begin": 268551568,
+      "end": 268552348,
+      "label": "__sfvwrite_r",
+      "name": "__sfvwrite_r",
+      "symbol": "__sfvwrite_r"
+    },
+    {
+      "begin": 268552348,
+      "end": 268552436,
+      "label": "__malloc_update_mallinf",
+      "name": "__malloc_update_mallinfo",
+      "symbol": "__malloc_update_mallinfo"
+    },
+    {
+      "begin": 268552436,
+      "end": 268552488,
+      "label": "_mallinfo_r",
+      "name": "_mallinfo_r",
+      "symbol": "_mallinfo_r"
+    },
+    {
+      "begin": 268552488,
+      "end": 268552528,
+      "label": "__sread",
+      "name": "__sread",
+      "symbol": "__sread"
+    },
+    {
+      "begin": 268552528,
+      "end": 268552532,
+      "label": "__seofread",
+      "name": "__seofread",
+      "symbol": "__seofread"
+    },
+    {
+      "begin": 268552532,
+      "end": 268552596,
+      "label": "__swrite",
+      "name": "__swrite",
+      "symbol": "__swrite"
+    },
+    {
+      "begin": 268552596,
+      "end": 268552640,
+      "label": "__sseek",
+      "name": "__sseek",
+      "symbol": "__sseek"
+    },
+    {
+      "begin": 268552640,
+      "end": 268552652,
+      "label": "__sclose",
+      "name": "__sclose",
+      "symbol": "__sclose"
+    },
+    {
+      "begin": 268552652,
+      "end": 268552972,
+      "label": "__sflush_r",
+      "name": "__sflush_r",
+      "symbol": "__sflush_r"
+    },
+    {
+      "begin": 268552972,
+      "end": 268553068,
+      "label": "_fflush_r",
+      "name": "_fflush_r",
+      "symbol": "_fflush_r"
+    },
+    {
+      "begin": 268553068,
+      "end": 268553112,
+      "label": "fflush",
+      "name": "fflush",
+      "symbol": "fflush"
+    },
+    {
+      "begin": 268553112,
+      "end": 268553162,
+      "label": "time",
+      "name": "time",
+      "symbol": "time"
+    },
+    {
+      "begin": 268553164,
+      "end": 268553210,
+      "label": "_init_signal_r",
+      "name": "_init_signal_r",
+      "symbol": "_init_signal_r"
+    },
+    {
+      "begin": 268553212,
+      "end": 268553280,
+      "label": "_signal_r",
+      "name": "_signal_r",
+      "symbol": "_signal_r"
+    },
+    {
+      "begin": 268553280,
+      "end": 268553362,
+      "label": "_raise_r",
+      "name": "_raise_r",
+      "symbol": "_raise_r"
+    },
+    {
+      "begin": 268553364,
+      "end": 268553454,
+      "label": "__sigtramp_r",
+      "name": "__sigtramp_r",
+      "symbol": "__sigtramp_r"
+    },
+    {
+      "begin": 268553456,
+      "end": 268553472,
+      "label": "raise",
+      "name": "raise",
+      "symbol": "raise"
+    },
+    {
+      "begin": 268553472,
+      "end": 268553544,
+      "label": "signal",
+      "name": "signal",
+      "symbol": "signal"
+    },
+    {
+      "begin": 268553544,
+      "end": 268553594,
+      "label": "_init_signal",
+      "name": "_init_signal",
+      "symbol": "_init_signal"
+    },
+    {
+      "begin": 268553596,
+      "end": 268553612,
+      "label": "__sigtramp",
+      "name": "__sigtramp",
+      "symbol": "__sigtramp"
+    },
+    {
+      "begin": 268553612,
+      "end": 268553716,
+      "label": "frexp",
+      "name": "frexp",
+      "symbol": "frexp"
+    },
+    {
+      "begin": 268553716,
+      "end": 268553784,
+      "label": "_fwalk_sglue",
+      "name": "_fwalk_sglue",
+      "symbol": "_fwalk_sglue"
+    },
+    {
+      "begin": 268553784,
+      "end": 268553916,
+      "label": "_Balloc",
+      "name": "_Balloc",
+      "symbol": "_Balloc"
+    },
+    {
+      "begin": 268553916,
+      "end": 268553992,
+      "label": "_Bfree",
+      "name": "_Bfree",
+      "symbol": "_Bfree"
+    },
+    {
+      "begin": 268553992,
+      "end": 268554148,
+      "label": "__multadd",
+      "name": "__multadd",
+      "symbol": "__multadd"
+    },
+    {
+      "begin": 268554148,
+      "end": 268554324,
+      "label": "__s2b",
+      "name": "__s2b",
+      "symbol": "__s2b"
+    },
+    {
+      "begin": 268554324,
+      "end": 268554418,
+      "label": "__hi0bits",
+      "name": "__hi0bits",
+      "symbol": "__hi0bits"
+    },
+    {
+      "begin": 268554420,
+      "end": 268554562,
+      "label": "__lo0bits",
+      "name": "__lo0bits",
+      "symbol": "__lo0bits"
+    },
+    {
+      "begin": 268554564,
+      "end": 268554608,
+      "label": "__i2b",
+      "name": "__i2b",
+      "symbol": "__i2b"
+    },
+    {
+      "begin": 268554608,
+      "end": 268555040,
+      "label": "__multiply",
+      "name": "__multiply",
+      "symbol": "__multiply"
+    },
+    {
+      "begin": 268555040,
+      "end": 268555308,
+      "label": "__pow5mult",
+      "name": "__pow5mult",
+      "symbol": "__pow5mult"
+    },
+    {
+      "begin": 268555308,
+      "end": 268555552,
+      "label": "__lshift",
+      "name": "__lshift",
+      "symbol": "__lshift"
+    },
+    {
+      "begin": 268555552,
+      "end": 268555610,
+      "label": "__mcmp",
+      "name": "__mcmp",
+      "symbol": "__mcmp"
+    },
+    {
+      "begin": 268555612,
+      "end": 268556036,
+      "label": "__mdiff",
+      "name": "__mdiff",
+      "symbol": "__mdiff"
+    },
+    {
+      "begin": 268556036,
+      "end": 268556100,
+      "label": "__ulp",
+      "name": "__ulp",
+      "symbol": "__ulp"
+    },
+    {
+      "begin": 268556100,
+      "end": 268556284,
+      "label": "__b2d",
+      "name": "__b2d",
+      "symbol": "__b2d"
+    },
+    {
+      "begin": 268556284,
+      "end": 268556480,
+      "label": "__d2b",
+      "name": "__d2b",
+      "symbol": "__d2b"
+    },
+    {
+      "begin": 268556480,
+      "end": 268556584,
+      "label": "__ratio",
+      "name": "__ratio",
+      "symbol": "__ratio"
+    },
+    {
+      "begin": 268556584,
+      "end": 268556636,
+      "label": "_mprec_log10",
+      "name": "_mprec_log10",
+      "symbol": "_mprec_log10"
+    },
+    {
+      "begin": 268556636,
+      "end": 268556698,
+      "label": "__copybits",
+      "name": "__copybits",
+      "symbol": "__copybits"
+    },
+    {
+      "begin": 268556700,
+      "end": 268556774,
+      "label": "__any_on",
+      "name": "__any_on",
+      "symbol": "__any_on"
+    },
+    {
+      "begin": 268556776,
+      "end": 268556780,
+      "label": "__localeconv_l",
+      "name": "__localeconv_l",
+      "symbol": "__localeconv_l"
+    },
+    {
+      "begin": 268556780,
+      "end": 268556788,
+      "label": "_localeconv_r",
+      "name": "_localeconv_r",
+      "symbol": "_localeconv_r"
+    },
+    {
+      "begin": 268556788,
+      "end": 268556796,
+      "label": "localeconv",
+      "name": "localeconv",
+      "symbol": "localeconv"
+    },
+    {
+      "begin": 268556796,
+      "end": 268565688,
+      "label": "_vfprintf_r",
+      "name": "_vfprintf_r",
+      "symbol": "_vfprintf_r"
+    },
+    {
+      "begin": 268565688,
+      "end": 268565712,
+      "label": "vfprintf",
+      "name": "vfprintf",
+      "symbol": "vfprintf"
+    },
+    {
+      "begin": 268565712,
+      "end": 268565856,
+      "label": "__sbprintf",
+      "name": "__sbprintf",
+      "symbol": "__sbprintf"
+    },
+    {
+      "begin": 268565856,
+      "end": 268565956,
+      "label": "_mallopt_r",
+      "name": "_mallopt_r",
+      "symbol": "_mallopt_r"
+    },
+    {
+      "begin": 268565956,
+      "end": 268566040,
+      "label": "_malloc_stats_r",
+      "name": "_malloc_stats_r",
+      "symbol": "_malloc_stats_r"
+    },
+    {
+      "begin": 268566040,
+      "end": 268566066,
+      "label": "sysconf",
+      "name": "sysconf",
+      "symbol": "sysconf"
+    },
+    {
+      "begin": 268566068,
+      "end": 268570520,
+      "label": "_vfiprintf_r",
+      "name": "_vfiprintf_r",
+      "symbol": "_vfiprintf_r"
+    },
+    {
+      "begin": 268570520,
+      "end": 268570544,
+      "label": "vfiprintf",
+      "name": "vfiprintf",
+      "symbol": "vfiprintf"
+    },
+    {
+      "begin": 268570544,
+      "end": 268570688,
+      "label": "__sbprintf",
+      "name": "__sbprintf",
+      "symbol": "__sbprintf"
+    },
+    {
+      "begin": 268570688,
+      "end": 268570896,
+      "label": "__ssputs_r",
+      "name": "__ssputs_r",
+      "symbol": "__ssputs_r"
+    },
+    {
+      "begin": 268570896,
+      "end": 268570908,
+      "label": "_tzset_unlocked",
+      "name": "_tzset_unlocked",
+      "symbol": "_tzset_unlocked"
+    },
+    {
+      "begin": 268570908,
+      "end": 268570928,
+      "label": "tzset",
+      "name": "tzset",
+      "symbol": "tzset"
+    },
+    {
+      "begin": 268570928,
+      "end": 268571170,
+      "label": "__swsetup_r",
+      "name": "__swsetup_r",
+      "symbol": "__swsetup_r"
+    },
+    {
+      "begin": 268571172,
+      "end": 268571180,
+      "label": "__gettzinfo",
+      "name": "__gettzinfo",
+      "symbol": "__gettzinfo"
+    },
+    {
+      "begin": 268571180,
+      "end": 268571436,
+      "label": "__call_exitprocs",
+      "name": "__call_exitprocs",
+      "symbol": "__call_exitprocs"
+    },
+    {
+      "begin": 268571436,
+      "end": 268571476,
+      "label": "_write_r",
+      "name": "_write_r",
+      "symbol": "_write_r"
+    },
+    {
+      "begin": 268571476,
+      "end": 268571900,
+      "label": "__tzcalc_limits",
+      "name": "__tzcalc_limits",
+      "symbol": "__tzcalc_limits"
+    },
+    {
+      "begin": 268571900,
+      "end": 268571936,
+      "label": "_close_r",
+      "name": "_close_r",
+      "symbol": "_close_r"
+    },
+    {
+      "begin": 268571936,
+      "end": 268571976,
+      "label": "_lseek_r",
+      "name": "_lseek_r",
+      "symbol": "_lseek_r"
+    },
+    {
+      "begin": 268571976,
+      "end": 268572424,
+      "label": "gmtime_r",
+      "name": "gmtime_r",
+      "symbol": "gmtime_r"
+    },
+    {
+      "begin": 268572424,
+      "end": 268572464,
+      "label": "_read_r",
+      "name": "_read_r",
+      "symbol": "_read_r"
+    },
+    {
+      "begin": 268572464,
+      "end": 268572504,
+      "label": "_gettimeofday_r",
+      "name": "_gettimeofday_r",
+      "symbol": "_gettimeofday_r"
+    },
+    {
+      "begin": 268572504,
+      "end": 268572520,
+      "label": "__tz_lock",
+      "name": "__tz_lock",
+      "symbol": "__tz_lock"
+    },
+    {
+      "begin": 268572520,
+      "end": 268572536,
+      "label": "__tz_unlock",
+      "name": "__tz_unlock",
+      "symbol": "__tz_unlock"
+    },
+    {
+      "begin": 268572536,
+      "end": 268572746,
+      "label": "__smakebuf_r",
+      "name": "__smakebuf_r",
+      "symbol": "__smakebuf_r"
+    },
+    {
+      "begin": 268572748,
+      "end": 268572836,
+      "label": "__swhatbuf_r",
+      "name": "__swhatbuf_r",
+      "symbol": "__swhatbuf_r"
+    },
+    {
+      "begin": 268572836,
+      "end": 268572876,
+      "label": "_kill_r",
+      "name": "_kill_r",
+      "symbol": "_kill_r"
+    },
+    {
+      "begin": 268572876,
+      "end": 268572884,
+      "label": "_getpid_r",
+      "name": "_getpid_r",
+      "symbol": "_getpid_r"
+    },
+    {
+      "begin": 268572884,
+      "end": 268572916,
+      "label": "__sprint_r",
+      "name": "__sprint_r",
+      "symbol": "__sprint_r"
+    },
+    {
+      "begin": 268572916,
+      "end": 268572956,
+      "label": "_fstat_r",
+      "name": "_fstat_r",
+      "symbol": "_fstat_r"
+    },
+    {
+      "begin": 268572956,
+      "end": 268572992,
+      "label": "_isatty_r",
+      "name": "_isatty_r",
+      "symbol": "_isatty_r"
+    },
+    {
+      "begin": 268572992,
+      "end": 268574188,
+      "label": "_tzset_unlocked_r",
+      "name": "_tzset_unlocked_r",
+      "symbol": "_tzset_unlocked_r"
+    },
+    {
+      "begin": 268574188,
+      "end": 268574208,
+      "label": "_tzset_r",
+      "name": "_tzset_r",
+      "symbol": "_tzset_r"
+    },
+    {
+      "begin": 268574208,
+      "end": 268574348,
+      "label": "_findenv_r",
+      "name": "_findenv_r",
+      "symbol": "_findenv_r"
+    },
+    {
+      "begin": 268574348,
+      "end": 268574362,
+      "label": "_getenv_r",
+      "name": "_getenv_r",
+      "symbol": "_getenv_r"
+    },
+    {
+      "begin": 268574364,
+      "end": 268574444,
+      "label": "siscanf",
+      "name": "siscanf",
+      "symbol": "siscanf"
+    },
+    {
+      "begin": 268574444,
+      "end": 268574536,
+      "label": "_siscanf_r",
+      "name": "_siscanf_r",
+      "symbol": "_siscanf_r"
+    },
+    {
+      "begin": 268574536,
+      "end": 268574552,
+      "label": "__env_lock",
+      "name": "__env_lock",
+      "symbol": "__env_lock"
+    },
+    {
+      "begin": 268574552,
+      "end": 268574568,
+      "label": "__env_unlock",
+      "name": "__env_unlock",
+      "symbol": "__env_unlock"
+    },
+    {
+      "begin": 268574568,
+      "end": 268574892,
+      "label": "_strtoul_l.isra.0",
+      "name": "_strtoul_l.isra.0",
+      "symbol": "_strtoul_l.isra.0"
+    },
+    {
+      "begin": 268574892,
+      "end": 268574900,
+      "label": "_strtoul_r",
+      "name": "_strtoul_r",
+      "symbol": "_strtoul_r"
+    },
+    {
+      "begin": 268574900,
+      "end": 268574924,
+      "label": "strtoul_l",
+      "name": "strtoul_l",
+      "symbol": "strtoul_l"
+    },
+    {
+      "begin": 268574924,
+      "end": 268574948,
+      "label": "strtoul",
+      "name": "strtoul",
+      "symbol": "strtoul"
+    },
+    {
+      "begin": 268574948,
+      "end": 268575076,
+      "label": "_sungetc_r",
+      "name": "_sungetc_r",
+      "symbol": "_sungetc_r"
+    },
+    {
+      "begin": 268575076,
+      "end": 268575138,
+      "label": "__ssrefill_r",
+      "name": "__ssrefill_r",
+      "symbol": "__ssrefill_r"
+    },
+    {
+      "begin": 268575140,
+      "end": 268575326,
+      "label": "_sfread_r",
+      "name": "_sfread_r",
+      "symbol": "_sfread_r"
+    },
+    {
+      "begin": 268575328,
+      "end": 268581124,
+      "label": "__ssvfiscanf_r",
+      "name": "__ssvfiscanf_r",
+      "symbol": "__ssvfiscanf_r"
+    },
+    {
+      "begin": 268581124,
+      "end": 268581540,
+      "label": "_strtoll_l.isra.0",
+      "name": "_strtoll_l.isra.0",
+      "symbol": "_strtoll_l.isra.0"
+    },
+    {
+      "begin": 268581540,
+      "end": 268581548,
+      "label": "_strtoll_r",
+      "name": "_strtoll_r",
+      "symbol": "_strtoll_r"
+    },
+    {
+      "begin": 268581548,
+      "end": 268581572,
+      "label": "strtoll_l",
+      "name": "strtoll_l",
+      "symbol": "strtoll_l"
+    },
+    {
+      "begin": 268581572,
+      "end": 268581596,
+      "label": "strtoll",
+      "name": "strtoll",
+      "symbol": "strtoll"
+    },
+    {
+      "begin": 268581596,
+      "end": 268581722,
+      "label": "__sccl",
+      "name": "__sccl",
+      "symbol": "__sccl"
+    },
+    {
+      "begin": 268581724,
+      "end": 268582176,
+      "label": "_strtoull_l.isra.0",
+      "name": "_strtoull_l.isra.0",
+      "symbol": "_strtoull_l.isra.0"
+    },
+    {
+      "begin": 268582176,
+      "end": 268582184,
+      "label": "_strtoull_r",
+      "name": "_strtoull_r",
+      "symbol": "_strtoull_r"
+    },
+    {
+      "begin": 268582184,
+      "end": 268582208,
+      "label": "strtoull_l",
+      "name": "strtoull_l",
+      "symbol": "strtoull_l"
+    },
+    {
+      "begin": 268582208,
+      "end": 268582232,
+      "label": "strtoull",
+      "name": "strtoull",
+      "symbol": "strtoull"
+    },
+    {
+      "begin": 268582232,
+      "end": 268582242,
+      "label": "iswspace",
+      "name": "iswspace",
+      "symbol": "iswspace"
+    },
+    {
+      "begin": 268582244,
+      "end": 268582316,
+      "label": "_mbrtowc_r",
+      "name": "_mbrtowc_r",
+      "symbol": "_mbrtowc_r"
+    },
+    {
+      "begin": 268582316,
+      "end": 268582408,
+      "label": "mbrtowc",
+      "name": "mbrtowc",
+      "symbol": "mbrtowc"
+    },
+    {
+      "begin": 268582408,
+      "end": 268582540,
+      "label": "__submore",
+      "name": "__submore",
+      "symbol": "__submore"
+    },
+    {
+      "begin": 268582540,
+      "end": 268582856,
+      "label": "_ungetc_r",
+      "name": "_ungetc_r",
+      "symbol": "_ungetc_r"
+    },
+    {
+      "begin": 268582856,
+      "end": 268582876,
+      "label": "ungetc",
+      "name": "ungetc",
+      "symbol": "ungetc"
+    },
+    {
+      "begin": 268582876,
+      "end": 268582900,
+      "label": "iswspace_l",
+      "name": "iswspace_l",
+      "symbol": "iswspace_l"
+    },
+    {
+      "begin": 268582900,
+      "end": 268582904,
+      "label": "__retarget_lock_init_re",
+      "name": "__retarget_lock_init_recursive",
+      "symbol": "__retarget_lock_init_recursive"
+    },
+    {
+      "begin": 268582904,
+      "end": 268582906,
+      "label": "__retarget_lock_close_r",
+      "name": "__retarget_lock_close_recursive",
+      "symbol": "__retarget_lock_close_recursive"
+    },
+    {
+      "begin": 268582908,
+      "end": 268582912,
+      "label": "__retarget_lock_acquire",
+      "name": "__retarget_lock_acquire",
+      "symbol": "__retarget_lock_acquire"
+    },
+    {
+      "begin": 268582912,
+      "end": 268582916,
+      "label": "__retarget_lock_acquire",
+      "name": "__retarget_lock_acquire_recursive",
+      "symbol": "__retarget_lock_acquire_recursive"
+    },
+    {
+      "begin": 268582916,
+      "end": 268582920,
+      "label": "__retarget_lock_release",
+      "name": "__retarget_lock_release",
+      "symbol": "__retarget_lock_release"
+    },
+    {
+      "begin": 268582920,
+      "end": 268582924,
+      "label": "__retarget_lock_release",
+      "name": "__retarget_lock_release_recursive",
+      "symbol": "__retarget_lock_release_recursive"
+    },
+    {
+      "begin": 268582924,
+      "end": 268582928,
+      "label": "_write",
+      "name": "_write",
+      "symbol": "_write"
+    },
+    {
+      "begin": 268582928,
+      "end": 268582944,
+      "label": "_close",
+      "name": "_close",
+      "symbol": "_close"
+    },
+    {
+      "begin": 268582944,
+      "end": 268582960,
+      "label": "_fstat",
+      "name": "_fstat",
+      "symbol": "_fstat"
+    },
+    {
+      "begin": 268582960,
+      "end": 268582976,
+      "label": "_getpid",
+      "name": "_getpid",
+      "symbol": "_getpid"
+    },
+    {
+      "begin": 268582976,
+      "end": 268583024,
+      "label": "_gettimeofday",
+      "name": "_gettimeofday",
+      "symbol": "_gettimeofday"
+    },
+    {
+      "begin": 268583024,
+      "end": 268583040,
+      "label": "_isatty",
+      "name": "_isatty",
+      "symbol": "_isatty"
+    },
+    {
+      "begin": 268583040,
+      "end": 268583056,
+      "label": "_kill",
+      "name": "_kill",
+      "symbol": "_kill"
+    },
+    {
+      "begin": 268583056,
+      "end": 268583072,
+      "label": "_lseek",
+      "name": "_lseek",
+      "symbol": "_lseek"
+    },
+    {
+      "begin": 268583072,
+      "end": 268583078,
+      "label": "_read",
+      "name": "_read",
+      "symbol": "_read"
+    },
+    {
+      "begin": 268583080,
+      "end": 268583084,
+      "label": "_exit",
+      "name": "_exit",
+      "symbol": "_exit"
+    },
+    {
+      "begin": 268583084,
+      "end": 268583128,
+      "label": "_sbrk",
+      "name": "_sbrk",
+      "symbol": "_sbrk"
+    },
+    {
+      "begin": 268583128,
+      "end": 268583172,
+      "label": "runtime_init",
+      "name": "runtime_init",
+      "symbol": "runtime_init"
+    },
+    {
+      "begin": 268583176,
+      "end": 268583184,
+      "label": "___ZN3gba14ScanlineWork",
+      "name": "___ZN3gba14ScanlineWorker4waitEv_veneer",
+      "symbol": "___ZN3gba14ScanlineWorker4waitEv_veneer"
+    },
+    {
+      "begin": 268583184,
+      "end": 268583192,
+      "label": "___ZN3gba8Emulator20ser",
+      "name": "___ZN3gba8Emulator20service_due_hardwareEv_veneer",
+      "symbol": "___ZN3gba8Emulator20service_due_hardwareEv_veneer"
+    },
+    {
+      "begin": 268583192,
+      "end": 268583200,
+      "label": "___ZNK3gba9Cartridge8re",
+      "name": "___ZNK3gba9Cartridge8read_romEmNS_8BusWidthE_veneer",
+      "symbol": "___ZNK3gba9Cartridge8read_romEmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 268583200,
+      "end": 268583208,
+      "label": "___ZN3gba9DmaEngine11se",
+      "name": "___ZN3gba9DmaEngine11service_dueEyRNS_3BusERNS_13IrqControllerE_veneer",
+      "symbol": "___ZN3gba9DmaEngine11service_dueEyRNS_3BusERNS_13IrqControllerE_veneer"
+    },
+    {
+      "begin": 268583208,
+      "end": 268583216,
+      "label": "____aeabi_idivmod_venee",
+      "name": "____aeabi_idivmod_veneer",
+      "symbol": "____aeabi_idivmod_veneer"
+    },
+    {
+      "begin": 268583216,
+      "end": 268583224,
+      "label": "___ZN3gba9Scheduler17se",
+      "name": "___ZN3gba9Scheduler17set_current_cycleEy_veneer",
+      "symbol": "___ZN3gba9Scheduler17set_current_cycleEy_veneer"
+    },
+    {
+      "begin": 268583224,
+      "end": 268583232,
+      "label": "___ZN3gba9Scheduler5res",
+      "name": "___ZN3gba9Scheduler5resetEy_veneer",
+      "symbol": "___ZN3gba9Scheduler5resetEy_veneer"
+    },
+    {
+      "begin": 268583232,
+      "end": 268583240,
+      "label": "___ZN3gba3Ppu17mark_mem",
+      "name": "___ZN3gba3Ppu17mark_memory_dirtyEm_veneer",
+      "symbol": "___ZN3gba3Ppu17mark_memory_dirtyEm_veneer"
+    },
+    {
+      "begin": 268583240,
+      "end": 268583248,
+      "label": "___ZL15benchmarkMemoryP",
+      "name": "___ZL15benchmarkMemoryPVmm.constprop.0_veneer",
+      "symbol": "___ZL15benchmarkMemoryPVmm.constprop.0_veneer"
+    },
+    {
+      "begin": 268583248,
+      "end": 268583256,
+      "label": "___ZN3gba3Bus5writeEmmN",
+      "name": "___ZN3gba3Bus5writeEmmNS_8BusWidthENS_10AccessTypeEy_veneer",
+      "symbol": "___ZN3gba3Bus5writeEmmNS_8BusWidthENS_10AccessTypeEy_veneer"
+    },
+    {
+      "begin": 268583256,
+      "end": 268583264,
+      "label": "____aeabi_uldivmod_vene",
+      "name": "____aeabi_uldivmod_veneer",
+      "symbol": "____aeabi_uldivmod_veneer"
+    },
+    {
+      "begin": 268583264,
+      "end": 268583272,
+      "label": "__mutex_exit_veneer",
+      "name": "__mutex_exit_veneer",
+      "symbol": "__mutex_exit_veneer"
+    },
+    {
+      "begin": 268583272,
+      "end": 268583280,
+      "label": "____aeabi_ldivmod_venee",
+      "name": "____aeabi_ldivmod_veneer",
+      "symbol": "____aeabi_ldivmod_veneer"
+    },
+    {
+      "begin": 268583280,
+      "end": 268583288,
+      "label": "__spi_write_read_blocki",
+      "name": "__spi_write_read_blocking_veneer",
+      "symbol": "__spi_write_read_blocking_veneer"
+    },
+    {
+      "begin": 268583288,
+      "end": 268583296,
+      "label": "____aeabi_uidiv_veneer",
+      "name": "____aeabi_uidiv_veneer",
+      "symbol": "____aeabi_uidiv_veneer"
+    },
+    {
+      "begin": 268583296,
+      "end": 268583304,
+      "label": "__mutex_enter_blocking_",
+      "name": "__mutex_enter_blocking_veneer",
+      "symbol": "__mutex_enter_blocking_veneer"
+    },
+    {
+      "begin": 268583304,
+      "end": 268583312,
+      "label": "___ZN3gba3Bus14service_",
+      "name": "___ZN3gba3Bus14service_timersEy_veneer",
+      "symbol": "___ZN3gba3Bus14service_timersEy_veneer"
+    },
+    {
+      "begin": 268583312,
+      "end": 268583320,
+      "label": "___ZN3gba3Bus4readEmNS_",
+      "name": "___ZN3gba3Bus4readEmNS_8BusWidthENS_10AccessTypeEy_veneer",
+      "symbol": "___ZN3gba3Bus4readEmNS_8BusWidthENS_10AccessTypeEy_veneer"
+    },
+    {
+      "begin": 268583320,
+      "end": 268583328,
+      "label": "___ZNK3gba9Scheduler10n",
+      "name": "___ZNK3gba9Scheduler10next_eventEv_veneer",
+      "symbol": "___ZNK3gba9Scheduler10next_eventEv_veneer"
+    },
+    {
+      "begin": 268583328,
+      "end": 268583336,
+      "label": "___ZN3gba3Bus9read_code",
+      "name": "___ZN3gba3Bus9read_codeEmNS_8BusWidthENS_10AccessTypeEy_veneer",
+      "symbol": "___ZN3gba3Bus9read_codeEmNS_8BusWidthENS_10AccessTypeEy_veneer"
+    },
+    {
+      "begin": 268583336,
+      "end": 268583344,
+      "label": "____aeabi_lmul_veneer",
+      "name": "____aeabi_lmul_veneer",
+      "symbol": "____aeabi_lmul_veneer"
+    },
+    {
+      "begin": 268583344,
+      "end": 268583352,
+      "label": "___ZN3gba3Apu10advance_",
+      "name": "___ZN3gba3Apu10advance_toEy_veneer",
+      "symbol": "___ZN3gba3Apu10advance_toEy_veneer"
+    },
+    {
+      "begin": 268583352,
+      "end": 268583360,
+      "label": "__spi_write16_read16_bl",
+      "name": "__spi_write16_read16_blocking_veneer",
+      "symbol": "__spi_write16_read16_blocking_veneer"
+    },
+    {
+      "begin": 268583360,
+      "end": 268583368,
+      "label": "__display_setup_clock_p",
+      "name": "__display_setup_clock_preinit_veneer",
+      "symbol": "__display_setup_clock_preinit_veneer"
+    },
+    {
+      "begin": 268583368,
+      "end": 268583376,
+      "label": "___ZL15benchmarkMemoryP",
+      "name": "___ZL15benchmarkMemoryPVmm.constprop.1_veneer",
+      "symbol": "___ZL15benchmarkMemoryPVmm.constprop.1_veneer"
+    },
+    {
+      "begin": 268583376,
+      "end": 268583384,
+      "label": "___ZL18safeCpuAndRamClo",
+      "name": "___ZL18safeCpuAndRamClockv_veneer",
+      "symbol": "___ZL18safeCpuAndRamClockv_veneer"
+    },
+    {
+      "begin": 268583384,
+      "end": 268583392,
+      "label": "__recursive_mutex_exit_",
+      "name": "__recursive_mutex_exit_veneer",
+      "symbol": "__recursive_mutex_exit_veneer"
+    },
+    {
+      "begin": 268583392,
+      "end": 268583400,
+      "label": "__recursive_mutex_enter",
+      "name": "__recursive_mutex_enter_blocking_veneer",
+      "symbol": "__recursive_mutex_enter_blocking_veneer"
+    },
+    {
+      "begin": 268583400,
+      "end": 268583408,
+      "label": "___ZN3gba8Emulator16ref",
+      "name": "___ZN3gba8Emulator16refresh_scheduleEv_veneer",
+      "symbol": "___ZN3gba8Emulator16refresh_scheduleEv_veneer"
+    },
+    {
+      "begin": 268583408,
+      "end": 268583416,
+      "label": "____aeabi_idiv_veneer",
+      "name": "____aeabi_idiv_veneer",
+      "symbol": "____aeabi_idiv_veneer"
+    },
+    {
+      "begin": 268583416,
+      "end": 268583424,
+      "label": "__spi_read_blocking_ven",
+      "name": "__spi_read_blocking_veneer",
+      "symbol": "__spi_read_blocking_veneer"
+    },
+    {
+      "begin": 268583424,
+      "end": 268583432,
+      "label": "___ZN3gba8Arm7tdmi13cpu",
+      "name": "___ZN3gba8Arm7tdmi13cpu_run_untilEy_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi13cpu_run_untilEy_veneer"
+    },
+    {
+      "begin": 268583432,
+      "end": 268583440,
+      "label": "__mutex_try_enter_venee",
+      "name": "__mutex_try_enter_veneer",
+      "symbol": "__mutex_try_enter_veneer"
+    },
+    {
+      "begin": 268583440,
+      "end": 268583448,
+      "label": "__spi_write_blocking_ve",
+      "name": "__spi_write_blocking_veneer",
+      "symbol": "__spi_write_blocking_veneer"
+    },
+    {
+      "begin": 268583448,
+      "end": 268583456,
+      "label": "____aeabi_uidivmod_vene",
+      "name": "____aeabi_uidivmod_veneer",
+      "symbol": "____aeabi_uidivmod_veneer"
+    },
+    {
+      "begin": 268583456,
+      "end": 268583460,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_bootrom_reset",
+      "symbol": "__pre_init_runtime_init_bootrom_reset"
+    },
+    {
+      "begin": 268583460,
+      "end": 268583464,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_early_resets",
+      "symbol": "__pre_init_runtime_init_early_resets"
+    },
+    {
+      "begin": 268583464,
+      "end": 268583468,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_usb_power_down",
+      "symbol": "__pre_init_runtime_init_usb_power_down"
+    },
+    {
+      "begin": 268583468,
+      "end": 268583472,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_clocks",
+      "symbol": "__pre_init_runtime_init_clocks"
+    },
+    {
+      "begin": 268583472,
+      "end": 268583476,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_post_clock_resets",
+      "symbol": "__pre_init_runtime_init_post_clock_resets"
+    },
+    {
+      "begin": 268583476,
+      "end": 268583480,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_boot_locks_reset",
+      "symbol": "__pre_init_runtime_init_boot_locks_reset"
+    },
+    {
+      "begin": 268583480,
+      "end": 268583484,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_spin_locks_reset",
+      "symbol": "__pre_init_runtime_init_spin_locks_reset"
+    },
+    {
+      "begin": 268583484,
+      "end": 268583488,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_bootrom_locking_enable",
+      "symbol": "__pre_init_runtime_init_bootrom_locking_enable"
+    },
+    {
+      "begin": 268583488,
+      "end": 268583492,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_mutex",
+      "symbol": "__pre_init_runtime_init_mutex"
+    },
+    {
+      "begin": 268583492,
+      "end": 268583496,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_install_ram_vector_table",
+      "symbol": "__pre_init_runtime_init_install_ram_vector_table"
+    },
+    {
+      "begin": 268583496,
+      "end": 268583500,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_default_alarm_pool",
+      "symbol": "__pre_init_runtime_init_default_alarm_pool"
+    },
+    {
+      "begin": 268583500,
+      "end": 268583504,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_setup_psram",
+      "symbol": "__pre_init_runtime_init_setup_psram"
+    },
+    {
+      "begin": 268583504,
+      "end": 268583508,
+      "label": "__pre_init_first_per_co",
+      "name": "__pre_init_first_per_core_initializer",
+      "symbol": "__pre_init_first_per_core_initializer"
+    },
+    {
+      "begin": 268583508,
+      "end": 268583512,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_per_core_bootrom_reset",
+      "symbol": "__pre_init_runtime_init_per_core_bootrom_reset"
+    },
+    {
+      "begin": 268583512,
+      "end": 268583516,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_per_core_enable_coprocessors",
+      "symbol": "__pre_init_runtime_init_per_core_enable_coprocessors"
+    },
+    {
+      "begin": 268583516,
+      "end": 268583520,
+      "label": "__pre_init_spinlock_set",
+      "name": "__pre_init_spinlock_set_extexclall",
+      "symbol": "__pre_init_spinlock_set_extexclall"
+    },
+    {
+      "begin": 268583520,
+      "end": 268583524,
+      "label": "__pre_init_runtime_init",
+      "name": "__pre_init_runtime_init_per_core_irq_priorities",
+      "symbol": "__pre_init_runtime_init_per_core_irq_priorities"
+    },
+    {
+      "begin": 536871184,
+      "end": 536871208,
+      "label": "captureGbaFault",
+      "name": "captureGbaFault()",
+      "symbol": "_ZL15captureGbaFaultv"
+    },
+    {
+      "begin": 536871208,
+      "end": 536871260,
+      "label": "HDMI IRQ wrapper",
+      "name": "countVideoIrq()",
+      "symbol": "_ZL13countVideoIrqv"
+    },
+    {
+      "begin": 536871260,
+      "end": 536871304,
+      "label": "renderCoreMain",
+      "name": "renderCoreMain()",
+      "symbol": "_ZL14renderCoreMainv"
+    },
+    {
+      "begin": 536871304,
+      "end": 536871376,
+      "label": "safeCpuAndRamClock",
+      "name": "safeCpuAndRamClock()",
+      "symbol": "_ZL18safeCpuAndRamClockv"
+    },
+    {
+      "begin": 536871376,
+      "end": 536871620,
+      "label": "benchmarkMemory",
+      "name": "benchmarkMemory(unsigned long volatile*, unsigned long) [clone .constprop.0]",
+      "symbol": "_ZL15benchmarkMemoryPVmm.constprop.0"
+    },
+    {
+      "begin": 536871620,
+      "end": 536871872,
+      "label": "benchmarkMemory",
+      "name": "benchmarkMemory(unsigned long volatile*, unsigned long) [clone .constprop.1]",
+      "symbol": "_ZL15benchmarkMemoryPVmm.constprop.1"
+    },
+    {
+      "begin": 536871872,
+      "end": 536872052,
+      "label": "CompressedRom::fast32",
+      "name": "CompressedRom::fast32(void const*, unsigned long)",
+      "symbol": "_ZN13CompressedRom6fast32EPKvm"
+    },
+    {
+      "begin": 536872052,
+      "end": 536872218,
+      "label": "CompressedRom::fastByte",
+      "name": "CompressedRom::fastByte(void const*, unsigned long)",
+      "symbol": "_ZN13CompressedRom8fastByteEPKvm"
+    },
+    {
+      "begin": 536872220,
+      "end": 536872400,
+      "label": "CompressedRom::fast16",
+      "name": "CompressedRom::fast16(void const*, unsigned long)",
+      "symbol": "_ZN13CompressedRom6fast16EPKvm"
+    },
+    {
+      "begin": 536872400,
+      "end": 536872420,
+      "label": "gba_pc_profile_irq",
+      "name": "gba_pc_profile_irq",
+      "symbol": "gba_pc_profile_irq"
+    },
+    {
+      "begin": 536872424,
+      "end": 536872712,
+      "label": "gba_pc_profile_capture",
+      "name": "gba_pc_profile_capture",
+      "symbol": "gba_pc_profile_capture"
+    },
+    {
+      "begin": 536872712,
+      "end": 536873870,
+      "label": "Apu::advance_to",
+      "name": "gba::Apu::advance_to(unsigned long long)",
+      "symbol": "_ZN3gba3Apu10advance_toEy"
+    },
+    {
+      "begin": 536873872,
+      "end": 536873994,
+      "label": "Bus::write_video_memory",
+      "name": "gba::Bus::write_video_memory(unsigned char*, unsigned long, unsigned long, unsigned long, gba::BusWidth, unsigned long)",
+      "symbol": "_ZN3gba3Bus18write_video_memoryEPhmmmNS_8BusWidthEm"
+    },
+    {
+      "begin": 536873996,
+      "end": 536874026,
+      "label": "Bus::mark_vram_dirty",
+      "name": "gba::Bus::mark_vram_dirty(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba3Bus15mark_vram_dirtyEmm"
+    },
+    {
+      "begin": 536874028,
+      "end": 536874198,
+      "label": "Bus::service_timers",
+      "name": "gba::Bus::service_timers(unsigned long long)",
+      "symbol": "_ZN3gba3Bus14service_timersEy"
+    },
+    {
+      "begin": 536874200,
+      "end": 536874592,
+      "label": "Bus::read_array",
+      "name": "gba::Bus::read_array(unsigned char const*, unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba3Bus10read_arrayEPKhmmNS_8BusWidthE"
+    },
+    {
+      "begin": 536874592,
+      "end": 536874994,
+      "label": "Bus::write_array",
+      "name": "gba::Bus::write_array(unsigned char*, unsigned long, unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba3Bus11write_arrayEPhmmmNS_8BusWidthE"
+    },
+    {
+      "begin": 536874996,
+      "end": 536877200,
+      "label": "Bus read",
+      "name": "gba::Bus::read(unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)",
+      "symbol": "_ZN3gba3Bus4readEmNS_8BusWidthENS_10AccessTypeEy"
+    },
+    {
+      "begin": 536877200,
+      "end": 536877696,
+      "label": "Bus code fetch",
+      "name": "gba::Bus::read_code(unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)",
+      "symbol": "_ZN3gba3Bus9read_codeEmNS_8BusWidthENS_10AccessTypeEy"
+    },
+    {
+      "begin": 536877696,
+      "end": 536878924,
+      "label": "Bus write",
+      "name": "gba::Bus::write(unsigned long, unsigned long, gba::BusWidth, gba::AccessType, unsigned long long)",
+      "symbol": "_ZN3gba3Bus5writeEmmNS_8BusWidthENS_10AccessTypeEy"
+    },
+    {
+      "begin": 536878924,
+      "end": 536880374,
+      "label": "Cartridge ROM",
+      "name": "gba::Cartridge::read_rom(unsigned long, gba::BusWidth) const",
+      "symbol": "_ZNK3gba9Cartridge8read_romEmNS_8BusWidthE"
+    },
+    {
+      "begin": 536880376,
+      "end": 536880406,
+      "label": "Arm7tdmi::read_visible_",
+      "name": "gba::Arm7tdmi::read_visible_reg(unsigned long) const",
+      "symbol": "_ZNK3gba8Arm7tdmi16read_visible_regEm"
+    },
+    {
+      "begin": 536880408,
+      "end": 536880430,
+      "label": "Arm7tdmi::arm_write_pc",
+      "name": "gba::Arm7tdmi::arm_write_pc(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi12arm_write_pcEm"
+    },
+    {
+      "begin": 536880432,
+      "end": 536880450,
+      "label": "Arm7tdmi::data_access",
+      "name": "gba::Arm7tdmi::data_access(gba::AccessType) const",
+      "symbol": "_ZNK3gba8Arm7tdmi11data_accessENS_10AccessTypeE"
+    },
+    {
+      "begin": 536880452,
+      "end": 536880480,
+      "label": "Arm7tdmi::break_fetch_b",
+      "name": "gba::Arm7tdmi::break_fetch_burst(gba::BusAccessResult const&)",
+      "symbol": "_ZN3gba8Arm7tdmi17break_fetch_burstERKNS_15BusAccessResultE"
+    },
+    {
+      "begin": 536880480,
+      "end": 536880502,
+      "label": "Arm7tdmi::break_fetch_b",
+      "name": "gba::Arm7tdmi::break_fetch_burst_for_internal()",
+      "symbol": "_ZN3gba8Arm7tdmi30break_fetch_burst_for_internalEv"
+    },
+    {
+      "begin": 536880504,
+      "end": 536880526,
+      "label": "Arm7tdmi::arm_open_bus_",
+      "name": "gba::Arm7tdmi::arm_open_bus_word() const",
+      "symbol": "_ZNK3gba8Arm7tdmi17arm_open_bus_wordEv"
+    },
+    {
+      "begin": 536880528,
+      "end": 536880578,
+      "label": "Arm7tdmi::thumb_open_bu",
+      "name": "gba::Arm7tdmi::thumb_open_bus_word() const",
+      "symbol": "_ZNK3gba8Arm7tdmi19thumb_open_bus_wordEv"
+    },
+    {
+      "begin": 536880580,
+      "end": 536880610,
+      "label": "Arm7tdmi::resolve_arm_o",
+      "name": "gba::Arm7tdmi::resolve_arm_open_bus_word(gba::BusAccessResult const&) const",
+      "symbol": "_ZNK3gba8Arm7tdmi25resolve_arm_open_bus_wordERKNS_15BusAccessResultE"
+    },
+    {
+      "begin": 536880612,
+      "end": 536880670,
+      "label": "Arm7tdmi::resolve_thumb",
+      "name": "gba::Arm7tdmi::resolve_thumb_open_bus_word(gba::BusAccessResult const&) const",
+      "symbol": "_ZNK3gba8Arm7tdmi27resolve_thumb_open_bus_wordERKNS_15BusAccessResultE"
+    },
+    {
+      "begin": 536880672,
+      "end": 536880674,
+      "label": "Arm7tdmi::trace_arm_gpi",
+      "name": "gba::Arm7tdmi::trace_arm_gpio(char const*, unsigned long, gba::BusWidth, unsigned long) const",
+      "symbol": "_ZNK3gba8Arm7tdmi14trace_arm_gpioEPKcmNS_8BusWidthEm"
+    },
+    {
+      "begin": 536880676,
+      "end": 536880678,
+      "label": "Arm7tdmi::trace_thumb_g",
+      "name": "gba::Arm7tdmi::trace_thumb_gpio(char const*, unsigned long, gba::BusWidth, unsigned long) const",
+      "symbol": "_ZNK3gba8Arm7tdmi16trace_thumb_gpioEPKcmNS_8BusWidthEm"
+    },
+    {
+      "begin": 536880680,
+      "end": 536880844,
+      "label": "Arm7tdmi::arm_read8",
+      "name": "gba::Arm7tdmi::arm_read8(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi9arm_read8Em"
+    },
+    {
+      "begin": 536880844,
+      "end": 536881016,
+      "label": "Arm7tdmi::arm_read16",
+      "name": "gba::Arm7tdmi::arm_read16(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi10arm_read16Em"
+    },
+    {
+      "begin": 536881016,
+      "end": 536881166,
+      "label": "Arm7tdmi::arm_read32",
+      "name": "gba::Arm7tdmi::arm_read32(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi10arm_read32Em"
+    },
+    {
+      "begin": 536881168,
+      "end": 536881292,
+      "label": "Arm7tdmi::arm_write8",
+      "name": "gba::Arm7tdmi::arm_write8(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi10arm_write8Emm"
+    },
+    {
+      "begin": 536881292,
+      "end": 536881416,
+      "label": "Arm7tdmi::arm_write16",
+      "name": "gba::Arm7tdmi::arm_write16(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi11arm_write16Emm"
+    },
+    {
+      "begin": 536881416,
+      "end": 536881540,
+      "label": "Arm7tdmi::arm_write32",
+      "name": "gba::Arm7tdmi::arm_write32(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi11arm_write32Emm"
+    },
+    {
+      "begin": 536881540,
+      "end": 536881704,
+      "label": "Arm7tdmi::thumb_read8",
+      "name": "gba::Arm7tdmi::thumb_read8(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi11thumb_read8Em"
+    },
+    {
+      "begin": 536881704,
+      "end": 536881892,
+      "label": "Arm7tdmi::thumb_read16",
+      "name": "gba::Arm7tdmi::thumb_read16(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi12thumb_read16Em"
+    },
+    {
+      "begin": 536881892,
+      "end": 536882056,
+      "label": "Arm7tdmi::thumb_read32",
+      "name": "gba::Arm7tdmi::thumb_read32(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi12thumb_read32Em"
+    },
+    {
+      "begin": 536882056,
+      "end": 536882180,
+      "label": "Arm7tdmi::thumb_write8",
+      "name": "gba::Arm7tdmi::thumb_write8(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi12thumb_write8Emm"
+    },
+    {
+      "begin": 536882180,
+      "end": 536882304,
+      "label": "Arm7tdmi::thumb_write16",
+      "name": "gba::Arm7tdmi::thumb_write16(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi13thumb_write16Emm"
+    },
+    {
+      "begin": 536882304,
+      "end": 536882428,
+      "label": "Arm7tdmi::thumb_write32",
+      "name": "gba::Arm7tdmi::thumb_write32(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi13thumb_write32Emm"
+    },
+    {
+      "begin": 536882428,
+      "end": 536887704,
+      "label": "CPU Thumb",
+      "name": "gba::Arm7tdmi::execute_thumb(unsigned short)",
+      "symbol": "_ZN3gba8Arm7tdmi13execute_thumbEt"
+    },
+    {
+      "begin": 536887704,
+      "end": 536893888,
+      "label": "CPU ARM",
+      "name": "gba::Arm7tdmi::execute_arm(unsigned long)",
+      "symbol": "_ZN3gba8Arm7tdmi11execute_armEm"
+    },
+    {
+      "begin": 536893888,
+      "end": 536894716,
+      "label": "CPU dispatch",
+      "name": "gba::Arm7tdmi::cpu_run_until(unsigned long long)",
+      "symbol": "_ZN3gba8Arm7tdmi13cpu_run_untilEy"
+    },
+    {
+      "begin": 536894716,
+      "end": 536894972,
+      "label": "kCondLut",
+      "name": "gba::(anonymous namespace)::kCondLut",
+      "symbol": "_ZN3gba12_GLOBAL__N_1L8kCondLutE"
+    },
+    {
+      "begin": 536894972,
+      "end": 536895176,
+      "label": "read_raw_memory",
+      "name": "gba::(anonymous namespace)::read_raw_memory(unsigned char const*, unsigned long, unsigned long, gba::BusWidth)",
+      "symbol": "_ZN3gba12_GLOBAL__N_115read_raw_memoryEPKhmmNS_8BusWidthE"
+    },
+    {
+      "begin": 536895176,
+      "end": 536899352,
+      "label": "DmaEngine::service_due",
+      "name": "gba::DmaEngine::service_due(unsigned long long, gba::Bus&, gba::IrqController&)",
+      "symbol": "_ZN3gba9DmaEngine11service_dueEyRNS_3BusERNS_13IrqControllerE"
+    },
+    {
+      "begin": 536899352,
+      "end": 536899504,
+      "label": "Emulator::refresh_sched",
+      "name": "gba::Emulator::refresh_schedule()",
+      "symbol": "_ZN3gba8Emulator16refresh_scheduleEv"
+    },
+    {
+      "begin": 536899504,
+      "end": 536900128,
+      "label": "Emulator::service_due_h",
+      "name": "gba::Emulator::service_due_hardware()",
+      "symbol": "_ZN3gba8Emulator20service_due_hardwareEv"
+    },
+    {
+      "begin": 536900128,
+      "end": 536900524,
+      "label": "Ppu::advance_to",
+      "name": "gba::Ppu::advance_to(unsigned long long, gba::IrqController&)",
+      "symbol": "_ZN3gba3Ppu10advance_toEyRNS_13IrqControllerE"
+    },
+    {
+      "begin": 536900524,
+      "end": 536902912,
+      "label": "Ppu::render_text_bg",
+      "name": "gba::Ppu::render_text_bg(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, int, unsigned short*, unsigned long, unsigned long)",
+      "symbol": "_ZN3gba3Ppu14render_text_bgEiSt4spanIKhLj4294967295EES3_iPtmm"
+    },
+    {
+      "begin": 536902912,
+      "end": 536903528,
+      "label": "Ppu::render_affine_bg",
+      "name": "gba::Ppu::render_affine_bg(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, int, unsigned short*, unsigned long, unsigned long)",
+      "symbol": "_ZN3gba3Ppu16render_affine_bgEiSt4spanIKhLj4294967295EES3_iPtmm"
+    },
+    {
+      "begin": 536903528,
+      "end": 536903594,
+      "label": "Ppu::invalidate_tile_ca",
+      "name": "gba::Ppu::invalidate_tile_cache()",
+      "symbol": "_ZN3gba3Ppu21invalidate_tile_cacheEv"
+    },
+    {
+      "begin": 536903596,
+      "end": 536903792,
+      "label": "Ppu::mark_memory_dirty",
+      "name": "gba::Ppu::mark_memory_dirty(unsigned long)",
+      "symbol": "_ZN3gba3Ppu17mark_memory_dirtyEm"
+    },
+    {
+      "begin": 536903792,
+      "end": 536903998,
+      "label": "Ppu::mark_vram_dirty",
+      "name": "gba::Ppu::mark_vram_dirty(unsigned long, unsigned long)",
+      "symbol": "_ZN3gba3Ppu15mark_vram_dirtyEmm"
+    },
+    {
+      "begin": 536904000,
+      "end": 536904036,
+      "label": "Ppu::mark_all_scanlines",
+      "name": "gba::Ppu::mark_all_scanlines_dirty()",
+      "symbol": "_ZN3gba3Ppu24mark_all_scanlines_dirtyEv"
+    },
+    {
+      "begin": 536904036,
+      "end": 536905694,
+      "label": "Ppu::render_objects",
+      "name": "gba::Ppu::render_objects(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned short*, unsigned char*, bool*, bool*, unsigned long, unsigned long)",
+      "symbol": "_ZN3gba3Ppu14render_objectsEiSt4spanIKhLj4294967295EES3_S3_PtPhPbS6_mm"
+    },
+    {
+      "begin": 536905696,
+      "end": 536910426,
+      "label": "Ppu::render_scanline",
+      "name": "gba::Ppu::render_scanline(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned short*)",
+      "symbol": "_ZN3gba3Ppu15render_scanlineEiSt4spanIKhLj4294967295EES3_S3_Pt"
+    },
+    {
+      "begin": 536910428,
+      "end": 536910476,
+      "label": "Render wait",
+      "name": "gba::ScanlineWorker::wait()",
+      "symbol": "_ZN3gba14ScanlineWorker4waitEv"
+    },
+    {
+      "begin": 536910476,
+      "end": 536910524,
+      "label": "Render wait",
+      "name": "gba::ScanlineWorker::wait_hook(void*)",
+      "symbol": "_ZN3gba14ScanlineWorker9wait_hookEPv"
+    },
+    {
+      "begin": 536910524,
+      "end": 536910654,
+      "label": "ScanlineWorker::submit_",
+      "name": "gba::ScanlineWorker::submit_hook(void*, gba::Ppu&, int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned long*)",
+      "symbol": "_ZN3gba14ScanlineWorker11submit_hookEPvRNS_3PpuEiSt4spanIKhLj4294967295EES6_S6_Pm"
+    },
+    {
+      "begin": 536910656,
+      "end": 536910902,
+      "label": "ScanlineWorker::run_one",
+      "name": "gba::ScanlineWorker::run_one()",
+      "symbol": "_ZN3gba14ScanlineWorker7run_oneEv"
+    },
+    {
+      "begin": 536910904,
+      "end": 536910910,
+      "label": "provider_fast_read16",
+      "name": "gba::(anonymous namespace)::provider_fast_read16(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_120provider_fast_read16EPKvm"
+    },
+    {
+      "begin": 536910912,
+      "end": 536910918,
+      "label": "provider_fast_read32",
+      "name": "gba::(anonymous namespace)::provider_fast_read32(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_120provider_fast_read32EPKvm"
+    },
+    {
+      "begin": 536910920,
+      "end": 536910962,
+      "label": "MemoryRomProvider::read",
+      "name": "gba::MemoryRomProvider::read_byte(unsigned long) const",
+      "symbol": "_ZNK3gba17MemoryRomProvider9read_byteEm"
+    },
+    {
+      "begin": 536910964,
+      "end": 536911010,
+      "label": "MemoryRomProvider::read",
+      "name": "gba::MemoryRomProvider::read16(unsigned long) const",
+      "symbol": "_ZNK3gba17MemoryRomProvider6read16Em"
+    },
+    {
+      "begin": 536911012,
+      "end": 536911070,
+      "label": "MemoryRomProvider::read",
+      "name": "gba::MemoryRomProvider::read32(unsigned long) const",
+      "symbol": "_ZNK3gba17MemoryRomProvider6read32Em"
+    },
+    {
+      "begin": 536911072,
+      "end": 536911118,
+      "label": "memory_fast_read16",
+      "name": "gba::(anonymous namespace)::memory_fast_read16(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_118memory_fast_read16EPKvm"
+    },
+    {
+      "begin": 536911120,
+      "end": 536911178,
+      "label": "memory_fast_read32",
+      "name": "gba::(anonymous namespace)::memory_fast_read32(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_118memory_fast_read32EPKvm"
+    },
+    {
+      "begin": 536911180,
+      "end": 536911222,
+      "label": "memory_fast_read_byte",
+      "name": "gba::(anonymous namespace)::memory_fast_read_byte(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_121memory_fast_read_byteEPKvm"
+    },
+    {
+      "begin": 536911224,
+      "end": 536911284,
+      "label": "provider_fast_read_byte",
+      "name": "gba::(anonymous namespace)::provider_fast_read_byte(void const*, unsigned long)",
+      "symbol": "_ZN3gba12_GLOBAL__N_123provider_fast_read_byteEPKvm"
+    },
+    {
+      "begin": 536911288,
+      "end": 536911330,
+      "label": "Scheduler::reset",
+      "name": "gba::Scheduler::reset(unsigned long long)",
+      "symbol": "_ZN3gba9Scheduler5resetEy"
+    },
+    {
+      "begin": 536911332,
+      "end": 536911338,
+      "label": "Scheduler::current_cycl",
+      "name": "gba::Scheduler::current_cycle() const",
+      "symbol": "_ZNK3gba9Scheduler13current_cycleEv"
+    },
+    {
+      "begin": 536911340,
+      "end": 536911346,
+      "label": "Scheduler::set_current_",
+      "name": "gba::Scheduler::set_current_cycle(unsigned long long)",
+      "symbol": "_ZN3gba9Scheduler17set_current_cycleEy"
+    },
+    {
+      "begin": 536911348,
+      "end": 536911528,
+      "label": "Scheduler::set_next_eve",
+      "name": "gba::Scheduler::set_next_event(gba::SchedulerSlot, unsigned long long)",
+      "symbol": "_ZN3gba9Scheduler14set_next_eventENS_13SchedulerSlotEy"
+    },
+    {
+      "begin": 536911528,
+      "end": 536911534,
+      "label": "Scheduler::next_event",
+      "name": "gba::Scheduler::next_event() const",
+      "symbol": "_ZNK3gba9Scheduler10next_eventEv"
+    },
+    {
+      "begin": 536911536,
+      "end": 536911680,
+      "label": "Scheduler::recompute_ne",
+      "name": "gba::Scheduler::recompute_next_event()",
+      "symbol": "_ZN3gba9Scheduler20recompute_next_eventEv"
+    },
+    {
+      "begin": 536911680,
+      "end": 536912660,
+      "label": "Timers::advance_due",
+      "name": "gba::Timers::advance_due(unsigned long long, gba::IrqController&, gba::Apu&)",
+      "symbol": "_ZN3gba6Timers11advance_dueEyRNS_13IrqControllerERNS_3ApuE"
+    },
+    {
+      "begin": 536912660,
+      "end": 536912696,
+      "label": "set_qmi_timing",
+      "name": "set_qmi_timing()",
+      "symbol": "_ZL14set_qmi_timingv"
+    },
+    {
+      "begin": 536912696,
+      "end": 536912928,
+      "label": "display_setup_clock_pre",
+      "name": "display_setup_clock_preinit",
+      "symbol": "display_setup_clock_preinit"
+    },
+    {
+      "begin": 536912928,
+      "end": 536913052,
+      "label": "_uart1IRQ",
+      "name": "_uart1IRQ()",
+      "symbol": "_ZL9_uart1IRQv"
+    },
+    {
+      "begin": 536913052,
+      "end": 536913176,
+      "label": "_uart0IRQ",
+      "name": "_uart0IRQ()",
+      "symbol": "_ZL9_uart0IRQv"
+    },
+    {
+      "begin": 536913176,
+      "end": 536913216,
+      "label": "RP2040::_SystickHandler",
+      "name": "RP2040::_SystickHandler()",
+      "symbol": "_ZN6RP204015_SystickHandlerEv"
+    },
+    {
+      "begin": 536913216,
+      "end": 536913284,
+      "label": "_MFIFO::_irq",
+      "name": "_MFIFO::_irq()",
+      "symbol": "_ZN6_MFIFO4_irqEv"
+    },
+    {
+      "begin": 536913284,
+      "end": 536913464,
+      "label": "psram_detect",
+      "name": "psram_detect()",
+      "symbol": "_Z12psram_detectv"
+    },
+    {
+      "begin": 536913464,
+      "end": 536913768,
+      "label": "psram_init",
+      "name": "psram_init(unsigned int)",
+      "symbol": "_Z10psram_initj"
+    },
+    {
+      "begin": 536913768,
+      "end": 536913812,
+      "label": "runtime_init_setup_psra",
+      "name": "runtime_init_setup_psram()",
+      "symbol": "_ZL24runtime_init_setup_psramv"
+    },
+    {
+      "begin": 536913812,
+      "end": 536913888,
+      "label": "mutex_enter_blocking",
+      "name": "mutex_enter_blocking",
+      "symbol": "mutex_enter_blocking"
+    },
+    {
+      "begin": 536913888,
+      "end": 536913976,
+      "label": "recursive_mutex_enter_b",
+      "name": "recursive_mutex_enter_blocking",
+      "symbol": "recursive_mutex_enter_blocking"
+    },
+    {
+      "begin": 536913976,
+      "end": 536914052,
+      "label": "mutex_try_enter",
+      "name": "mutex_try_enter",
+      "symbol": "mutex_try_enter"
+    },
+    {
+      "begin": 536914052,
+      "end": 536914104,
+      "label": "mutex_exit",
+      "name": "mutex_exit",
+      "symbol": "mutex_exit"
+    },
+    {
+      "begin": 536914104,
+      "end": 536914176,
+      "label": "recursive_mutex_exit",
+      "name": "recursive_mutex_exit",
+      "symbol": "recursive_mutex_exit"
+    },
+    {
+      "begin": 536914176,
+      "end": 536914238,
+      "label": "spi_write_read_blocking",
+      "name": "spi_write_read_blocking",
+      "symbol": "spi_write_read_blocking"
+    },
+    {
+      "begin": 536914238,
+      "end": 536914296,
+      "label": "spi_write_blocking",
+      "name": "spi_write_blocking",
+      "symbol": "spi_write_blocking"
+    },
+    {
+      "begin": 536914296,
+      "end": 536914354,
+      "label": "spi_read_blocking",
+      "name": "spi_read_blocking",
+      "symbol": "spi_read_blocking"
+    },
+    {
+      "begin": 536914354,
+      "end": 536914416,
+      "label": "spi_write16_read16_bloc",
+      "name": "spi_write16_read16_blocking",
+      "symbol": "spi_write16_read16_blocking"
+    },
+    {
+      "begin": 536914416,
+      "end": 536914682,
+      "label": "__udivsi3",
+      "name": "__udivsi3",
+      "symbol": "__udivsi3"
+    },
+    {
+      "begin": 536914684,
+      "end": 536914692,
+      "label": "__aeabi_uidivmod",
+      "name": "__aeabi_uidivmod",
+      "symbol": "__aeabi_uidivmod"
+    },
+    {
+      "begin": 536914692,
+      "end": 536915152,
+      "label": "__divsi3",
+      "name": "__divsi3",
+      "symbol": "__divsi3"
+    },
+    {
+      "begin": 536915152,
+      "end": 536915160,
+      "label": "__aeabi_idivmod",
+      "name": "__aeabi_idivmod",
+      "symbol": "__aeabi_idivmod"
+    },
+    {
+      "begin": 536915160,
+      "end": 536915162,
+      "label": "__aeabi_ldiv0",
+      "name": "__aeabi_ldiv0",
+      "symbol": "__aeabi_idiv0"
+    },
+    {
+      "begin": 536915164,
+      "end": 536915234,
+      "label": "__aeabi_ldivmod",
+      "name": "__aeabi_ldivmod",
+      "symbol": "__aeabi_ldivmod"
+    },
+    {
+      "begin": 536915236,
+      "end": 536915298,
+      "label": "__aeabi_uldivmod",
+      "name": "__aeabi_uldivmod",
+      "symbol": "__aeabi_uldivmod"
+    },
+    {
+      "begin": 536915300,
+      "end": 536915390,
+      "label": "__muldi3",
+      "name": "__muldi3",
+      "symbol": "__aeabi_lmul"
+    },
+    {
+      "begin": 536915392,
+      "end": 536915444,
+      "label": "__popcountsi2",
+      "name": "__popcountsi2",
+      "symbol": "__popcountsi2"
+    },
+    {
+      "begin": 536915444,
+      "end": 536915852,
+      "label": "__udivmoddi4",
+      "name": "__udivmoddi4",
+      "symbol": "__udivmoddi4"
+    },
+    {
+      "begin": 536915852,
+      "end": 536915910,
+      "label": "__gnu_ldivmod_helper",
+      "name": "__gnu_ldivmod_helper",
+      "symbol": "__gnu_ldivmod_helper"
+    },
+    {
+      "begin": 536915912,
+      "end": 536915972,
+      "label": "__clzsi2",
+      "name": "__clzsi2",
+      "symbol": "__clzsi2"
+    },
+    {
+      "begin": 536915996,
+      "end": 536916504,
+      "label": "__divdi3",
+      "name": "__divdi3",
+      "symbol": "__divdi3"
+    },
+    {
+      "begin": 536916504,
+      "end": 536916512,
+      "label": "__vreg_set_voltage_vene",
+      "name": "__vreg_set_voltage_veneer",
+      "symbol": "__vreg_set_voltage_veneer"
+    },
+    {
+      "begin": 536916512,
+      "end": 536916520,
+      "label": "__clock_get_hz_veneer",
+      "name": "__clock_get_hz_veneer",
+      "symbol": "__clock_get_hz_veneer"
+    },
+    {
+      "begin": 536916520,
+      "end": 536916528,
+      "label": "__micros_veneer",
+      "name": "__micros_veneer",
+      "symbol": "__micros_veneer"
+    },
+    {
+      "begin": 536916528,
+      "end": 536916536,
+      "label": "___ZN3gba9DmaEngine14re",
+      "name": "___ZN3gba9DmaEngine14request_vblankEy_veneer",
+      "symbol": "___ZN3gba9DmaEngine14request_vblankEy_veneer"
+    },
+    {
+      "begin": 536916536,
+      "end": 536916544,
+      "label": "___ZNK3gba3Bus4vramEv_v",
+      "name": "___ZNK3gba3Bus4vramEv_veneer",
+      "symbol": "___ZNK3gba3Bus4vramEv_veneer"
+    },
+    {
+      "begin": 536916544,
+      "end": 536916552,
+      "label": "___ZN3gba3Bus8write_ioE",
+      "name": "___ZN3gba3Bus8write_ioEmmNS_8BusWidthEy_veneer",
+      "symbol": "___ZN3gba3Bus8write_ioEmmNS_8BusWidthEy_veneer"
+    },
+    {
+      "begin": 536916552,
+      "end": 536916560,
+      "label": "___ZN3gba12_GLOBAL__N_1",
+      "name": "___ZN3gba12_GLOBAL__N_129thumb_exception_refill_cyclesEmm_veneer",
+      "symbol": "___ZN3gba12_GLOBAL__N_129thumb_exception_refill_cyclesEmm_veneer"
+    },
+    {
+      "begin": 536916560,
+      "end": 536916568,
+      "label": "___ZNK3gba3Ppu8is_dirty",
+      "name": "___ZNK3gba3Ppu8is_dirtyEi_veneer",
+      "symbol": "___ZNK3gba3Ppu8is_dirtyEi_veneer"
+    },
+    {
+      "begin": 536916568,
+      "end": 536916576,
+      "label": "___ZNK3gba3Bus9peek_wor",
+      "name": "___ZNK3gba3Bus9peek_wordEm_veneer",
+      "symbol": "___ZNK3gba3Bus9peek_wordEm_veneer"
+    },
+    {
+      "begin": 536916576,
+      "end": 536916584,
+      "label": "___ZNK3gba17MemoryRomPr",
+      "name": "___ZNK3gba17MemoryRomProvider11touch_rangeEmjb.part.0.constprop.0_veneer",
+      "symbol": "___ZNK3gba17MemoryRomProvider11touch_rangeEmjb.part.0.constprop.0_veneer"
+    },
+    {
+      "begin": 536916584,
+      "end": 536916592,
+      "label": "___ZNK13CompressedRom11",
+      "name": "___ZNK13CompressedRom11fillHotLineEmmm_veneer",
+      "symbol": "___ZNK13CompressedRom11fillHotLineEmmm_veneer"
+    },
+    {
+      "begin": 536916592,
+      "end": 536916600,
+      "label": "__gpio_set_function_ven",
+      "name": "__gpio_set_function_veneer",
+      "symbol": "__gpio_set_function_veneer"
+    },
+    {
+      "begin": 536916600,
+      "end": 536916608,
+      "label": "___ZN3gba13IrqControlle",
+      "name": "___ZN3gba13IrqController13raise_delayedEtyy_veneer",
+      "symbol": "___ZN3gba13IrqController13raise_delayedEtyy_veneer"
+    },
+    {
+      "begin": 536916608,
+      "end": 536916616,
+      "label": "___ZN3gba13IrqControlle",
+      "name": "___ZN3gba13IrqController14recompute_lineEv_veneer",
+      "symbol": "___ZN3gba13IrqController14recompute_lineEv_veneer"
+    },
+    {
+      "begin": 536916616,
+      "end": 536916624,
+      "label": "___ZN3gba8Arm7tdmi9fetc",
+      "name": "___ZN3gba8Arm7tdmi9fetch_armEv_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi9fetch_armEv_veneer"
+    },
+    {
+      "begin": 536916624,
+      "end": 536916632,
+      "label": "__memset_veneer",
+      "name": "__memset_veneer",
+      "symbol": "__memset_veneer"
+    },
+    {
+      "begin": 536916632,
+      "end": 536916640,
+      "label": "___ZN3gba9Cartridge10wr",
+      "name": "___ZN3gba9Cartridge10write_saveEmmNS_8BusWidthE_veneer",
+      "symbol": "___ZN3gba9Cartridge10write_saveEmmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916640,
+      "end": 536916648,
+      "label": "___ZNK3gba3Ppu25is_vide",
+      "name": "___ZNK3gba3Ppu25is_video_memory_contendedEv_veneer",
+      "symbol": "___ZNK3gba3Ppu25is_video_memory_contendedEv_veneer"
+    },
+    {
+      "begin": 536916648,
+      "end": 536916656,
+      "label": "____wrap_memcpy_veneer",
+      "name": "____wrap_memcpy_veneer",
+      "symbol": "____wrap_memcpy_veneer"
+    },
+    {
+      "begin": 536916656,
+      "end": 536916664,
+      "label": "___ZNK3gba3Ppu16next_ev",
+      "name": "___ZNK3gba3Ppu16next_event_cycleEv_veneer",
+      "symbol": "___ZNK3gba3Ppu16next_event_cycleEv_veneer"
+    },
+    {
+      "begin": 536916664,
+      "end": 536916672,
+      "label": "___ZNK3gba3Bus7paletteE",
+      "name": "___ZNK3gba3Bus7paletteEv_veneer",
+      "symbol": "___ZNK3gba3Bus7paletteEv_veneer"
+    },
+    {
+      "begin": 536916672,
+      "end": 536916680,
+      "label": "___ZNK3gba11RomProvider",
+      "name": "___ZNK3gba11RomProvider6read32Em_veneer",
+      "symbol": "___ZNK3gba11RomProvider6read32Em_veneer"
+    },
+    {
+      "begin": 536916680,
+      "end": 536916688,
+      "label": "___ZNK3gba3Ppu9is_vblan",
+      "name": "___ZNK3gba3Ppu9is_vblankEv_veneer",
+      "symbol": "___ZNK3gba3Ppu9is_vblankEv_veneer"
+    },
+    {
+      "begin": 536916688,
+      "end": 536916696,
+      "label": "___ZN3gba12_GLOBAL__N_1",
+      "name": "___ZN3gba12_GLOBAL__N_127arm_exception_refill_cyclesEmm_veneer",
+      "symbol": "___ZN3gba12_GLOBAL__N_127arm_exception_refill_cyclesEmm_veneer"
+    },
+    {
+      "begin": 536916696,
+      "end": 536916704,
+      "label": "___ZNK3gba3Bus3oamEv_ve",
+      "name": "___ZNK3gba3Bus3oamEv_veneer",
+      "symbol": "___ZNK3gba3Bus3oamEv_veneer"
+    },
+    {
+      "begin": 536916704,
+      "end": 536916712,
+      "label": "___ZN3gba3Ppu22consume_",
+      "name": "___ZN3gba3Ppu22consume_scanline_readyEv_veneer",
+      "symbol": "___ZN3gba3Ppu22consume_scanline_readyEv_veneer"
+    },
+    {
+      "begin": 536916712,
+      "end": 536916720,
+      "label": "__clock_stop_veneer",
+      "name": "__clock_stop_veneer",
+      "symbol": "__clock_stop_veneer"
+    },
+    {
+      "begin": 536916720,
+      "end": 536916728,
+      "label": "___ZN3gba12_GLOBAL__N_1",
+      "name": "___ZN3gba12_GLOBAL__N_122gamepak_open_bus_valueEmNS_8BusWidthE_veneer",
+      "symbol": "___ZN3gba12_GLOBAL__N_122gamepak_open_bus_valueEmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916728,
+      "end": 536916736,
+      "label": "___ZN3gba8Arm7tdmi17set",
+      "name": "___ZN3gba8Arm7tdmi17set_current_cycleEy_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi17set_current_cycleEy_veneer"
+    },
+    {
+      "begin": 536916736,
+      "end": 536916744,
+      "label": "___ZN3gba3Bus7read_ioEm",
+      "name": "___ZN3gba3Bus7read_ioEmNS_8BusWidthENS_10AccessTypeEy_veneer",
+      "symbol": "___ZN3gba3Bus7read_ioEmNS_8BusWidthENS_10AccessTypeEy_veneer"
+    },
+    {
+      "begin": 536916744,
+      "end": 536916752,
+      "label": "___ZNK3gba3Apu16next_ev",
+      "name": "___ZNK3gba3Apu16next_event_cycleEv_veneer",
+      "symbol": "___ZNK3gba3Apu16next_event_cycleEv_veneer"
+    },
+    {
+      "begin": 536916752,
+      "end": 536916760,
+      "label": "___ZN3gba9DmaEngine14re",
+      "name": "___ZN3gba9DmaEngine14request_hblankEy_veneer",
+      "symbol": "___ZN3gba9DmaEngine14request_hblankEy_veneer"
+    },
+    {
+      "begin": 536916760,
+      "end": 536916768,
+      "label": "___ZNK3gba3Bus15dma_vra",
+      "name": "___ZNK3gba3Bus15dma_vram_cyclesENS_8BusWidthE_veneer",
+      "symbol": "___ZNK3gba3Bus15dma_vram_cyclesENS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916768,
+      "end": 536916776,
+      "label": "___ZN3gba8Arm7tdmi11swi",
+      "name": "___ZN3gba8Arm7tdmi11switch_modeENS_7CpuModeE_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi11switch_modeENS_7CpuModeE_veneer"
+    },
+    {
+      "begin": 536916776,
+      "end": 536916784,
+      "label": "CPU shift",
+      "name": "___ZN3gba12_GLOBAL__N_111apply_shiftEmmmbb_veneer",
+      "symbol": "___ZN3gba12_GLOBAL__N_111apply_shiftEmmmbb_veneer"
+    },
+    {
+      "begin": 536916784,
+      "end": 536916792,
+      "label": "___ZNK3gba9Cartridge4bi",
+      "name": "___ZNK3gba9Cartridge4biosEv_veneer",
+      "symbol": "___ZNK3gba9Cartridge4biosEv_veneer"
+    },
+    {
+      "begin": 536916792,
+      "end": 536916800,
+      "label": "___ZN3gba9Cartridge9wri",
+      "name": "___ZN3gba9Cartridge9write_romEmmNS_8BusWidthE_veneer",
+      "symbol": "___ZN3gba9Cartridge9write_romEmmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916800,
+      "end": 536916808,
+      "label": "___ZNK3gba3Ppu9is_hblan",
+      "name": "___ZNK3gba3Ppu9is_hblankEv_veneer",
+      "symbol": "___ZNK3gba3Ppu9is_hblankEv_veneer"
+    },
+    {
+      "begin": 536916808,
+      "end": 536916816,
+      "label": "___ZNK3gba9Cartridge9re",
+      "name": "___ZNK3gba9Cartridge9read_saveEmNS_8BusWidthE_veneer",
+      "symbol": "___ZNK3gba9Cartridge9read_saveEmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916816,
+      "end": 536916824,
+      "label": "___ZN3gba8Arm7tdmi14han",
+      "name": "___ZN3gba8Arm7tdmi14handle_hle_swiEm.part.0_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi14handle_hle_swiEm.part.0_veneer"
+    },
+    {
+      "begin": 536916824,
+      "end": 536916832,
+      "label": "ROM prefetch",
+      "name": "___ZNK3gba9Cartridge12prefetch_romEmj_veneer",
+      "symbol": "___ZNK3gba9Cartridge12prefetch_romEmj_veneer"
+    },
+    {
+      "begin": 536916832,
+      "end": 536916840,
+      "label": "___ZN3gba9DmaEngine14re",
+      "name": "___ZN3gba9DmaEngine14request_fifo_aEy_veneer",
+      "symbol": "___ZN3gba9DmaEngine14request_fifo_aEy_veneer"
+    },
+    {
+      "begin": 536916840,
+      "end": 536916848,
+      "label": "___ZN3gba8Arm7tdmi17try",
+      "name": "___ZN3gba8Arm7tdmi17try_skip_ram_waitEmyRib_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi17try_skip_ram_waitEmyRib_veneer"
+    },
+    {
+      "begin": 536916848,
+      "end": 536916856,
+      "label": "___ZNK3gba3Bus16next_ev",
+      "name": "___ZNK3gba3Bus16next_event_cycleEv_veneer",
+      "symbol": "___ZNK3gba3Bus16next_event_cycleEv_veneer"
+    },
+    {
+      "begin": 536916856,
+      "end": 536916864,
+      "label": "___ZNK3gba8Arm7tdmi13cu",
+      "name": "___ZNK3gba8Arm7tdmi13current_cycleEv_veneer",
+      "symbol": "___ZNK3gba8Arm7tdmi13current_cycleEv_veneer"
+    },
+    {
+      "begin": 536916864,
+      "end": 536916872,
+      "label": "___ZN3gba3Ppu20rebuild_",
+      "name": "___ZN3gba3Ppu20rebuild_sprite_cacheESt4spanIKhLj4294967295EE_veneer",
+      "symbol": "___ZN3gba3Ppu20rebuild_sprite_cacheESt4spanIKhLj4294967295EE_veneer"
+    },
+    {
+      "begin": 536916872,
+      "end": 536916880,
+      "label": "___ZNK3gba11RomProvider",
+      "name": "___ZNK3gba11RomProvider6read16Em_veneer",
+      "symbol": "___ZNK3gba11RomProvider6read16Em_veneer"
+    },
+    {
+      "begin": 536916880,
+      "end": 536916888,
+      "label": "__pll_init_veneer",
+      "name": "__pll_init_veneer",
+      "symbol": "__pll_init_veneer"
+    },
+    {
+      "begin": 536916888,
+      "end": 536916896,
+      "label": "__interrupts_veneer",
+      "name": "__interrupts_veneer",
+      "symbol": "__interrupts_veneer"
+    },
+    {
+      "begin": 536916896,
+      "end": 536916904,
+      "label": "___ZN3gba3Bus11service_",
+      "name": "___ZN3gba3Bus11service_dmaEy_veneer",
+      "symbol": "___ZN3gba3Bus11service_dmaEy_veneer"
+    },
+    {
+      "begin": 536916904,
+      "end": 536916912,
+      "label": "___ZNK3gba13IrqControll",
+      "name": "___ZNK3gba13IrqController16next_event_cycleEv_veneer",
+      "symbol": "___ZNK3gba13IrqController16next_event_cycleEv_veneer"
+    },
+    {
+      "begin": 536916912,
+      "end": 536916920,
+      "label": "___ZN3gba8Arm7tdmi11fet",
+      "name": "___ZN3gba8Arm7tdmi11fetch_thumbEv_veneer",
+      "symbol": "___ZN3gba8Arm7tdmi11fetch_thumbEv_veneer"
+    },
+    {
+      "begin": 536916920,
+      "end": 536916928,
+      "label": "___ZN3gba6Timers8overfl",
+      "name": "___ZN3gba6Timers8overflowEiRNS_13IrqControllerERNS_3ApuEy_veneer",
+      "symbol": "___ZN3gba6Timers8overflowEiRNS_13IrqControllerERNS_3ApuEy_veneer"
+    },
+    {
+      "begin": 536916928,
+      "end": 536916936,
+      "label": "___ZN3gba3Bus16read_gam",
+      "name": "___ZN3gba3Bus16read_gamepak_romEmNS_8BusWidthEb_veneer",
+      "symbol": "___ZN3gba3Bus16read_gamepak_romEmNS_8BusWidthEb_veneer"
+    },
+    {
+      "begin": 536916936,
+      "end": 536916944,
+      "label": "__clock_configure_venee",
+      "name": "__clock_configure_veneer",
+      "symbol": "__clock_configure_veneer"
+    },
+    {
+      "begin": 536916944,
+      "end": 536916952,
+      "label": "___ZNK3gba3Bus7waitcntE",
+      "name": "___ZNK3gba3Bus7waitcntEv_veneer",
+      "symbol": "___ZNK3gba3Bus7waitcntEv_veneer"
+    },
+    {
+      "begin": 536916952,
+      "end": 536916960,
+      "label": "___ZN3gba13IrqControlle",
+      "name": "___ZN3gba13IrqController7requestEt_veneer",
+      "symbol": "___ZN3gba13IrqController7requestEt_veneer"
+    },
+    {
+      "begin": 536916960,
+      "end": 536916968,
+      "label": "___ZN3gba9DmaEngine14re",
+      "name": "___ZN3gba9DmaEngine14request_fifo_bEy_veneer",
+      "symbol": "___ZN3gba9DmaEngine14request_fifo_bEy_veneer"
+    },
+    {
+      "begin": 536916968,
+      "end": 536916976,
+      "label": "__noInterrupts_veneer",
+      "name": "__noInterrupts_veneer",
+      "symbol": "__noInterrupts_veneer"
+    },
+    {
+      "begin": 536916976,
+      "end": 536916984,
+      "label": "___ZNK3gba9Cartridge9re",
+      "name": "___ZNK3gba9Cartridge9read_biosEmNS_8BusWidthE_veneer",
+      "symbol": "___ZNK3gba9Cartridge9read_biosEmNS_8BusWidthE_veneer"
+    },
+    {
+      "begin": 536916984,
+      "end": 536916988,
+      "label": "alarmNumber",
+      "name": "(anonymous namespace)::alarmNumber",
+      "symbol": "_ZN12_GLOBAL__N_111alarmNumberE"
+    },
+    {
+      "begin": 536916988,
+      "end": 536916992,
+      "label": "randomState",
+      "name": "(anonymous namespace)::randomState",
+      "symbol": "_ZN12_GLOBAL__N_111randomStateE"
+    },
+    {
+      "begin": 536916992,
+      "end": 536917000,
+      "label": "color_lut",
+      "name": "color_lut",
+      "symbol": "color_lut"
+    },
+    {
+      "begin": 536917000,
+      "end": 536917020,
+      "label": "font_dsc",
+      "name": "font_dsc",
+      "symbol": "font_dsc"
+    },
+    {
+      "begin": 536917116,
+      "end": 536917140,
+      "label": "default_alarm_pool",
+      "name": "default_alarm_pool",
+      "symbol": "default_alarm_pool"
+    },
+    {
+      "begin": 536917140,
+      "end": 536917141,
+      "label": "striped_spin_lock_num",
+      "name": "striped_spin_lock_num",
+      "symbol": "striped_spin_lock_num"
+    },
+    {
+      "begin": 536917144,
+      "end": 536917148,
+      "label": "_impure_ptr",
+      "name": "_impure_ptr",
+      "symbol": "_impure_ptr"
+    },
+    {
+      "begin": 536917148,
+      "end": 536917224,
+      "label": "_impure_data",
+      "name": "_impure_data",
+      "symbol": "_impure_data"
+    },
+    {
+      "begin": 536917224,
+      "end": 536917588,
+      "label": "__global_locale",
+      "name": "__global_locale",
+      "symbol": "__global_locale"
+    },
+    {
+      "begin": 536917588,
+      "end": 536917600,
+      "label": "__sglue",
+      "name": "__sglue",
+      "symbol": "__sglue"
+    },
+    {
+      "begin": 536917600,
+      "end": 536917604,
+      "label": "__malloc_sbrk_base",
+      "name": "__malloc_sbrk_base",
+      "symbol": "__malloc_sbrk_base"
+    },
+    {
+      "begin": 536917604,
+      "end": 536917608,
+      "label": "__malloc_trim_threshold",
+      "name": "__malloc_trim_threshold",
+      "symbol": "__malloc_trim_threshold"
+    },
+    {
+      "begin": 536917608,
+      "end": 536918640,
+      "label": "__malloc_av_",
+      "name": "__malloc_av_",
+      "symbol": "__malloc_av_"
+    },
+    {
+      "begin": 536918640,
+      "end": 536918728,
+      "label": "tzinfo",
+      "name": "tzinfo",
+      "symbol": "tzinfo"
+    },
+    {
+      "begin": 536918728,
+      "end": 536918732,
+      "label": "__atexit_recursive_mute",
+      "name": "__atexit_recursive_mutex",
+      "symbol": "__atexit_recursive_mutex"
+    },
+    {
+      "begin": 536918732,
+      "end": 536918740,
+      "label": "_tzname",
+      "name": "_tzname",
+      "symbol": "_tzname"
+    },
+    {
+      "begin": 536918740,
+      "end": 536918744,
+      "label": "environ",
+      "name": "environ",
+      "symbol": "environ"
+    },
+    {
+      "begin": 536918744,
+      "end": 536918752,
+      "label": "_irqMutex",
+      "name": "_irqMutex",
+      "symbol": "_ZL9_irqMutex"
+    },
+    {
+      "begin": 536918752,
+      "end": 536918760,
+      "label": "_adcMutex",
+      "name": "_adcMutex",
+      "symbol": "_ZL9_adcMutex"
+    },
+    {
+      "begin": 536918760,
+      "end": 536918768,
+      "label": "_dacMutex",
+      "name": "_dacMutex",
+      "symbol": "_ZL9_dacMutex"
+    },
+    {
+      "begin": 536918768,
+      "end": 536918776,
+      "label": "__lock___arc4random_mut",
+      "name": "__lock___arc4random_mutex",
+      "symbol": "__lock___arc4random_mutex"
+    },
+    {
+      "begin": 536918776,
+      "end": 536918784,
+      "label": "__lock___dd_hash_mutex",
+      "name": "__lock___dd_hash_mutex",
+      "symbol": "__lock___dd_hash_mutex"
+    },
+    {
+      "begin": 536918784,
+      "end": 536918792,
+      "label": "__lock___tz_mutex",
+      "name": "__lock___tz_mutex",
+      "symbol": "__lock___tz_mutex"
+    },
+    {
+      "begin": 536918792,
+      "end": 536918800,
+      "label": "__lock___env_recursive_",
+      "name": "__lock___env_recursive_mutex",
+      "symbol": "__lock___env_recursive_mutex"
+    },
+    {
+      "begin": 536918800,
+      "end": 536918808,
+      "label": "__lock___malloc_recursi",
+      "name": "__lock___malloc_recursive_mutex",
+      "symbol": "__lock___malloc_recursive_mutex"
+    },
+    {
+      "begin": 536918808,
+      "end": 536918816,
+      "label": "__lock___at_quick_exit_",
+      "name": "__lock___at_quick_exit_mutex",
+      "symbol": "__lock___at_quick_exit_mutex"
+    },
+    {
+      "begin": 536918816,
+      "end": 536918824,
+      "label": "__lock___atexit_recursi",
+      "name": "__lock___atexit_recursive_mutex",
+      "symbol": "__lock___atexit_recursive_mutex"
+    },
+    {
+      "begin": 536918824,
+      "end": 536918832,
+      "label": "__lock___sfp_recursive_",
+      "name": "__lock___sfp_recursive_mutex",
+      "symbol": "__lock___sfp_recursive_mutex"
+    },
+    {
+      "begin": 536918832,
+      "end": 536918840,
+      "label": "__lock___sinit_recursiv",
+      "name": "__lock___sinit_recursive_mutex",
+      "symbol": "__lock___sinit_recursive_mutex"
+    },
+    {
+      "begin": 537395200,
+      "end": 537395840,
+      "label": "dma_irq_handler",
+      "name": "dma_irq_handler()",
+      "symbol": "_Z15dma_irq_handlerv"
+    },
+    {
+      "begin": 537395840,
+      "end": 537396480,
+      "label": "HDMI handler",
+      "name": "pimoroni::DVHSTX::gfx_dma_handler()",
+      "symbol": "_ZN8pimoroni6DVHSTX15gfx_dma_handlerEv"
+    },
+    {
+      "begin": 537396480,
+      "end": 537397424,
+      "label": "pimoroni::DVHSTX::text_",
+      "name": "pimoroni::DVHSTX::text_dma_handler()",
+      "symbol": "_ZN8pimoroni6DVHSTX16text_dma_handlerEv"
+    },
+    {
+      "begin": 537397424,
+      "end": 537397436,
+      "label": "dma_irq_handler_text",
+      "name": "dma_irq_handler_text()",
+      "symbol": "_Z20dma_irq_handler_textv"
+    }
+  ]
+}

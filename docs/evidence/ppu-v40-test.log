@@ -1,0 +1,3 @@
+PASS: profiling-enabled PPU worker stage accounting equals measured Draw time
+PASS: 240 randomized PPU fixtures match v21 across modes 0-5, all text sizes, flips, affine/sprites, windows, blending, cropped/full output, video writes and repeated frames
+PASS: direct RGB565 worker output and protected margins match independent v21 pixels; cropped framebuffer fallback also matches

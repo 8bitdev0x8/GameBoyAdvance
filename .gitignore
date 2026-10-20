@@ -1,6 +1,7 @@
 # Private assets and local build products
 /build/
 /publish/
+/GBAPrototype/logs/
 /GBAPrototype/rom/
 /GBAPrototype/upstream/
 /GBAPrototype/output/

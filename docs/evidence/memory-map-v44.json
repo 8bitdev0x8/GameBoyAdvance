@@ -1,0 +1,310 @@
+[
+  {
+    "name": "PSRAM · external",
+    "children": [
+      {
+        "name": "Decoded ROM cache",
+        "value": 7208960,
+        "note": "6.875 MiB; 440 decoded 16 KiB blocks",
+        "kind": "rom",
+        "short": "Decoded ROM cache"
+      },
+      {
+        "name": "Game data and buffers",
+        "children": [
+          {
+            "name": "GBA EWRAM",
+            "value": 262144,
+            "note": "",
+            "kind": "data",
+            "short": "GBA EWRAM"
+          },
+          {
+            "name": "Cartridge save data",
+            "value": 131072,
+            "note": "Volatile; lost on reset",
+            "kind": "data",
+            "short": "Cartridge save data"
+          },
+          {
+            "name": "GBA RGB555 framebuffer",
+            "value": 76800,
+            "note": "Retained allocation; direct output bypasses full-frame copying",
+            "kind": "video",
+            "short": "GBA RGB555 framebuffer"
+          },
+          {
+            "name": "HDMI recovery backup",
+            "value": 153600,
+            "note": "Backup only; live HDMI framebuffer is in internal SRAM",
+            "kind": "video",
+            "short": "HDMI recovery backup"
+          },
+          {
+            "name": "Binary debug logs",
+            "value": 24576,
+            "note": "",
+            "kind": "data",
+            "short": "Binary debug logs"
+          }
+        ],
+        "note": "",
+        "kind": "data"
+      },
+      {
+        "name": "Arena spare",
+        "value": 7168,
+        "note": "Known remaining project-arena capacity",
+        "kind": "free",
+        "short": "Arena spare"
+      },
+      {
+        "name": "Outside project arena",
+        "value": 524288,
+        "note": "Reserved for SDK; actual usage/free capacity not measured",
+        "kind": "unknown",
+        "short": "Outside project arena"
+      }
+    ],
+    "note": "",
+    "kind": "data"
+  },
+  {
+    "name": "QSPI flash · external",
+    "children": [
+      {
+        "name": "Compressed Sonic ROM",
+        "value": 4753067,
+        "note": "Original cartridge: 16 MiB",
+        "kind": "rom",
+        "short": "Compressed Sonic ROM"
+      },
+      {
+        "name": "Native code",
+        "children": [
+          {
+            "name": "Code executing from flash",
+            "value": 158962,
+            "note": "Union of exact ELF function ranges",
+            "kind": "code",
+            "short": "Code executing from flash"
+          },
+          {
+            "name": "SRAM code load image",
+            "value": 59863,
+            "note": "Stored in flash; copied into SRAM at startup",
+            "kind": "code",
+            "short": "SRAM code load image"
+          }
+        ],
+        "note": "",
+        "kind": "code"
+      },
+      {
+        "name": "GBA BIOS",
+        "value": 16384,
+        "note": "",
+        "kind": "rom",
+        "short": "GBA BIOS"
+      },
+      {
+        "name": "Tables, data and padding",
+        "value": 91020,
+        "note": "Includes ROM index, PC map, initialized data, vectors and gaps",
+        "kind": "data",
+        "short": "Tables, data and padding"
+      },
+      {
+        "name": "Unused image address space",
+        "value": 3301120,
+        "note": "Within configured application flash region",
+        "kind": "free",
+        "short": "Unused image address space"
+      },
+      {
+        "name": "Reserved flash tail",
+        "value": 8192,
+        "note": "Outside configured application region",
+        "kind": "unknown",
+        "short": "Reserved flash tail"
+      }
+    ],
+    "note": "",
+    "kind": "data"
+  },
+  {
+    "name": "SRAM · internal",
+    "children": [
+      {
+        "name": "Live HDMI framebuffer",
+        "value": 153600,
+        "note": "320 × 240 × 2 bytes; display driver uses ordinary malloc",
+        "kind": "video",
+        "short": "Live HDMI framebuffer"
+      },
+      {
+        "name": "Emulator state and workspace",
+        "children": [
+          {
+            "name": "Tile-index caches",
+            "value": 49152,
+            "note": "Two 2,048-entry caches, 12 bytes per entry",
+            "kind": "data",
+            "short": "Tile-index caches"
+          },
+          {
+            "name": "Sprite line lists",
+            "value": 20640,
+            "note": "160 × 128 indices plus per-line counts",
+            "kind": "data",
+            "short": "Sprite line lists"
+          },
+          {
+            "name": "Scanline pixel workspace",
+            "value": 3120,
+            "note": "BG/OBJ rows, priorities, transparency and OBJ-window bits",
+            "kind": "data",
+            "short": "Scanline pixel workspace"
+          },
+          {
+            "name": "Optional decoded blocks",
+            "value": 3328,
+            "note": "Allocated even with CPU blocks OFF",
+            "kind": "data",
+            "short": "Optional decoded blocks"
+          },
+          {
+            "name": "CPU/device state and metadata",
+            "value": 10672,
+            "note": "Remainder of the 86,912-byte emulator object",
+            "kind": "data",
+            "short": "CPU/device state and metadata"
+          }
+        ],
+        "note": "",
+        "kind": "data"
+      },
+      {
+        "name": "Guest fast memory",
+        "children": [
+          {
+            "name": "GBA VRAM",
+            "value": 98304,
+            "note": "",
+            "kind": "data",
+            "short": "GBA VRAM"
+          },
+          {
+            "name": "GBA IWRAM",
+            "value": 32768,
+            "note": "",
+            "kind": "data",
+            "short": "GBA IWRAM"
+          },
+          {
+            "name": "Palette + OAM",
+            "value": 2048,
+            "note": "",
+            "kind": "data",
+            "short": "Palette + OAM"
+          },
+          {
+            "name": "Bus wait tables",
+            "value": 64,
+            "note": "",
+            "kind": "data",
+            "short": "Bus wait tables"
+          }
+        ],
+        "note": "",
+        "kind": "data"
+      },
+      {
+        "name": "Hot ROM line cache",
+        "value": 32768,
+        "note": "",
+        "kind": "rom",
+        "short": "Hot ROM line cache"
+      },
+      {
+        "name": "Native executable code",
+        "value": 59863,
+        "note": "Includes 2,236 bytes of HDMI/DMA code in scratch X",
+        "kind": "code",
+        "short": "Native executable code"
+      },
+      {
+        "name": "Stacks",
+        "children": [
+          {
+            "name": "Core 0 stack reserve",
+            "value": 16384,
+            "note": "",
+            "kind": "data",
+            "short": "Core 0 stack reserve"
+          },
+          {
+            "name": "Core 1 stack + canary",
+            "value": 8256,
+            "note": "",
+            "kind": "data",
+            "short": "Core 1 stack + canary"
+          }
+        ],
+        "note": "",
+        "kind": "data"
+      },
+      {
+        "name": "ROM metadata + code window",
+        "value": 5124,
+        "note": "CompressedRom object; includes stable 256-byte instruction window",
+        "kind": "data",
+        "short": "ROM metadata + code window"
+      },
+      {
+        "name": "Other static data",
+        "value": 12417,
+        "note": "Includes render worker, profiler, UART/USB control and SDK globals",
+        "kind": "data",
+        "short": "Other static data"
+      },
+      {
+        "name": "Other heap use + alignment",
+        "value": 6928,
+        "note": "Residual accounting; includes driver scanline buffers and allocator overhead",
+        "kind": "data",
+        "short": "Other heap use + alignment"
+      },
+      {
+        "name": "Scratch reserve / SDK stack area",
+        "value": 5956,
+        "note": "Not part of the reported free heap",
+        "kind": "unknown",
+        "short": "Scratch reserve / SDK stack area"
+      },
+      {
+        "name": "Reported free heap",
+        "value": 11088,
+        "note": "Cached measurement in latest V44 logs; not peak stack headroom",
+        "kind": "free",
+        "short": "Reported free heap"
+      }
+    ],
+    "note": "",
+    "kind": "data"
+  },
+  {
+    "name": "OTP · internal",
+    "children": [
+      {
+        "name": "Provisioning occupancy unknown",
+        "value": 8192,
+        "note": "8 KiB capacity; project does not provision OTP. Factory/configuration usage was not read.",
+        "kind": "unknown",
+        "short": "Provisioning occupancy unknown"
+      }
+    ],
+    "note": "",
+    "kind": "unknown"
+  }
+]

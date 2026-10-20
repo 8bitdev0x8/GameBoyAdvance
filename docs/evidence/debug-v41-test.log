@@ -1,0 +1,2 @@
+PASS: binary CRC vectors, counter wrap, sparse/max varints, bounded ring eviction and lossless chronological decode
+PASS: empty/partial/zero-byte USB export, frozen appends, cancellation, clear and cross-language frame/profile fixture

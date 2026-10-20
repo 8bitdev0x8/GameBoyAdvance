@@ -1,8 +1,17 @@
 # Validation and current emulator state
 
-## Hardware result
+## Latest checkpoint: V45
 
-Latest author report, 19 October 2026, **v28 with Sonic Advance 3**:
+Seven V45 binary captures validate their timing partitions and exact build map.
+Slow gameplay remains around seven FPS: the latest window is 7.24 FPS over 45.6
+retained seconds, Run 131.48 / Draw 35.76 / Wait 14.70 ms/frame. Renderer waits
+are only part of Run. Smooth 60 FPS is not achieved. See the
+[V45 board report](v45-board-results.md) and [V45 validation](performance-v45.md).
+V46 is unfinished source work with focused fetch tests, not a tested release.
+
+## Historical V28 hardware result
+
+Author report at that checkpoint, 19 October 2026, **v28 with Sonic Advance 3**:
 
 | Metric | Result |
 | --- | --- |
@@ -35,7 +44,7 @@ V27 additionally reported HDMI resets 5, IRQ/s 31495 and usually zero ROM misses
 
 Run is core 0 emulation/finish elapsed time and includes Wait; Draw is core 1 render/conversion/presentation elapsed time and can overlap Run. Interrupts contribute to the affected core's timings. Do not add these values as sequential exclusive CPU costs. Copy zero reflects the v26 removal of the full-frame presentation copy, with conversion/presentation now included in Draw. VBskip is the percentage of guest cycles bypassed in recognized VBlank loops, not hardware utilization.
 
-The HSTX monitor signal is 60 Hz even when only about seven new guest frames complete per second. The latest result demonstrates a running experiment, not real-time gameplay. Full utilization of both cores and the PSRAM share of frame cost remain unmeasured. V28 contains the memory and IRQ timing instruments, but PC sampling, DWT/XIP/bus profiling, JIT and a new accelerated scanout backend are proposals rather than active features.
+The HSTX monitor signal is 60 Hz even when only about seven new guest frames complete per second. The latest result demonstrates a running experiment, not real-time gameplay. Full utilization of both cores and the PSRAM share of frame cost remain unmeasured. V28 contains the memory and IRQ timing instruments, but At V28 these were proposals. Later V31-V45 implemented native PC sampling and binary logs; DWT/XIP/bus attribution, native JIT and a different scanout backend remain unimplemented.
 
 ## Native regression checks through v28
 

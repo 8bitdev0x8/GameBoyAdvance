@@ -1,0 +1,14 @@
+{
+  "captures": 7,
+  "retained_frame_records": 1790,
+  "unique_retained_frames": 1735,
+  "duplicate_frame_records": 55,
+  "retained_wall_seconds": 160.738232,
+  "weighted_fps": 10.793947267007391,
+  "map_fingerprints": [
+    173271835
+  ],
+  "blocks_on_unique_frames": 0,
+  "invalid_frame_records": 0,
+  "note": "Deduplicated retained windows, not a controlled replay or continuous full-session average. Gaps between captures are unobserved."
+}

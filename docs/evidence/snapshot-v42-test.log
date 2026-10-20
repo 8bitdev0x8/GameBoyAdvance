@@ -1,0 +1,2 @@
+PASS: profiling-enabled concurrent worker counters equal measured Draw time
+PASS: 38400 queued register snapshots match independent PPU pixels; four deferred jobs, concurrent live writes, byte/word merges, all graphics modes and RGB565 margins

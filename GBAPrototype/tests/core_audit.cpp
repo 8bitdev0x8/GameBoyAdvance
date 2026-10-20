@@ -58,6 +58,11 @@ void testThumbMultiple(unsigned firstLoad=0) {
 
 void testFetchPath() {
     gba::Emulator plain,fast;
+    auto fetch=[&](gba::u32 address,gba::BusWidth width,gba::AccessType access,gba::u64 cycle) {
+        if(width==gba::BusWidth::Half)return fast.bus().read_code_specialized<gba::BusWidth::Half>(address,access,cycle);
+        if(width==gba::BusWidth::Word)return fast.bus().read_code_specialized<gba::BusWidth::Word>(address,access,cycle);
+        return fast.bus().read_code(address,width,access,cycle);
+    };
     std::vector<gba::u8> code(0x40003);
     std::mt19937 rng(0xfeed2350);
     for(auto& b:code)b=gba::u8(rng());
@@ -88,7 +93,7 @@ void testFetchPath() {
             plain.bus().prefetch_advance(cycles);fast.bus().prefetch_advance(cycles);
         }
         const auto a=plain.bus().read(address,width,access,i);
-        const auto packed=fast.bus().read_code(address,width,access,i);
+        const auto packed=fetch(address,width,access,i);
         const gba::BusAccessResult b{gba::u32(packed),gba::u32(packed>>32)};
         check(a.value==b.value && a.cycles==b.cycles,"Fast instruction read value/cycles differ");
         check(plain.bus().idle_bus_state()==fast.bus().idle_bus_state(),"Fast instruction read changes bus/prefetch/latches");
@@ -103,19 +108,19 @@ void testFetchPath() {
         plain.bus().prefetch_advance(128);fast.bus().prefetch_advance(128);
         const auto access=gba::AccessType::CodeFetch|gba::AccessType::Sequential;
         const auto a=plain.bus().read(address,width,access,40000);
-        const auto packed=fast.bus().read_code(address,width,access,40000);
+        const auto packed=fetch(address,width,access,40000);
         const gba::BusAccessResult b{gba::u32(packed),gba::u32(packed>>32)};
         check(a.value==b.value && a.cycles==b.cycles && plain.bus().idle_bus_state()==fast.bus().idle_bus_state(),"RTC GPIO, prefetch hints, 32/128 KiB boundaries and partial-ROM fetch parity");
     }
     for(auto* emu:{&plain,&fast})emu->cartridge().set_save_type(gba::SaveType::Eeprom);
     for(unsigned i=0;i<68;++i) {
         const auto a=plain.bus().read(0x0d000000u,gba::BusWidth::Half,gba::AccessType::CodeFetch,i);
-        const auto packed=fast.bus().read_code(0x0d000000u,gba::BusWidth::Half,gba::AccessType::CodeFetch,i);
+        const auto packed=fetch(0x0d000000u,gba::BusWidth::Half,gba::AccessType::CodeFetch,i);
         const gba::BusAccessResult b{gba::u32(packed),gba::u32(packed>>32)};
         check(a.value==b.value && a.cycles==b.cycles && plain.bus().idle_bus_state()==fast.bus().idle_bus_state(),"EEPROM code fetch must use ordinary peripheral path");
     }
     check(fast.bus().code_fetch_fast_hits>1000,"Instruction fast path exercised");
-    std::cout<<"PASS: 30000 mixed instruction reads preserve exact data/cycles/bus/prefetch/latches, RAM mirrors, ROM aliases/bounds, MMIO/BIOS/open-bus/DMA/byte/EEPROM fallback; fast hits "<<fast.bus().code_fetch_fast_hits<<"\n";
+    std::cout<<"PASS: 30000 fixed-width instruction reads preserve exact data/cycles/bus/prefetch/latches, RAM mirrors, ROM aliases/bounds, MMIO/BIOS/open-bus/DMA/byte/EEPROM fallback; fast hits "<<fast.bus().code_fetch_fast_hits<<"\n";
 }
 
 #ifdef GBA_TIMER_AUDIT
@@ -124,10 +129,18 @@ void testTimerReference();
 
 void testVideoWrites();
 void testVideoDma();
+void testBiosReads();
+void testInstructionWindow();
+void testLeafFetch();
+void testThumbAluFast();
+void testBlockExecution();
+void testColorMath();
 int main(int argc,char**) {
     try {
-        testThumbMultiple(argc>1?1:0);testFetchPath();
+        testThumbMultiple(argc>1?1:0);testThumbAluFast();testFetchPath();testBiosReads();testInstructionWindow();testLeafFetch();
         testVideoWrites();testVideoDma();
+        testBlockExecution();
+        testColorMath();
 #ifdef GBA_TIMER_AUDIT
         testTimerReference();
 #endif

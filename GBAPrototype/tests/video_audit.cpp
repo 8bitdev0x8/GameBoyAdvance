@@ -47,6 +47,112 @@ void testVideoWrites() {
         for(int line=0;line<160;++line)check(!fast.ppu().is_dirty(line),"Unchanged display register must leave clean rows clean");
     }
     std::cout<<"PASS: 45003 randomized/repeated video writes and reads preserve cycles/latches/memory, mirrors/alignment, byte replication/ignored writes; unchanged-write barrier and display-register dirty-state checks\n";
+
+    // Exercise the bus entry point: testing Ppu::write_register alone cannot
+    // establish that its caller avoided the cross-core barrier.
+    fast.reset(true);plain.reset(true);
+    unsigned reference_barriers=0,register_cases=0;
+    fast.bus().set_render_barrier([](void* p){++*static_cast<unsigned*>(p);},&barriers);
+    plain.bus().set_render_barrier([](void* p){++*static_cast<unsigned*>(p);},&reference_barriers);
+    auto register_write=[&](gba::u32 address,gba::u32 value,gba::BusWidth width,int expected_skip=-1) {
+        const auto before=barriers,reference_before=reference_barriers;
+        if(expected_skip>=0) {
+            const auto normalized=width==gba::BusWidth::Word?address&~3u:
+                width==gba::BusWidth::Half?address&~1u:address;
+            check(fast.ppu().storage_write_unchanged(normalized,value,width)==bool(expected_skip),
+                  "Pure register preflight must match effective raw storage changes");
+        }
+        write(address,value,width,1000000+register_cases++*20);
+        check(reference_barriers==reference_before+1,"Reference display write must retain its barrier");
+        if(expected_skip>=0)check(barriers==before+unsigned(!expected_skip),
+            "Only unchanged pure-storage display writes may bypass the renderer barrier");
+        for(gba::u32 a=0x04000000;a<=0x04000054;a+=2)
+            check(fast.ppu().read_register(a,gba::BusWidth::Half)==plain.ppu().read_register(a,gba::BusWidth::Half),
+                  "Register barrier bypass must preserve all display register readbacks");
+    };
+    register_write(0x04000000,0x1234,gba::BusWidth::Half,0);
+    register_write(0x04000000,0x1234,gba::BusWidth::Half,1);
+    register_write(0x04000001,0x12,gba::BusWidth::Byte,1);
+    register_write(0x04000001,0x13,gba::BusWidth::Byte,0);
+    register_write(0x04000008,0xffffffff,gba::BusWidth::Word,0);
+    register_write(0x04000008,0xffffffff,gba::BusWidth::Word,1);
+    // BG0CNT read masks bit 13. A same-value byte write must still perform
+    // the original masked merge, which changes this raw bit on its first use.
+    register_write(0x04000008,0xff,gba::BusWidth::Byte,0);
+    register_write(0x04000008,0xff,gba::BusWidth::Byte,1);
+    register_write(0x04000048,0xffffffff,gba::BusWidth::Word,0);
+    register_write(0x04000048,0xffffffff,gba::BusWidth::Word,1);
+    register_write(0x04000048,0xff,gba::BusWidth::Byte,0);
+    register_write(0x04000048,0xff,gba::BusWidth::Byte,1);
+    register_write(0x04000050,0xffffffff,gba::BusWidth::Word,0);
+    register_write(0x04000050,0xffffffff,gba::BusWidth::Word,1);
+    register_write(0x04000050,0xff,gba::BusWidth::Byte,0);
+    register_write(0x04000050,0xff,gba::BusWidth::Byte,1);
+    register_write(0x04000028,0x92345678,gba::BusWidth::Word,0);
+    register_write(0x04000028,0x92345678,gba::BusWidth::Word,1);
+    register_write(0x0400002b,0x92,gba::BusWidth::Byte,1);
+    register_write(0x0400002b,0x12,gba::BusWidth::Byte,0);
+    register_write(0x0400002b,0x12,gba::BusWidth::Byte,1);
+    // Status, unknown, and partially unknown word writes are conservative.
+    register_write(0x04000004,0,gba::BusWidth::Half,0);
+    register_write(0x04000004,0,gba::BusWidth::Half,0);
+    register_write(0x04000004,0,gba::BusWidth::Word,0);
+    register_write(0x04000006,0,gba::BusWidth::Half,0);
+    register_write(0x0400004e,0,gba::BusWidth::Half,0);
+    register_write(0x0400004c,0,gba::BusWidth::Word,0);
+    register_write(0x04000054,0,gba::BusWidth::Word,0);
+    {
+        const auto before=barriers;
+        fast.ppu().optimize_video_writes=false;
+        register_write(0x04000054,0,gba::BusWidth::Half);
+        check(barriers==before+1,"Disabling PPU video optimization must retain the original barrier");
+        fast.ppu().optimize_video_writes=true;
+    }
+    {
+        const auto before=barriers;
+        fast.bus().optimize_video_writes=false;
+        register_write(0x04000054,0,gba::BusWidth::Half);
+        check(barriers==before+1,"Disabling bus video optimization must retain the original barrier");
+        fast.bus().optimize_video_writes=true;
+    }
+    gba::IrqController fast_scan_irq,plain_scan_irq;
+    for(unsigned i=0;i<12000;++i) {
+        if(i%700==0) {
+            const auto cycle=gba::u64(i/700+1)*1232u;
+            fast.ppu().advance_to(cycle,fast_scan_irq);
+            plain.ppu().advance_to(cycle,plain_scan_irq);
+        }
+        const auto address=0x04000000u+rng()%0x55u;
+        const auto width=i%3==0?gba::BusWidth::Byte:i%3==1?gba::BusWidth::Half:gba::BusWidth::Word;
+        const auto value=gba::u32(rng());
+        register_write(address,value,width);
+        register_write(address,value,width);
+    }
+    check(fast.ppu().skipped_register_halves>1000,"Repeated display writes must exercise barrier bypass");
+    std::cout<<"PASS: "<<register_cases<<" display-register writes preserve cycles/latches/readbacks, byte masked merges and affine halves; unchanged storage skips joins, status/unknown/partial words retain joins\n";
+    // Exercise the explicit backend capability. A legacy backend retains all
+    // its conservative barriers; only a snapshot-aware backend may defer them.
+    fast.set_render_backend({&barriers,nullptr,[](void* p){++*static_cast<unsigned*>(p);},true});
+    for(unsigned i=0;i<2000;++i) {
+        const auto before=barriers;
+        const gba::u32 address=0x04000000+(i%43)*2;
+        write(address,gba::u32(rng()),i%2?gba::BusWidth::Word:gba::BusWidth::Byte,2000000+i*20);
+        check(barriers==before,"Snapshot-aware display writes must not drain pending jobs");
+    }
+    for(gba::u32 region:{0x05000000u,0x06000000u,0x07000000u}) {
+        const auto old=fast.bus().read(region,gba::BusWidth::Half,gba::AccessType::NonSequential,3000000).value;
+        check(plain.bus().read(region,gba::BusWidth::Half,gba::AccessType::NonSequential,3000000).value==old,
+              "Reference memory read remains synchronized before barrier check");
+        const auto before=barriers;
+        write(region,old^0xffffu,gba::BusWidth::Half,3000020);
+        check(barriers==before+1,"Snapshot backend must retain changed shared-memory barrier");
+    }
+    fast.set_render_backend({&barriers,nullptr,[](void* p){++*static_cast<unsigned*>(p);}});
+    const auto before=barriers;
+    const auto control=fast.ppu().dispcnt();
+    write(0x04000000,control^0x80u,gba::BusWidth::Half,4000000);
+    check(barriers==before+1,"Switching back to a legacy backend restores register joins");
+    std::cout<<"PASS: 2000 snapshot-backend register writes preserve guest bus state without joins; changed VRAM/palette/OAM still drain, legacy backend restores register barrier\n";
 }
 
 struct VideoFixture {

@@ -1,0 +1,256 @@
+{
+  "version": 44,
+  "baseline": 43,
+  "kind": "Opaque compositor specialization and optional validated Thumb predecoded blocks",
+  "blocks_default": false,
+  "sha256": "3bc324324479a28c5d8e353709bfc5e85fbfca8c0357db1f4f07192a35dbed1d",
+  "uf2_bytes": 10159104,
+  "arduino_reported_program_bytes": 5006816,
+  "static_sram_bytes": 244252,
+  "heap_capacity_before_dynamic_allocations": 263644,
+  "final_arm_class_sizes": {
+    "Emulator": 86912,
+    "CompressedRom": 5124,
+    "Cartridge": 172,
+    "ScanlineWorker": 1032,
+    "RenderState": 84,
+    "Recorder": 332,
+    "GbaPcProfileSnapshot": 120
+  },
+  "individual_stack_frames": {
+    "cpu_run_until": 80,
+    "try_run_thumb_block": 104
+  },
+  "main_stack_bytes": 16384,
+  "core1_stack_bytes": 8192,
+  "initialized_sram_bytes_verified": 60116,
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "log_ring_bytes": 24576,
+  "psram_arena_used_bytes": 7857152,
+  "psram_arena_spare_bytes": 7168,
+  "sampler_function_ranges": 1037,
+  "map_fingerprint": 173271835,
+  "new_hot_functions": [
+    {
+      "begin": 536896144,
+      "end": 536898752,
+      "label": "Thumb block execute",
+      "name": "gba::Arm7tdmi::try_run_thumb_block(unsigned short, unsigned long long, int&)",
+      "symbol": "_ZN3gba8Arm7tdmi19try_run_thumb_blockEtyRi"
+    },
+    {
+      "begin": 536911684,
+      "end": 536918096,
+      "label": "Ppu::render_prepared_sc",
+      "name": "gba::Ppu::render_prepared_scanline(int, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, std::span<unsigned char const, 4294967295u>, unsigned short*, gba::RenderStageTimes*)",
+      "symbol": "_ZN3gba3Ppu24render_prepared_scanlineEiSt4spanIKhLj4294967295EES3_S3_PtPNS_16RenderStageTimesE"
+    }
+  ],
+  "native_block_benchmark": [
+    {
+      "mode": "compute",
+      "warmup": 3600,
+      "frames": 2400,
+      "median_ms": {
+        "baseline": 1196.118,
+        "blocks": 1324.381
+      },
+      "reduction_percent": {
+        "baseline": 0.0,
+        "blocks": -10.723273121882638
+      }
+    },
+    {
+      "mode": "compute",
+      "warmup": 12000,
+      "frames": 1200,
+      "median_ms": {
+        "baseline": 1051.077,
+        "blocks": 1138.332
+      },
+      "reduction_percent": {
+        "baseline": 0.0,
+        "blocks": -8.301485048193435
+      }
+    },
+    {
+      "mode": "inline",
+      "warmup": 3600,
+      "frames": 2400,
+      "median_ms": {
+        "baseline": 1919.819,
+        "blocks": 2012.793
+      },
+      "reduction_percent": {
+        "baseline": 0.0,
+        "blocks": -4.842852373062256
+      }
+    }
+  ],
+  "native_render_benchmark": [
+    {
+      "warmup": 0,
+      "frames": 1800,
+      "median_ms": {
+        "baseline": {
+          "wall_ms": 1320.492,
+          "draw_ms": 477.902
+        },
+        "candidate": {
+          "wall_ms": 1307.098,
+          "draw_ms": 470.127
+        }
+      },
+      "reduction_percent": {
+        "wall_ms": 1.014318905377698,
+        "draw_ms": 1.6269025867228004
+      }
+    },
+    {
+      "warmup": 3600,
+      "frames": 1200,
+      "median_ms": {
+        "baseline": {
+          "wall_ms": 959.743,
+          "draw_ms": 345.768
+        },
+        "candidate": {
+          "wall_ms": 935.729,
+          "draw_ms": 337.19
+        }
+      },
+      "reduction_percent": {
+        "wall_ms": 2.502128173896556,
+        "draw_ms": 2.4808542143865187
+      }
+    },
+    {
+      "warmup": 12000,
+      "frames": 600,
+      "median_ms": {
+        "baseline": {
+          "wall_ms": 952.927,
+          "draw_ms": 234.799
+        },
+        "candidate": {
+          "wall_ms": 965.329,
+          "draw_ms": 237.788
+        }
+      },
+      "reduction_percent": {
+        "wall_ms": -1.3014638057269767,
+        "draw_ms": -1.2730037180737508
+      }
+    }
+  ],
+  "native_frames": 6000,
+  "native_checkpoints_match_v43": 20,
+  "native_final_pc": "080bc248",
+  "native_final_hash": "5ba30470",
+  "native_guest_cycles": 1685293130,
+  "native_worker_scanlines": 953015,
+  "fallback": "GBAFeather-Sonic-v43-USB.uf2",
+  "fallback_sha256": "8c084379be0b7f3a5dd965d03edf5bc647452511665b883265a204b3b6fde175",
+  "preserved_v43_sources": [
+    "GBAFeather/BiosStorage.h",
+    "GBAFeather/BiosStub.h",
+    "GBAFeather/BoardStartup.h",
+    "GBAFeather/CompressedRom.h",
+    "GBAFeather/ControllerState.h",
+    "GBAFeather/MemoryBenchmark.h",
+    "GBAFeather/PcProfiler.h",
+    "GBAFeather/RenderProfileDisplay.h",
+    "GBAFeather/src/BiosStorage.cpp",
+    "GBAFeather/src/BootTrace.h",
+    "GBAFeather/src/core/apu.cpp",
+    "GBAFeather/src/core/bus.cpp",
+    "GBAFeather/src/core/cartridge.cpp",
+    "GBAFeather/src/core/dma.cpp",
+    "GBAFeather/src/core/emulator.cpp",
+    "GBAFeather/src/core/irq.cpp",
+    "GBAFeather/src/core/log.cpp",
+    "GBAFeather/src/core/render_worker.cpp",
+    "GBAFeather/src/core/rom_provider.cpp",
+    "GBAFeather/src/core/scheduler.cpp",
+    "GBAFeather/src/core/timers.cpp",
+    "GBAFeather/src/esp_attr.h",
+    "GBAFeather/src/esp_heap_caps.h",
+    "GBAFeather/src/FaultCapture.cpp",
+    "GBAFeather/src/FaultCapture.h",
+    "GBAFeather/src/FrameInputLatch.h",
+    "GBAFeather/src/gba/core/apu.hpp",
+    "GBAFeather/src/gba/core/bus.hpp",
+    "GBAFeather/src/gba/core/cartridge.hpp",
+    "GBAFeather/src/gba/core/constants.hpp",
+    "GBAFeather/src/gba/core/dma.hpp",
+    "GBAFeather/src/gba/core/downscale.hpp",
+    "GBAFeather/src/gba/core/emulator.hpp",
+    "GBAFeather/src/gba/core/irq.hpp",
+    "GBAFeather/src/gba/core/log.hpp",
+    "GBAFeather/src/gba/core/ppu.hpp",
+    "GBAFeather/src/gba/core/render_backend.hpp",
+    "GBAFeather/src/gba/core/render_profile.hpp",
+    "GBAFeather/src/gba/core/render_profile_clock.hpp",
+    "GBAFeather/src/gba/core/render_worker.hpp",
+    "GBAFeather/src/gba/core/rom_provider.hpp",
+    "GBAFeather/src/gba/core/save_allocator.hpp",
+    "GBAFeather/src/gba/core/scheduler.hpp",
+    "GBAFeather/src/gba/core/timers.hpp",
+    "GBAFeather/src/gba/core/types.hpp",
+    "GBAFeather/src/generated/manifest.json",
+    "GBAFeather/src/generated/rom_blob.S",
+    "GBAFeather/src/generated/RomIndex.h",
+    "GBAFeather/src/PcProfiler.cpp",
+    "GBAFeather/src/PcProfilerFormat.h",
+    "GBAFeather/src/PcProfilerTable.cpp",
+    "GBAFeather/src/psram_arena.cpp",
+    "GBAFeather/src/psram_arena.h",
+    "GBAFeather/src/ReplacementBios-LICENSE.txt",
+    "GBAFeather/src/ReplacementBios.h",
+    "GBAFeather/src/tinf/crc32.c",
+    "GBAFeather/src/tinf/LICENSE",
+    "GBAFeather/src/tinf/tinf.h",
+    "GBAFeather/src/tinf/tinflate.c",
+    "GBAFeather/src/VideoIdleMonitor.h",
+    "GBAFeather/UartProtocol.h",
+    "linker/feather-8mb-stack16k.ld",
+    "build.ps1"
+  ],
+  "changed_v43_firmware_sources": [
+    "GBAFeather/BiosSelection.h",
+    "GBAFeather/DebugLog.h",
+    "GBAFeather/GBAFeather.ino",
+    "GBAFeather/src/core/cpu.cpp",
+    "GBAFeather/src/core/ppu.cpp",
+    "GBAFeather/src/gba/core/cpu.hpp",
+    "GBAFeather/src/generated/pc-profile-map.json",
+    "GBAFeather/src/generated/PcProfileRanges.h"
+  ],
+  "validation": "PASS final UF2/vectors/stacks/initialized SRAM/exact ROM/single BIOS/exact map; new hot functions in SRAM; core/renderer audits; 6000 Sonic frames exact CPU/bus/cycles/RAM/video and binary log accounting",
+  "hardware_tested": true,
+  "hardware_fps": null,
+  "limits": "Host timing is not RP2350 FPS. CPU predecode regresses host time and defaults OFF. Native translation/fetch batching/VRAM versioning/IRQ relocation not implemented; no claim of 60 FPS.",
+  "publication": "Private local only; no modified core, ROM, BIOS, firmware or source archive published",
+  "hardware_observations": {
+    "report": "V44-BOARD-RESULTS.md",
+    "captures": 7,
+    "retained_frame_records": 1790,
+    "unique_retained_frames": 1735,
+    "duplicate_frame_records": 55,
+    "retained_wall_seconds": 160.738232,
+    "weighted_fps": 10.793947267007391,
+    "map_fingerprints": [
+      173271835
+    ],
+    "blocks_on_unique_frames": 0,
+    "invalid_frame_records": 0,
+    "note": "Deduplicated retained windows, not a controlled replay or continuous full-session average. Gaps between captures are unobserved.",
+    "longer_capture_fps_range": [
+      6.896153231688911,
+      19.85078072160871
+    ],
+    "same_scene_speedup_established": false,
+    "earlier_black_screen_cause": "Not observed in retained frames; user reported recovery."
+  }
+}

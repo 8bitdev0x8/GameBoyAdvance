@@ -9,6 +9,13 @@ values were not supplied for v28. These remain unknown rather than zero.
 
 The earlier v27 report follows for context, not as a controlled same-scene test.
 
+A subsequent private video supplies v28's SRAM/PSRAM benchmark and approximately
+147 ms/s in the HDMI handler, plus several different game/BIOS intervals. These
+later measurements are transcribed in [PERFORMANCE-v29.md](performance-v29.md)
+and `output/v28-video-measurements.json`; the original typed report above remains
+a distinct observation. Below, statements about measurements not yet supplied
+describe the status when v28 was first tested.
+
 The user reports v27 averaging 7 FPS, PAD ON, VBskip 10%, Run 121,
 Draw 33, Copy 0 and Wait 32 ms/frame; HDMI resets 5, IRQ/s 31495.
 ROM misses and decode are normally zero with occasional spikes. Scene and

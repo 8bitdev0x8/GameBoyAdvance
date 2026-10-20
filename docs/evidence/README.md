@@ -1,8 +1,25 @@
+# Evidence index through V45 and unfinished V46 work
+
+Current board evidence: [V45 captures](log-analysis-v45.json),
+[deduplicated overview](log-analysis-v45-overview.json),
+[V45 build validation](performance-v45-summary.json),
+[V44 board captures](log-analysis-v44.json), and
+[V44 build validation](performance-v44-summary.json).
+Saved native maps V31-V45 support exact offline symbol resolution.
+
+[AI usage snapshot](project-metrics-2026-10-20.json) and
+[per-response token CSV](project-metrics-2026-10-20.csv) use the fixed
+20 October 00:30 UTC cutoff. API cost is an estimate, not a reconciled invoice.
+The [memory hierarchy](memory-map-v44.json) describes V44, not a live/V45 dump.
+V46 benchmark/audit evidence describes unfinished source work. It establishes
+neither a ready-to-flash build, board improvement nor 60 FPS. Older notes
+below retain their original checkpoint context.
+
 # Text evidence from the local experiment
 
 The JSON and log files here record local builds, native comparisons and later hardware reports. They contain no game payload or emulator implementation. Firmware, generated ROM data and historical core source archives are intentionally absent. Author-reported hardware values are observations, not independently instrumented benchmark measurements.
 
-## Current and recent records
+## Historical records through V28
 
 | Build | Summary | Native or focused evidence |
 | --- | --- | --- |

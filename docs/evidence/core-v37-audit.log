@@ -1,0 +1,10 @@
+PASS: 8160 Thumb LDMIA/STMIA cases, all nonempty lists/base registers, EWRAM/IWRAM, base first/later/absent and flags
+PASS: 262144 Thumb fast ALU cases: every 0x0000-0x3fff encoding, all NZCV inputs, edge operands, register aliases, exact CPU/cycles/bus parity
+PASS: 30000 mixed instruction reads preserve exact data/cycles/bus/prefetch/latches, RAM mirrors, ROM aliases/bounds, MMIO/BIOS/open-bus/DMA/byte/EEPROM fallback; fast hits 15633
+PASS: 600120 BIOS scalar reads vs preserved byte reader, empty/partial/full/clipped sizes, all alignments, end and 32-bit address bounds; 120000 bus code/data/DMA/protected reads with exact results/cycles/latches
+PASS: 263168 instruction-window alignment/boundary/bounds reads, stable hits/data interleaving, failed-provider/header fallback and ROM replacement; 60000 mixed bus reads preserve values/cycles/latches/prefetch, aliases/GPIO/DMA/EEPROM
+PASS: 45003 randomized/repeated video writes and reads preserve cycles/latches/memory, mirrors/alignment, byte replication/ignored writes; unchanged-write barrier and display-register dirty-state checks
+PASS: 24030 display-register writes preserve cycles/latches/readbacks, byte masked merges and affine halves; unchanged storage skips joins, status/unknown/partial words retain joins
+PASS: 2000 snapshot-backend register writes preserve guest bus state without joins; changed VRAM/palette/OAM still drain, legacy backend restores register barrier
+PASS: 600 VRAM DMA fixtures from ROM/EWRAM/IWRAM, half/word, destination increment/decrement/fixed/reload, mirrors/end crossing; exact cycles, IRQs, bus/latches, channel state and bytes
+PASS: 60000 randomized timer operations match independent v26 channels/registers/deadlines/IRQ/FIFO state

@@ -103,4 +103,23 @@ The preparation tools read user-supplied local archives and rename reference typ
 
 Stage 13 shows a memory benchmark table for 15 seconds, then normal boot continues. Record SRAM 32 KiB, PSRAM 32 KiB and PSRAM 256 KiB rows. Columns are nanoseconds per 32-bit operation: SeqR, dependent-read DepR, SeqW and scattered-write RandW. HDMI stays active, so these values include cache/loop/IRQ cost. The HUD alternates DepR values with the PC/key line and adds HDMI-handler `ms/s`. A measured 100 ms/s is roughly one tenth of a second spent inside that handler, excluding some interrupt overhead.
 
-The author has confirmed v28 at 7 FPS, Run 113, Draw 22, Copy 0, Wait 14 ms/frame, PAD ON and VBskip 12%. The memory table and IRQ-time values have not yet been supplied. See the [measurement limits and profiling plan](performance-v28.md); PC sampling is not implemented in the current frontend.
+The author has confirmed v28 at 7 FPS, Run 113, Draw 22, Copy 0, Wait 14 ms/frame, PAD ON and VBskip 12%. The memory table and IRQ-time values have not yet been supplied. See the [measurement limits and profiling plan](performance-v28.md); That statement applies to V28; V31 and later include native PC sampling.
+
+## Current USB logs and original Python tools
+
+The packaged V45 private firmware accepts USB captures. Close other serial
+programs and replace COM9 with the Feather USB port:
+
+```powershell
+python GBAPrototype/tools/debug_log.py --list
+python GBAPrototype/tools/debug_log.py --port COM9 --output sonic-v45 --open
+python GBAPrototype/tests/test_debug_log.py
+python GBAPrototype/tests/test_project_metrics.py
+```
+
+Captures use local timestamps under `GBAPrototype/logs`; they remain ignored.
+The decoder discovers exact maps in local `output` or public `docs/evidence`.
+The `--map` option can explicitly select a matching saved JSON map. Local BIOS
+preparation requires a separately supplied 16 KiB file and writes an ignored
+header; no private BIOS bytes are distributed. V46 `--engine fetch` commands
+are source-level work in progress and are not available in the V45 firmware.

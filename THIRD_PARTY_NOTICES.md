@@ -10,7 +10,7 @@ The existing repository's `LICENSE` is GNU GPL version 3. It is retained unchang
 - The locally modified files under `GBAPrototype/GBAFeather/src/core/` and `GBAPrototype/GBAFeather/src/gba/` are not published. This includes the modified ARM7 interpreter, bus, PPU, APU, IRQ, DMA, timers, cartridge logic and core renderer worker.
 - No patch archive, old source ZIP, or compiled emulator image is included as a substitute for those excluded sources. Permission or a licensed replacement is needed for a complete public implementation.
 
-The published integration files refer to that absent API to document the local system. They do not make this a complete rebuildable v28 release.
+The published integration files refer to that absent API to document the local system. They do not make this a complete rebuildable emulator release.
 
 ## tinf: included with notices
 
@@ -48,3 +48,13 @@ Install these through their normal channels and retain their respective licences
 The private hardware experiment used locally supplied European releases of Super Mario Advance 3: Yoshi's Island and Sonic Advance 3. This repository contains neither game, compressed pages, generated ROM indices, game imagery nor firmware carrying game data. The ROM packer takes a local file; users must supply content they have permission to use.
 
 Local build evidence describes artifact sizes and hashes without distributing the artifacts. All local source archives, compiled outputs, upstream checkouts and personal filesystem paths are excluded. The existing PDFs already present on `main` are preserved unchanged; this publication does not add new reference PDFs or claim ownership of them.
+
+## Published diagnostics and metrics
+
+Native function maps contain addresses, labels and symbol names for matching
+performance captures, not emulator implementations or ROM data. Numerical
+build/capture summaries, original diagnostics/decoder code, and aggregate AI
+usage exports are included. Raw conversations, account identifiers/credentials,
+raw board captures, supplied BIOS bytes and game imagery remain excluded.
+The V46 integration source is explicitly labeled unfinished; the latest private
+packaged and board-measured version is V45.

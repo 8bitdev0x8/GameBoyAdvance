@@ -13,6 +13,7 @@
 #include "src/VideoIdleMonitor.h"
 #include "src/FrameInputLatch.h"
 #include "gba/core/render_worker.hpp"
+#include "DebugLog.h"
 
 class HostRenderThread {
   gba::ScanlineWorker& worker_;
@@ -150,7 +151,7 @@ void testDirectWorker() {
   for(unsigned x=0;x<320;++x)
     check(first[48*320+x]==(x>=40 && x<280?0xffdf:0xdead),"Forced blank converts to RGB565 without touching margins");
   const auto completed=worker.completed();
-  submit(0);check(!worker.run_one() && worker.completed()==completed,"Clean row avoids worker wake and retains pixels");
+  submit(0);check(worker.run_one() && !worker.run_one() && worker.completed()==completed,"Queued clean row is consumed without rendering or copying");
   ppu.mark_dirty(1);submit(1);
   std::atomic<bool> rebinding{false};
   std::thread rebind([&] { rebinding.store(true,std::memory_order_release);worker.set_video_target(nullptr,0); });
@@ -164,7 +165,22 @@ void testDirectWorker() {
   check(std::all_of(first.begin(),first.end(),[](uint16_t v){return v==0xaaaa;}),"Rebound worker never writes retired target");
   for(unsigned y=0;y<240;++y)for(unsigned x=0;x<320;++x)
     check(second[y*320+x]==(y==50 && x>=40 && x<280?0xffdf:0xbeef),"Rebound output preserves other rows and margins");
-  std::cout<<"PASS: direct worker forced blank, clean-row suppression, pending-job detach and target lifetime/rebind\n";
+  // Multiple queued jobs must retain FIFO order and clean duplicates must
+  // leave the previous pixels intact. Exercise ring wrap over 64 batches.
+  worker.set_video_target(first.data()+48*320+40,320);
+  for(unsigned batch=0;batch<64;++batch) {
+    worker.wait();
+    const int base=int((batch*3)%150);
+    for(int row=base;row<base+3;++row)ppu.mark_dirty(row);
+    const auto before=worker.completed();
+    submit(base);submit(base+1);submit(base+2);submit(base+2);
+    for(unsigned job=0;job<4;++job)check(worker.run_one(),"Four queued jobs consumed");
+    check(!worker.run_one() && worker.completed()==before+3,"Duplicate queued row avoids stale row copy");
+    worker.wait();
+    for(int row=base;row<base+3;++row)for(unsigned x=40;x<280;++x)
+      check(first[(row+48)*320+x]==0xffdf,"Queued batch pixels survive ring wrap");
+  }
+  std::cout<<"PASS: queued worker forced blank, clean-row suppression, ring wrap, duplicate line, pending-job detach and target lifetime/rebind\n";
 }
 void testTileCacheWrap() {
   for(bool eightBit:{false,true}) {
@@ -372,6 +388,15 @@ int main(int argc,char**argv) {
     for(unsigned i=0;i<1000;++i){(void)loader.read32(0);(void)loader.read32(32768);}
     check(loader.hotMisses==conflictMisses,"Two-way SRAM cache keeps colliding code/data lines");
     std::cout<<"PASS: SRAM ROM cache line boundaries, direct callbacks, hits and two-way conflicts\n";
+    check(fastAccess.code_line!=nullptr,"Compressed ROM opts into stable instruction lines");
+    const uint8_t* stableCode=fastAccess.code_line(fastAccess.context,256);
+    check(stableCode && std::equal(stableCode,stableCode+256,original.data()+256),"Instruction line initially matches source ROM");
+    for(unsigned i=0;i<128;++i)(void)loader.read32((i*32768u)%ROM_SIZE);
+    check(std::equal(stableCode,stableCode+256,original.data()+256),"Instruction line survives evicting ordinary data-cache reads");
+    const uint8_t* nextCode=fastAccess.code_line(fastAccess.context,512);
+    check(nextCode && std::equal(nextCode,nextCode+256,original.data()+512),"Explicit instruction refill changes window safely");
+    check(!fastAccess.code_line(fastAccess.context,1) && !fastAccess.code_line(fastAccess.context,ROM_SIZE),"Invalid instruction line requests fail safely");
+    std::cout<<"PASS: instruction window survives ordinary data-cache eviction and matches ROM after explicit refill\n";
     for(unsigned i=0;i<32;++i)(void)loader.page(i*16);
     const auto backingMisses=loader.misses;
     for(unsigned pass=0;pass<16;++pass)for(unsigned i=0;i<32;++i)
@@ -408,26 +433,48 @@ int main(int argc,char**argv) {
     std::cout<<"PASS: EEPROM 6/14-bit addressing and serial round-trip\n";
     const bool threaded=getenv("GBA_TEST_THREADED")!=nullptr;
     const bool directVideo=getenv("GBA_TEST_DIRECT_VIDEO")!=nullptr;
+    const bool renderProfiling=getenv("GBA_TEST_RENDER_PROFILE")!=nullptr;
     check(!directVideo || threaded,"Direct output requires threaded renderer");
+    check(!renderProfiling || threaded,"Render profiling requires worker backend");
     std::vector<uint16_t> videoPixels;
     gba::ScanlineWorker worker;
+    worker.set_profile_enabled(renderProfiling);
+    gba::RenderProfile previousRenderProfile{};
     HostRenderThread renderThread(worker,threaded);
+    std::vector<uint8_t> borrowedBios; // External view outlives both emulators.
     gba::Emulator memory,compressed;
+    memory.cpu().optimize_thumb_alu=false;
     compressed.cpu().set_idle_acceleration(true);
     compressed.cpu().set_fast_fetch(true);
+    compressed.cpu().set_block_execution(false);
     memory.bus().optimize_video_writes=false;
+    memory.cartridge().optimize_bios_reads=false;
     memory.ppu().optimize_video_writes=false;
     memory.load_rom(original);
     auto provider=std::make_unique<CompressedRom>();auto* stats=provider.get();
     compressed.cartridge().set_scan_progress(scanProgress);
     compressed.set_rom_provider(std::move(provider));
-    check(scanCompleted==ROM_SIZE && scanCalls==ROM_BLOCK_COUNT,"Scan progress covers every ROM chunk");
+    const auto expectedScanCalls=(ROM_SIZE+1023u)/1024u;
+    check(scanCompleted==ROM_SIZE && scanCalls==expectedScanCalls,"Scan progress covers every 1 KiB ROM chunk");
     memory.cartridge().auto_detect_save_type();compressed.cartridge().auto_detect_save_type();
-    check(scanCalls==ROM_BLOCK_COUNT,"Cached feature scan does not repeat callbacks");
+    check(scanCalls==expectedScanCalls,"Cached feature scan does not repeat callbacks");
     check(compressed.cartridge().save_type()==memory.cartridge().save_type() && compressed.cartridge().rtc_enabled()==memory.cartridge().rtc_enabled(),"Save/RTC detection matches original ROM");
     std::cout<<"PASS: cartridge scan progress, cached scan, save/RTC detection; save type "<<int(compressed.cartridge().save_type())<<"\n";
-    bool replacement=getenv("GBA_TEST_HLE") == nullptr;
-    if(replacement) {
+    const char* localBiosPath=getenv("GBA_TEST_BIOS_PATH");
+    bool replacement=localBiosPath || getenv("GBA_TEST_HLE") == nullptr;
+    if(localBiosPath) {
+      auto bios=load(localBiosPath);
+      check(bios.size()==16384,"Local GBA BIOS is exactly 16 KiB");
+      std::cout<<"Local BIOS: 16384 bytes, SWI vector 0x"<<std::hex
+               <<(unsigned(bios[8])|(unsigned(bios[9])<<8)|(unsigned(bios[10])<<16)|(unsigned(bios[11])<<24))
+               <<std::dec<<"\n";
+      memory.load_bios(bios);
+      if(getenv("GBA_TEST_BIOS_VIEW")) {
+        borrowedBios=std::move(bios);
+        compressed.cartridge().set_bios_view(borrowedBios);
+        std::cout<<"External BIOS view enabled; conservative reference retains owned copy\n";
+      } else compressed.load_bios(std::move(bios));
+    } else if(replacement) {
       memory.load_bios(std::vector<uint8_t>(std::begin(gba_bios_bin),std::end(gba_bios_bin)));
       compressed.load_bios(std::vector<uint8_t>(std::begin(gba_bios_bin),std::end(gba_bios_bin)));
     } else {memory.load_bios(makeBiosStub());compressed.load_bios(makeBiosStub());}
@@ -440,6 +487,32 @@ int main(int argc,char**argv) {
       worker.set_video_target(videoPixels.data()+48*320+40,320);
     }
     if(threaded)compressed.set_render_backend(worker.backend());
+    const char* binaryLogPath=getenv("GBA_TEST_BINARY_LOG");
+    check(!binaryLogPath || renderProfiling,"Binary log test requires render profiling");
+    GbaDebug::Recorder recorder;
+    std::vector<uint8_t> logStorage(binaryLogPath?GbaDebug::StorageBytes:0);
+    recorder.bind(logStorage);
+    auto captureLogCounters=[&](uint32_t frame) {
+      GbaDebug::Counters c{};const auto p=worker.profile_snapshot();
+      c[GbaDebug::FrameNo]=frame;c[GbaDebug::WallUs]=micros();c[GbaDebug::UptimeMs]=micros()/1000;
+      c[GbaDebug::DrawUs]=compressed.render_wall_us();c[GbaDebug::WaitUs]=worker.wait_wall_us();
+      c[GbaDebug::QfullUs]=worker.full_wait_wall_us();c[GbaDebug::BarrierUs]=worker.barrier_wait_wall_us();
+      c[GbaDebug::PrepUs]=p.stages.setup_us;c[GbaDebug::BgUs]=p.stages.background_us;
+      c[GbaDebug::ObjUs]=p.stages.object_us;c[GbaDebug::MixUs]=p.stages.composite_us;
+      c[GbaDebug::RgbUs]=p.stages.rgb_us;c[GbaDebug::OtherUs]=p.other_us;c[GbaDebug::WorkerUs]=p.total_us;
+      c[GbaDebug::Jobs]=p.jobs;c[GbaDebug::DirtyJobs]=p.dirty_jobs;
+      c[GbaDebug::RomMisses]=stats->misses;c[GbaDebug::DecodeUs]=stats->inflateUs;
+      c[GbaDebug::IFetchHits]=compressed.cartridge().instruction_hits();
+      c[GbaDebug::IFetchFills]=compressed.cartridge().instruction_fills();
+      c[GbaDebug::GuestCycles]=uint32_t(compressed.cpu().current_cycle());
+      c[GbaDebug::VblankCycles]=uint32_t(compressed.cpu().vblank_skipped_cycles());
+      c[GbaDebug::GuestPc]=compressed.cpu().state().regs[15];
+      c[GbaDebug::Flags]=compressed.cpu().block_execution()?GbaDebug::BlocksOn:0u;
+      if(compressed.cpu().alu_burst() && !compressed.cpu().block_execution())c[GbaDebug::Flags]|=GbaDebug::AluBurstOn;
+      c[GbaDebug::Keys]=uint32_t((~compressed.bus().keyinput())&0x03ffu);
+      c[GbaDebug::KeyReads]=compressed.bus().keyinput_read_count();return c;
+    };
+    auto previousLogCounters=binaryLogPath?captureLogCounters(0):GbaDebug::Counters{};
     const unsigned frames=getenv("GBA_TEST_FRAMES")?unsigned(std::stoul(getenv("GBA_TEST_FRAMES"))):1200;
     for(unsigned frame=0;frame<frames;++frame) {
       if(directVideo && frame==3000) {
@@ -473,6 +546,26 @@ int main(int argc,char**argv) {
       check(memory.cpu().current_cycle()==compressed.cpu().current_cycle(),"Exact cycle parity with idle acceleration");
       check(memory.bus().idle_bus_state()==compressed.bus().idle_bus_state(),"Bus/prefetch/latch parity with idle acceleration");
       compressed.flush_render();
+      if(renderProfiling) {
+        const auto nowProfile=worker.profile_snapshot();
+        const auto delta=gba::renderProfileDelta(nowProfile,previousRenderProfile);
+        check(gba::renderProfileConsistent(delta),"Per-frame renderer phase partition");
+        check(nowProfile.total_us==compressed.render_wall_us(),"Profile total equals Draw counter");
+        check(nowProfile.dirty_jobs==worker.completed(),"Profile dirty jobs equal completed scanlines");
+        previousRenderProfile=nowProfile;
+      }
+      if(binaryLogPath) {
+        const auto counters=captureLogCounters(frame+1);
+        auto delta=GbaDebug::frameDelta(counters,previousLogCounters);previousLogCounters=counters;
+        check(GbaDebug::consistent(delta),"Binary per-frame timing partition");
+        delta[GbaDebug::Flags]|=GbaDebug::TimingValid;
+        check(recorder.append(1,delta),"Append binary frame");
+        if(frame%300==299) {
+          GbaDebug::Profile pc{};pc[GbaDebug::PcFrame]=frame+1;
+          pc[GbaDebug::PcId1]=pc[GbaDebug::PcId2]=pc[GbaDebug::PcId3]=0xffffu;
+          check(recorder.append(2,pc),"Append periodic binary profile");
+        }
+      }
       if(directVideo) {
         const auto expected=memory.framebuffer();
         for(unsigned y=0;y<240;++y)for(unsigned x=0;x<320;++x) {
@@ -494,17 +587,36 @@ int main(int argc,char**argv) {
       }
     }
     std::cout<<"PASS: compressed vs original ROM CPU/frame parity for "<<frames<<" emulated frames with input\n";
+    if(binaryLogPath) {
+      GbaDebug::Config config;config.cpuHz=config.psramHz=0; // Host fixture, not board performance.
+      check(recorder.startDump(config),"Freeze native log export");
+      std::ofstream logFile(binaryLogPath,std::ios::binary);unsigned part=0;
+      while(recorder.exporting()) {
+        const auto pending=recorder.pending();const size_t n=std::min(pending.size(),size_t(1+(part++*17)%64));
+        logFile.write(reinterpret_cast<const char*>(pending.data()),n);recorder.consume(n);
+      }
+      check(bool(logFile),"Save native binary log");
+      std::cout<<"PASS: binary frame/profile logging with complete-record eviction and partial-write export; bytes "
+          <<recorder.used()<<" records "<<recorder.count()<<" overwritten "<<recorder.dropped()<<"\n";
+    }
     if(directVideo)std::cout<<"PASS: direct RGB565 output and protected margins every frame, including display target replacement at frame 3000\n";
     if(threaded) {
       compressed.flush_render();check(worker.completed()>0,"Real render worker exercised");
+      check(worker.wait_wall_us()==uint32_t(worker.full_wait_wall_us()+worker.barrier_wait_wall_us()),"Queue-full and barrier wait accounting sums to total modulo timer wrap");
       std::cout<<"PASS: threaded renderer completed "<<worker.completed()<<" scanlines\n";
+      std::cout<<"PASS: queue-full and barrier elapsed counters sum to total wait\n";
+      if(renderProfiling)std::cout<<"PASS: core-1 phase partition, Draw total and completed-job accounting on every frame\n";
     }
     std::cout<<"Idle cycles skipped "<<compressed.cpu().idle_skipped_cycles()<<" of "<<compressed.cpu().current_cycle()<<"\n";
     std::cout<<"VBlank polling cycles skipped "<<compressed.cpu().vblank_skipped_cycles()<<"\n";
     std::cout<<"Instruction fast reads "<<compressed.bus().code_fetch_fast_hits<<" of "<<compressed.bus().code_fetch_attempts<<"\n";
+    std::cout<<"Thumb ALU fast executions "<<compressed.cpu().fast_thumb_alu_count<<"\n";
+    std::cout<<"Instruction window hits "<<compressed.cartridge().instruction_hits()<<" fills "<<compressed.cartridge().instruction_fills()<<"\n";
     std::cout<<"Thumb base-in-list cases: loads "<<compressed.cpu().base_load_corrections<<" stores "<<compressed.cpu().base_store_corrections<<"\n";
     std::cout<<"Video writes "<<compressed.bus().video_writes<<" unchanged "<<compressed.bus().unchanged_video_writes
-      <<" register halves "<<compressed.ppu().register_writes<<" unchanged "<<compressed.ppu().unchanged_register_writes<<"\n";
+      <<" register halves "<<(compressed.ppu().register_writes+compressed.ppu().skipped_register_halves)
+      <<" unchanged "<<(compressed.ppu().unchanged_register_writes+compressed.ppu().skipped_register_halves)<<"\n";
+    std::cout<<"Display register halves bypassed before join "<<compressed.ppu().skipped_register_halves<<"\n";
     std::cout<<"Tile cache optimized hits "<<compressed.ppu().tile_hits<<" misses "<<compressed.ppu().tile_misses
       <<" reference hits "<<memory.ppu().tile_hits<<" misses "<<memory.ppu().tile_misses
       <<" partial invalidations "<<compressed.ppu().partial_invalidations<<"\n";

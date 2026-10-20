@@ -1,6 +1,26 @@
 # Development history: from controller reports to a running GBA
 
-This chronology is reconstructed from the project conversation, retained sketches, local version archives, summaries and test logs. It covers the available development record through **19 October 2026**. Exact timestamps were not retained for each iteration, so version numbers express sequence rather than invented dates or backdated Git commits. The newest report takes precedence over earlier expectations or measurements.
+This chronology is reconstructed from the project conversation, retained sketches, local version archives, summaries and test logs. It covers the available development record through **20 October 2026**. Exact timestamps were not retained for each iteration, so version numbers express sequence rather than invented dates or backdated Git commits. The newest report takes precedence over earlier expectations or measurements.
+
+## Origin timestamps
+
+Windows creation metadata and the original Codex session establish distinct
+milestones. Times below are Dublin local time (UTC+01:00 on these dates).
+
+| Milestone | Dublin time | UTC | Evidence |
+| --- | --- | --- | --- |
+| Workspace folder created | 18 Oct 2026, 22:50:09 | 18 Oct, 21:50:09 | `<workspace>` Windows CreationTime |
+| Original project session created | 18 Oct 2026, 22:50:23 | 18 Oct, 21:50:23 | Original session metadata |
+| First user request recorded | 18 Oct 2026, 22:51:27 | 18 Oct, 21:51:27 | Original user-message event |
+| First surviving original source file | **18 Oct 2026, 22:54:53** | **18 Oct, 21:54:53** | `DualSenseReader/DualSenseReader.ino` CreationTime |
+| GBA emulator subfolder created | 19 Oct 2026, 00:09:42 | 18 Oct, 23:09:42 | `GBAPrototype` CreationTime |
+
+The first sketch timestamp is 21:54:53.1568465 UTC; the initial root README
+follows at 21:54:53.3110283 UTC. The first surviving GBA artifacts are a local
+compressed ROM and its manifest at 23:09:42 UTC, followed by its README one
+second later. These are observed local creation timestamps, not proof that no
+earlier deleted file existed. A few generated CMake stamp rules have synthetic
+2001 dates; they are not evidence of project work in 2001.
 
 ## 1. Read a DualSense on the ESP32
 
@@ -132,16 +152,284 @@ Small changed VRAM ranges now invalidate overlapping decoded tile rows, with a c
 
 The native 6000-frame sequence counted 4,141,934 unchanged writes out of 4,196,721 video writes (98.69%) and 1,039,108 unchanged halves out of 1,154,176 storage-register half writes (90.03%). Decoded tile-row misses fell from 8,011,631 in the conservative reference to 3,848,078, about 51.97% fewer. Worker jobs changed only from 958,816 to 958,723. This establishes less redundant work in that sequence, not a corresponding FPS multiplier or elimination of most scanline rendering.
 
-V28 also adds a startup SRAM/PSRAM access benchmark and the original HDMI handler's elapsed time in ms/s. The memory table covers 32 KiB SRAM, 32 KiB PSRAM and 256 KiB PSRAM, using sequential and dependent/scattered accesses. It measures CPU-observed cached loop costs with HDMI running, rather than raw PSRAM chip latency or contention during active emulation. No board table values have yet been reported.
+V28 also adds a startup SRAM/PSRAM access benchmark and the original HDMI handler's elapsed time in ms/s. The memory table covers 32 KiB SRAM, 32 KiB PSRAM and 256 KiB PSRAM, using sequential and dependent/scattered accesses. It measures CPU-observed cached loop costs with HDMI running, rather than raw PSRAM chip latency or contention during active emulation. Later video and V30 reports supplied the table values; see the continuation below.
 
-The latest user report is **7 FPS, PAD ON, VBskip 12%, Run 113, Draw 22, Copy 0 and Wait 14 ms/frame**. The screen and duration were unspecified. The Run/Draw/Wait readings are lower than the preceding v27 report, but FPS remains about 7 and these are not controlled same-scene measurements. Wait is included in Run, and Draw overlaps Run, so these times must not be added. V28 ROM miss/decode, HDMI resets, IRQ time and memory results were not supplied. Neither 30 nor 60 FPS has been demonstrated.
+The V28 user report was **7 FPS, PAD ON, VBskip 12%, Run 113, Draw 22, Copy 0 and Wait 14 ms/frame**. The screen and duration were unspecified. The Run/Draw/Wait readings are lower than the preceding v27 report, but FPS remains about 7 and these are not controlled same-scene measurements. Wait is included in Run, and Draw overlaps Run, so these times must not be added. V28 ROM miss/decode, HDMI resets, IRQ time and memory results were not supplied. Neither 30 nor 60 FPS has been demonstrated.
 
 On-board PC sampling, DWT cycle/stall measurements, XIP/bus counters and controlled headless/UART-off experiments are proposed next profiling steps. Dynamic translation or a decoded-instruction cache, interpolator-assisted rendering and a different scanout backend are possible larger changes, not implemented v28 features. The existing backend interprets guest instructions; on-demand ROM decompression is not ROM recompilation. The [v28 findings and profiling plan](performance-v28.md) explain these distinctions.
 
-## 11. Prepare and update an educational publication
+## 11. Prepare and update an educational publication (initial documentation checkpoint)
 
 The user requested a full architecture/history/debugging README and a `develop` branch in `8bitdev0x8/GameBoyAdvance`. The existing repository already had a GPLv3 file and reference documents. Those were preserved.
 
 The emulator core's own README explicitly withholds redistribution rights. The user chose to publish the documentation and original support code while excluding the modified core. ROMs, generated game data, game-containing firmware and old core archives were also excluded. The result records what was built locally without presenting an incomplete public tree as a ready-to-build emulator release.
 
 The main lessons are practical: isolate the smallest failing subsystem, make progress visible before optimizing, retain a booting fallback, inspect actual linker placement, compare correctness after timing changes, and separate measured hardware results from native-test expectations.
+
+## 12. Memory latency, BIOS and native PC sampling: V29–V33
+
+V29 bundled CPU/bus placement and read-path changes. Native correctness checks
+passed, but the Feather reported CPU HARDFAULT with fault status zero. The last
+stage and cause were not established. V30 returned to the booting V28 core for
+an isolated BIOS experiment. The supplied local BIOS booted; a BIOS change did
+not remove the performance problem. Its exact bytes remain private, alongside
+the earlier replacement BIOS and their distinct selection paths.
+
+The memory benchmark finally provided physical evidence. The V30 dependent-read
+loop reported SRAM 32 KiB **21 ns**, PSRAM 32 KiB **767 ns**, and PSRAM 256 KiB
+**1,188 ns** per observed operation. The last value was clarified after an initial
+transcription of 118. These loops ran with HDMI enabled: they are neither raw
+chip timing nor proof that every frame spends the same percentage on memory.
+The video handler used roughly **146–147 ms per second**, around 14.7% of one
+core's elapsed time. Eliminating only that measured handler cost would ideally
+give about 1.17× speed, far short of 7→60 FPS.
+
+V31 added on-board sampling of the **native M33 program counter**, rather than
+only counting guest instructions. A dithered hardware-timer interrupt captures
+the interrupted PC into bounded histograms. A two-pass build maps the samples
+against the exact final ELF. No allocation or text output occurs inside that
+interrupt. Early samples identified bus reads, BIOS reads, interpreter execution
+and renderer submission/waiting. Different five-second windows must not be
+added into one percentage distribution.
+
+V32 used scalar BIOS reads and avoided joining the renderer for unchanged
+storage-only display-register writes. The user still reported poor performance.
+V33 introduced a stable **256-byte SRAM instruction line**. Ordinary ROM data
+reads can no longer evict the buffer under an instruction pointer; complete
+instruction bounds, peripheral exceptions, guest cycles and prefetch semantics
+remain. This is instruction fetching, not ROM recompilation. Reports still
+placed submission around 22%, code fetch around 12%, and Wait at 24 ms/frame.
+
+Sources: [V29](performance-v29.md), [BIOS trial](bios-test-v30.md),
+[PC sampler](profiling-v31.md), [V32](performance-v32.md),
+[V33](performance-v33.md), [mGBA reference review](mgba-reference.md).
+
+## 13. Queue the renderer safely, then make failure diagnosable: V34–V39
+
+V34 replaced a drain-before-every-line handoff with a bounded four-job queue.
+Core 0 publishes jobs; core 1 consumes them. Shared video-memory changes and
+buffer lifetime changes still require synchronization. A deeper queue can
+hide short scheduling gaps, but cannot make a renderer process pixels faster.
+Schedule refresh also computes the next deadline in one pass.
+
+The user reported an improvement, but the HUD showed contradictory Wait and
+Qfull/Barrier readings. Investigation found a diagnostic-row ownership bug;
+V34d corrected it. The bug's role in the specific transcribed readings was not
+proven. This prompted matching sample numbers and later binary capture.
+
+V35's next CPU/fetch/placement trial hardfaulted on hardware despite native
+tests passing. V36 restored the V34d bus/fetch arrangement, retained the tested
+Thumb ALU path and added PC/LR/SP, HFSR/SFSR and core-number recovery details.
+The board booted at about 5–10 FPS. A zero CFSR alone was insufficient to
+identify the cause of earlier failures.
+
+V37 captured immutable video-register state in each queued line job. Scrolling,
+window and blend-register changes therefore need not drain the renderer just
+to preserve an old register value. VRAM/palette/OAM still have shared ownership
+barriers. The desktop tests showed much lower explicit barrier waiting without
+a significant total speedup. Hardware failed at stage 3, cartridge scanning,
+before this render path was active. The fault addresses resolved to an abort
+path; allocation failure was a leading explanation, not a proved original caller.
+
+V38 replaced the scan's temporary 16 KiB allocation with a fixed 1 KiB buffer
+and overlap, and recorded future abort callers. It passed scanning, then the
+board aborted at stage 5, BIOS loading. This time the retained caller identified
+`operator new` after a null allocation. V39 added checked BIOS storage: copy to
+internal SRAM only when an 8 KiB heap reserve can remain; otherwise borrow an
+immutable flash view of the same BIOS. The board ran again. The reported 5–12
+FPS and Wait 8 / Qfull 8 / Barrier 0 ms/frame established operation, not a
+controlled sustained improvement.
+
+Sources: [V34](performance-v34.md), [HUD correction](diagnostics-v34d.md),
+[V35](performance-v35.md), [V36](recovery-v36.md),
+[V37](performance-v37.md), [V38](recovery-v38.md), [V39](recovery-v39.md).
+The [PicoDMG comparison](picodmg-reference.md) also explains why a fast original
+Game Boy emulator does not establish achievable GBA speed on this hardware.
+
+## 14. Replace handwritten HUD readings with retained evidence: V40–V41
+
+V40 split core-1 rendering into background drawing, objects, composition,
+preparation, RGB conversion and other work. The user observed approximately
+4–20 FPS in different scenes. Their copied timings came from different windows,
+so a single frame-time partition could not be reconstructed from them.
+
+V41 added a **24 KiB binary PSRAM ring**. Every completed game frame records
+performance counters; periodic records retain CPU profiles. Sparse encoding
+keeps this small enough to coexist with ROM and working buffers. The oldest
+records are overwritten, so a capture is a retained window rather than a full
+play-session trace. Data is volatile and must be exported before reset.
+
+The PC requests a USB serial export, temporarily pausing the game, validates the
+framing, decodes CSV/JSON, and generates an offline browser chart. Captures now
+save under `logs` with local timestamps, avoiding accidental overwrite of a
+previous `gba-log.bin`. The ESP32 controller UART is separate from this USB
+debug channel. Decoder tests check incomplete/corrupt records, wrapped counters,
+version/map association and timing partitions.
+
+This changed the development method: analyze matching frame records and actual
+sample windows; distinguish queue-full waiting from shared-state barriers;
+deduplicate overlapping exports; retain the exact ELF map. Native and board
+measurements remain separate.
+
+Sources: [renderer profiling](profiling-v40.md), [binary log format and workflow](debug-log-v41.md).
+
+## 15. Compositor and CPU-fetch experiments: V42–V44
+
+V41 logs placed composition at roughly 53–73% of measured rendering in selected
+captures. V42 introduced window spans, preselected background rows and packed
+layer information; it avoids searching for an unnecessary second layer when
+alpha blending cannot use one. Controlled desktop runs reduced rendering time
+by about 21–22% and total time by 6–9%. Those host figures are not RP2350 FPS.
+
+V42 board logs then placed CPU dispatch and instruction fetching ahead of
+renderer waiting in slow scenes. V43 specialized constant-width ARM/Thumb code
+fetches and simplified instruction-window hits. Controlled host runs reduced
+CPU-only time by 3.4% and total time with rendering by 1.8%. A speculative
+flag-update change was rejected rather than bundled into the candidate.
+
+V44 specialized ordinary opaque compositor spans. Its small host differences
+were scene dependent, including a regression. It also tested bounded predecoded
+Thumb ALU blocks: **3,328 bytes** of entries, architectural fetch/timing retained,
+no native JIT. That prototype averaged only **1.37 instructions per entry**.
+Lookup, validation and entry costs outweighed saved decode work; measured
+CPU-only host time rose around 8–11%. Blocks therefore default **off**, with USB
+commands and log flags for an explicit board A/B trial. A failed narrow block
+prototype does not prove all native translation designs would fail.
+
+Seven V44 exports contain **1,735 unique completed frames** after exact duplicate
+removal, covering **160.738 seconds** of retained activity. Their weighted rate
+is **10.79 FPS**; the five longer windows range from **6.90 to 19.85 FPS**. These
+are different retained game scenes, not one sustained session or a controlled
+V43/V44 comparison. Earlier "no signal" recovered; these captures do not
+identify its cause. The reset counter remains five in every retained frame.
+
+The latest slow V44 window reports Run **138.09**, Draw **35.23**, Wait **13.96
+ms/frame**; BG **15.04** and Mix **14.26 ms/frame** dominate Draw. Queue-full
+waiting contributes **13.66 ms**, explicit barriers only **0.30 ms**. Decode
+averages **3.89 ms/s**, so compressed-ROM decoding is not the principal cost
+in that window. Partial top-three PC windows put dispatch and specialized
+fetch ahead of the other recorded functions; this is not a complete CPU profile.
+
+**Run includes Wait, and Draw overlaps Run. Never add those three values.**
+The 60 FPS target remains unmet. Generic ARM7 interpretation, address/bus/timing
+work, rendering and HDMI preemption all remain material. Sound synthesis is
+muted, but the guest's own sound-driver instructions and required device timing
+still run. Neither UART nor compression has been established as the dominant
+bottleneck in these recent logs.
+
+Sources: [V42](performance-v42.md), [V43](performance-v43.md),
+[V44](performance-v44.md), [audited V44 board captures](v44-board-results.md).
+
+## 16. Make physical memory understandable
+
+The user requested a disk-usage-style map of ROM, code and data. The interactive
+explorer separates **520 KiB internal SRAM**, **8 MiB PSRAM**, **8 MiB flash** and
+**8 KiB OTP**. Sources are labeled: exact build symbols/size, source-defined
+allocations, board free-heap observations, residual accounting or unknown
+occupancy. It is a snapshot, not a live USB memory reader.
+
+The UI moved from four small maps to one large treemap with memory tabs,
+breadcrumbs, Back, wrapped labels, an exact allocation list and measurement
+notes. Small allocations remain selectable in the list. Color identifies the
+kind of allocation, while byte count and source text preserve the meaning
+without relying on color alone. Each memory tab has its own area scale.
+
+The allocator audit corrected an earlier architectural claim: the active
+320×240 RGB565 HDMI framebuffer occupies **153,600 bytes of internal SRAM**,
+28.8% of the chip's SRAM. The explicitly allocated recovery backup is in
+PSRAM. Ordinary driver `malloc()` does not become `pmalloc()`. Latest V44
+captures report only **11,088 bytes of free heap**; this is a sample, not peak
+stack measurement or a guaranteed minimum. A second full video-memory image
+cannot simply be allocated there.
+
+The packed Sonic ROM is **4,753,067 bytes** in flash. Decoded ROM backing pages
+occupy **7,208,960 bytes** of PSRAM. The **10,159,104-byte UF2** is a transport
+container, not that many flash payload bytes: its block headers/padding and
+256-byte payloads explain why its file size exceeds the physical 8 MiB flash.
+OTP occupancy and the PSRAM area outside the project arena were not measured
+and are labeled unknown/reserved, rather than free.
+
+Sources: [memory placement](memory-layout.md), [explorer and UX](memory-explorer.md),
+[rendering opportunities](render-optimization-map.md).
+
+## 17. V45 renderer and CPU-burst work in progress
+
+The next local candidate tests packed RGB555 blending/brightness arithmetic
+and text-background rows that write their transparent sentinel directly,
+avoiding a redundant clear. Exhaustive brightness tests and randomized alpha
+tests preserve rounding, saturation and bit-15 behavior. No new render cache,
+second video-memory image or larger queue is introduced.
+
+An uncached bounded Thumb ALU burst and a closed-form common prefetch-state
+transition were also tested. Full architectural fetches and per-instruction
+timing remain. The CPU burst does not show a dependable desktop gain and
+defaults **off**. It can be enabled explicitly for a real-board trial; it is
+not a native-code translator or a promised large speedup.
+
+Three rotating-order desktop repeats show about **10.78% less Draw time and
+3.73% less total time** in one renderer-only replay, and **4.21% less Draw /
+1.12% less total** in a later replay. These are MSVC host results. The CPU-only
+variant is approximately neutral to slower. All variants have matching guest
+cycles, PC and state/output hashes for the measured workloads.
+
+V45's local packaging now passes UF2/vector/stack/ROM/BIOS/map checks and the
+6,000-frame regression. The firmware is `output/GBAFeather-Sonic-v45-USB.uf2`;
+its 1,037 mapped functions match the exact final ELF. ARM static SRAM is 245,700
+bytes, 1,448 more than V44; the emulator object is 86,920 bytes. These totals
+are not runtime free heap. The [V45 report](performance-v45.md) and its JSON
+summary retain checksums and details. **V44 is the latest board-measured build**;
+V45 board FPS is unknown. Do not label desktop percentages as measured Feather gains.
+
+## 18. Record the AI development process without inventing a bill
+
+The original project session begins on 18 October 2026. Its local usage records
+and five historical helper sessions can be audited without exporting prompts,
+private game data or account credentials. [AI-PROJECT-METRICS.md](ai-project-metrics.md)
+defines the fixed cutoff, token categories, response-ID deduplication, elapsed
+task time and current-rate API cost estimate. The machine-readable JSON/CSV and
+the audit script let a blog reader reproduce the arithmetic.
+
+Cached input is a subset of input; reasoning output is a subset of output.
+Neither is added twice. Repeated conversation context explains the large
+input count; it does not mean hundreds of millions of unique words were
+written. Cumulative counters are never summed. Helper time overlaps primary
+time, so wall time uses the union of intervals. Automatic review telemetry is
+reported separately because its model price/billing attribution is unknown.
+
+## 19. V45 gameplay evidence and CPU-focused investigation
+
+Seven V45 captures match the exact build map and validate their time partitions.
+After duplicate removal they retain 2,213 frames over 185.672 seconds. Faster
+entry/menu windows coexist with slow gameplay; the two latest windows are
+7.89 and 7.24 FPS. The latter averages Run 131.48, Draw 35.76 and Wait 14.70
+ms/frame. About 89% of Run is outside explicit renderer waiting. ROM decoding
+uses only 0.34% of elapsed time there, while the HDMI handler uses about 14.7%.
+The captured PC top-three list still puts dispatch and Thumb fetching first.
+
+The user explicitly retained smooth 60 FPS gameplay as the benchmark and asked
+for deeper CPU execution/bus/scheduler analysis. The V46 source experiment tries
+an inline leaf for cached instruction fetches, retaining the ordinary path for
+misses, aliases, peripherals and unusual states. Its synthetic correctness audit
+passes, but full packaging and board speed are not established at this checkpoint.
+More complete native/guest workload profiling and controlled board A/B remain
+necessary. See [V45-BOARD-RESULTS.md](v45-board-results.md).
+
+The publication update records completed work through V45 and explicitly labels
+V46 as unfinished. It follows the earlier decision to publish documentation and
+original support code while excluding the modified core and private game assets.
+
+## Current state and next evidence needed
+
+The Feather boots Sonic, receives the DualSense through the ESP32/UART bridge,
+renders through HSTX, and retains exportable performance evidence. Generic
+emulation works experimentally, but broad game compatibility, persistent saves,
+sound output, stable full-speed gameplay and 60 FPS are not established.
+
+The strongest next result would be repeatable real-board A/B captures on one
+slow scene, exact build maps, mode flags and matched time partitions. Larger
+architectural work—effective guest-block translation, lower-overhead bus/timing
+dispatch, dependency-based rendering, carefully budgeted video-memory ownership
+or a different scanout backend—must be justified by the remaining CPU and
+renderer costs. None should be described as completed merely because it was
+discussed. The public repository remains docs/original-support only, with the
+modified unlicensed core, supplied ROMs/BIOS and game-containing UF2s excluded.
