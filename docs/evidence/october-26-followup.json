@@ -1,0 +1,150 @@
+{
+  "fetch_fix": {
+    "comparison": {
+      "baseline_fps": 10.498349047126098,
+      "candidate_fps": 12.048445191656292,
+      "fps_change": 1.550096144530194,
+      "fps_change_percent": 14.76514200063228,
+      "baseline_run_outside_wait_ms": 90.16669444444445,
+      "candidate_run_outside_wait_ms": 78.32266666666666,
+      "qualification": "Fixed frame/input workload with equal CPU/RAM/video endpoint hashes; repeat trials quantify timing noise"
+    },
+    "qualification": "Both variants raw Flash; code-line callback only; same Casper policy3 frames1501..1680; scene not visually verified",
+    "source_change": "CompressedRom.h callback only",
+    "static_sram_unchanged": true,
+    "callback_function_flash_bytes": 36,
+    "desktop_results": "User-reported, not locally reproduced",
+    "playable_installation": "verified by runtime profile fingerprint and frame records",
+    "phases": [
+      {
+        "name": "baseline",
+        "benchmark": {
+          "phase": 3,
+          "frame": 1680,
+          "warmup": 1500,
+          "count": 180,
+          "policy": 3,
+          "start_state": 890182495,
+          "end_state": 316145756,
+          "start_video": 4121752207,
+          "end_video": 2907534620,
+          "start_cycle": 421260442,
+          "end_cycle": 471822400
+        },
+        "metrics": {
+          "weighted_fps": 10.498349047126098,
+          "mean_ms_per_frame": {
+            "run": 90.16669444444445,
+            "draw": 15.670422222222221,
+            "copy": 0.00021111111111111122,
+            "wait": 0.0,
+            "qfull": 0.0,
+            "barrier": 0.0,
+            "prep": 2.053072222222222,
+            "bg": 6.591583333333335,
+            "obj": 1.4292166666666664,
+            "mix": 3.350627777777779,
+            "rgb": 2.020022222222221,
+            "other": 0.2258999999999999
+          },
+          "irq_per_second": 31500.004695094995,
+          "cpu_hz": 240000000,
+          "psram_hz": 30000000,
+          "health_issues": []
+        }
+      },
+      {
+        "name": "candidate",
+        "benchmark": {
+          "phase": 3,
+          "frame": 1680,
+          "warmup": 1500,
+          "count": 180,
+          "policy": 3,
+          "start_state": 890182495,
+          "end_state": 316145756,
+          "start_video": 4121752207,
+          "end_video": 2907534620,
+          "start_cycle": 421260442,
+          "end_cycle": 471822400
+        },
+        "metrics": {
+          "weighted_fps": 12.048445191656292,
+          "mean_ms_per_frame": {
+            "run": 78.32266666666666,
+            "draw": 15.668366666666662,
+            "copy": 0.00013888888888888897,
+            "wait": 0.0,
+            "qfull": 0.0,
+            "barrier": 0.0,
+            "prep": 2.0518222222222215,
+            "bg": 6.591666666666665,
+            "obj": 1.4302833333333347,
+            "mix": 3.348322222222224,
+            "rgb": 2.0197055555555536,
+            "other": 0.22656666666666664
+          },
+          "irq_per_second": 31500.057531325787,
+          "cpu_hz": 240000000,
+          "psram_hz": 30000000,
+          "health_issues": []
+        }
+      }
+    ],
+    "playable_video": {
+      "frames": 1,
+      "irq_per_second": 33067,
+      "irq_ms_per_second": 154,
+      "restarts": 2,
+      "sys_hz": 240000000,
+      "hstx_hz": 126000000,
+      "hstx_csr": 1342505475,
+      "fifo_status": 264,
+      "framebuffer": 537167752,
+      "pixel_4_4": 0
+    }
+  },
+  "clock_test": {
+    "status": "stopped-invalid-clock-configuration",
+    "candidate_fps": null,
+    "error": "Invalid480/300=1.6 fractional divider; no USB benchmark",
+    "baseline_fps": 10.901263141472716,
+    "baseline_flash_hz": 30000000,
+    "restored_240mhz": true,
+    "candidate_quarantined": true
+  },
+  "recovery": {
+    "status": "restored-and-verified",
+    "video": {
+      "frames": 3,
+      "irq_per_second": 30625,
+      "irq_ms_per_second": 142,
+      "restarts": 3,
+      "sys_hz": 240000000,
+      "hstx_hz": 126000000,
+      "hstx_csr": 1342505475,
+      "fifo_status": 263,
+      "framebuffer": 537167752,
+      "pixel_4_4": 0
+    }
+  },
+  "sonic_deployment": {
+    "status": "verified",
+    "fingerprint": 2447646605,
+    "runtime_frames": 8,
+    "video": {
+      "frames": 1,
+      "irq_per_second": 32353,
+      "irq_ms_per_second": 151,
+      "restarts": 5,
+      "sys_hz": 240000000,
+      "hstx_hz": 126000000,
+      "hstx_csr": 1342505475,
+      "fifo_status": 264,
+      "framebuffer": 537120672,
+      "pixel_4_4": 0
+    },
+    "fps_measured": false
+  },
+  "block_executor_implemented": false
+}

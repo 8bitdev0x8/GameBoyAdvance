@@ -106,3 +106,11 @@ one-unit red-channel discrepancy. Later demo progression differs visibly, and
 sampled non-PC registers diverge by frame 3. See the
 [whole-ROM record](WHOLE-ROM-NATIVE-EXPERIMENT.md) and private
 `build/reference-mgba/` for the frozen reference, conversion and boundary scope.
+
+
+## 26 October: Casper direct-Flash callback fix
+
+A fresh same-ROM/same-input/same-frame board A/B measured10.49835 to12.04845 FPS (+14.77%) by supplying the missing immutable instruction-line callback. CPU/RAM/video endpoint hashes and cycles match. Static SRAM unchanged; no CPU/bus/timing implementation changes. See PERFORMANCE-2026-10-26.md for evidence and scope. This is a scripted Casper window, not a full-game average; native headless figures elsewhere are separate experiments.
+
+
+Current deployment at the user’s request: verified Sonic V52 USB at240MHz (HSTX126MHz), fingerprint2447646605; no fresh Sonic FPS result. A subsequent300MHz attempt used an invalid1.6 fractional divider and failed to enumerate USB. Its firmware was quarantined, the runner disabled, and BOOTSEL recovery to Casper240MHz was verified before the Sonic restoration. There is no valid300MHz FPS result and this failure does not establish a silicon speed limit. Event-bounded executor rewrite remains pending.

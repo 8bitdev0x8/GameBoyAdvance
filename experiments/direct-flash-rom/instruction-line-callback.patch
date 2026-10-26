@@ -1,0 +1,15 @@
+--- a/CompressedRom.h
++++ b/CompressedRom.h
+@@ -17,7 +17,11 @@
+  const uint8_t* page(uint32_t i)const {if(i>=ROM_BLOCK_COUNT){failed=true;return nullptr;}return gba_rom_packed+i*ROM_PAGE_SIZE;}
+  const uint8_t* cached_page(uint32_t i)const{return i<ROM_BLOCK_COUNT?gba_rom_packed+i*ROM_PAGE_SIZE:nullptr;}
+  std::span<const gba::u8> direct_read_span()const override{return {gba_rom_packed,ROM_SIZE};}
+- gba::RomFastAccess fast_access()const override{return {nullptr,nullptr,nullptr,nullptr,gba_rom_packed,ROM_SIZE,nullptr};}
++ static const uint8_t* codeLine(const void*,uint32_t base) {
++  if((base&255u)||base>ROM_SIZE||ROM_SIZE-base<256u)return nullptr;
++  return gba_rom_packed+base;
++ }
++ gba::RomFastAccess fast_access()const override{return {nullptr,nullptr,nullptr,nullptr,gba_rom_packed,ROM_SIZE,&codeLine};}
+  gba::u8 read_byte(gba::u32 a)const override{return a<ROM_SIZE?gba_rom_packed[a]:0xff;}
+  gba::u16 read16(gba::u32 a)const override{if(a>=ROM_SIZE-1)return RomProvider::read16(a);uint16_t v;memcpy(&v,gba_rom_packed+a,2);return v;}
+  gba::u32 read32(gba::u32 a)const override{if(a>=ROM_SIZE-3)return RomProvider::read32(a);uint32_t v;memcpy(&v,gba_rom_packed+a,4);return v;}

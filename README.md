@@ -6,7 +6,11 @@ This project grew from a simple question: can I read every controller value on a
 
 **Status updated 26 October 2026.** Sonic gameplay remains below full speed. The normal path is still an ARM/Thumb interpreter with a second-core renderer. A separate whole-ROM native experiment is being tested; it is not an established faster replacement.
 
-Recent matched native headless tests measured 3.93860 to 4.31453 FPS with a lookup cache (+9.54%), then 4.61077 FPS with IWRAM/VRAM in SRAM (+6.87% versus cached). These are single headless comparisons, not HDMI gameplay gains. Casper's matched interpreter test measured 11.48 FPS compressed versus 10.50 FPS uncompressed direct Flash (-8.54%); CPU/RAM/pixel endpoints matched. Its 4 MiB ROM fits wholly in Flash. The 60 FPS target remains unmet.
+Recent matched native headless tests measured 3.93860 to 4.31453 FPS with a lookup cache (+9.54%), then 4.61077 FPS with IWRAM/VRAM in SRAM (+6.87% versus cached). These are single headless comparisons, not HDMI gameplay gains.
+
+An external review identified a missing instruction-line callback in the Casper raw-Flash provider. A fresh board A/B confirmed **10.49835 to 12.04845 FPS (+14.77%)**, with equal CPU/RAM/video endpoints and guest cycles. The earlier 11.48 compressed versus 10.50 raw result was confounded by this missing fast path; it did not isolate memory speed.
+
+A subsequent 300MHz clock attempt used an invalid divider and failed to boot. No 300MHz FPS result exists. The candidate was quarantined and BOOTSEL recovery verified. The board is now back on **Sonic V52 at240MHz**, as requested; no fresh Sonic FPS measurement was taken. The 60FPS target remains unmet and the block-executor redesign remains pending.
 
 Read the [current performance status](GBAPrototype/PERFORMANCE-STATUS.md), [26 October results](GBAPrototype/PERFORMANCE-2026-10-26.md), [native experiment](GBAPrototype/WHOLE-ROM-NATIVE-EXPERIMENT.md), [reference-guided plan](GBAPrototype/REFERENCE-GUIDED-OPTIMIZATION.md), and [uploader version history](GBAPrototype/ROM-UPLOADER-HISTORY.md). The older V45 table below is historical, not current status.
 
