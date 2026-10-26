@@ -1,0 +1,2 @@
+PASS: RAM wait event slices, EWRAM/IWRAM, prefetch on/off, flag wake, MMIO rejection
+FAIL: VBlank wait CPU/banked/IRQ parity

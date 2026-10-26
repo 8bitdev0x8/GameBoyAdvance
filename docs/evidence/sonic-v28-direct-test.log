@@ -1,0 +1,50 @@
+BIOS SWI vector at 0x08: 0xEA000046 (stub=0xEAFFFFFE, match=0)
+BIOS SWI vector at 0x08: 0xEA000046 (stub=0xEAFFFFFE, match=0)
+PASS: RAM wait event slices, EWRAM/IWRAM, prefetch on/off, flag wake, MMIO rejection
+PASS: BEQ/BNE VBlank waits, event boundary slices, prefetch on/off, HBlank/VBlank/timer IRQs, exact CPU/bus/PPU parity and other-status-mask rejection
+PASS: direct worker forced blank, clean-row suppression, pending-job detach and target lifetime/rebind
+PASS: text background 32x32, 64x32, 32x64 and 64x64 block addressing
+PASS: 4bpp/8bpp tile cache invalidation wraparound
+PASS: independent palette, VRAM and OAM invalidation
+PASS: short UART press delivery, release, held key, disconnect and frame rollover
+PASS: maximum save allocation reused, EEPROM/SRAM/Flash sizes, Flash64 ID/program/erase/load
+PASS: silent APU preserves register/status reads, FIFO DMA requests and event times under randomized sound writes
+PASS: video DMA idle timing and timer wrap
+PASS: video IRQ progress timeout and counter/time wrap
+PASS: fixed 7.5 MiB arena capacity, alignment, overflow rejection
+PASS: SRAM ROM cache line boundaries, direct callbacks, hits and two-way conflicts
+PASS: associative backing cache avoids direct-map conflicts
+PASS: all 1024 blocks, 10000 random reads, boundaries, corrupt input
+PASS: EEPROM 6/14-bit addressing and serial round-trip
+PASS: cartridge scan progress, cached scan, save/RTC detection; save type 2
+Frame 300 PC 80bc1fc DISPCNT 1341 HASH 1dcf7d33 KEYREADS 461
+Frame 600 PC 80bc190 DISPCNT 7340 HASH 806bc991 KEYREADS 1061
+Frame 900 PC 80bcca0 DISPCNT 7340 HASH 4437b1a3 KEYREADS 1661
+Frame 1200 PC 80bcc9e DISPCNT 7340 HASH f77d2074 KEYREADS 2261
+Frame 1500 PC 80bcc9e DISPCNT 7340 HASH 5489f6b9 KEYREADS 2861
+Frame 1800 PC 80bcc9e DISPCNT 7340 HASH 8f89bd76 KEYREADS 3461
+Frame 2100 PC 80bcca0 DISPCNT 7340 HASH c7d48efd KEYREADS 4061
+Frame 2400 PC 80bcc9e DISPCNT 7340 HASH fcdd7cde KEYREADS 4661
+Frame 2700 PC 80bcca0 DISPCNT 7340 HASH d0a66d36 KEYREADS 5261
+Frame 3000 PC 80bcc9e DISPCNT 7340 HASH ff205170 KEYREADS 5861
+Frame 3300 PC 80bcca0 DISPCNT 7340 HASH 4437b1a3 KEYREADS 6461
+Frame 3600 PC 80bcc74 DISPCNT 7340 HASH f77d2074 KEYREADS 7061
+Frame 3900 PC 80bc1fc DISPCNT 7340 HASH 83eace48 KEYREADS 7661
+Frame 4200 PC 124 DISPCNT 7340 HASH 789c7aad KEYREADS 8261
+Frame 4500 PC 80bc99a DISPCNT 7340 HASH a8a3550d KEYREADS 8861
+Frame 4800 PC 80bc208 DISPCNT 7340 HASH d9bcc39 KEYREADS 9461
+Frame 5100 PC 80bcca0 DISPCNT 7340 HASH 3bfa22d KEYREADS 10061
+Frame 5400 PC 80bc890 DISPCNT 7340 HASH d8f55ad6 KEYREADS 10660
+Frame 5700 PC 80bc24c DISPCNT 7340 HASH 7de6b4b KEYREADS 11261
+Frame 6000 PC 80bcca6 DISPCNT 7340 HASH 5ba30470 KEYREADS 11861
+PASS: compressed vs original ROM CPU/frame parity for 6000 emulated frames with input
+PASS: direct RGB565 output and protected margins every frame, including display target replacement at frame 3000
+PASS: threaded renderer completed 958723 scanlines
+Idle cycles skipped 347342144 of 1685292894
+VBlank polling cycles skipped 347342144
+Instruction fast reads 89126473 of 109063662
+Thumb base-in-list cases: loads 0 stores 0
+Video writes 4196721 unchanged 4141934 register halves 1154176 unchanged 1039108
+Tile cache optimized hits 55098172 misses 3848078 reference hits 50934619 misses 8011631 partial invalidations 4732
+SRAM ROM cache: hits 117386291 misses 187416 hit percent 99.8406 backing page misses 1048
+Frame hash 5ba30470 PC 80bcca6

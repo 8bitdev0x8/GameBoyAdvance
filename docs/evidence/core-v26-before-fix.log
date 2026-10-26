@@ -1,0 +1,1 @@
+FAIL: STMIA must store the updated base when it is not first in the register list

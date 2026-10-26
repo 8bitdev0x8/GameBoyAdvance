@@ -1,0 +1,5 @@
+PASS: 8160 Thumb LDMIA/STMIA cases, all nonempty lists/base registers, EWRAM/IWRAM, base first/later/absent and flags
+PASS: 30000 mixed instruction reads preserve exact data/cycles/bus/prefetch/latches, RAM mirrors, ROM aliases/bounds, MMIO/BIOS/open-bus/DMA/byte/EEPROM fallback; fast hits 15633
+PASS: 45003 randomized/repeated video writes and reads preserve cycles/latches/memory, mirrors/alignment, byte replication/ignored writes; unchanged-write barrier and display-register dirty-state checks
+PASS: 600 VRAM DMA fixtures from ROM/EWRAM/IWRAM, half/word, destination increment/decrement/fixed/reload, mirrors/end crossing; exact cycles, IRQs, bus/latches, channel state and bytes
+PASS: 60000 randomized timer operations match independent v26 channels/registers/deadlines/IRQ/FIFO state

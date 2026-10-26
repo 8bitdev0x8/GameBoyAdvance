@@ -1,0 +1,2 @@
+PASS: BIOS low-heap and failed-allocation fallback, exact 16 KiB checked SRAM copy, all fallback bytes, empty image and owned/view replacement; no new/new[] while binding fallback
+PASS: 260 allocation-denied ROM scans; all eight markers split across 1 KiB/16 KiB boundaries and file ends, partial tails, save/RTC results, ordered progress and cached reuse

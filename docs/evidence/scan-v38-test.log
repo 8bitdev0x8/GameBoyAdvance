@@ -1,0 +1,1 @@
+PASS: 260 allocation-denied ROM scans; all eight markers split across 1 KiB/16 KiB boundaries and file ends, partial tails, save/RTC results, ordered progress and cached reuse

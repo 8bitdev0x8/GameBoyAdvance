@@ -1,0 +1,13 @@
+test_corruption_and_truncation (__main__.ProtocolTests.test_corruption_and_truncation) ... ok
+test_cpp_fixture (__main__.ProtocolTests.test_cpp_fixture) ... ok
+test_empty (__main__.ProtocolTests.test_empty) ... ok
+test_malformed_valid_crc_record (__main__.ProtocolTests.test_malformed_valid_crc_record) ... ok
+test_map_fingerprint_and_exact_ids (__main__.ProtocolTests.test_map_fingerprint_and_exact_ids) ... ok
+test_summary_weighted_fps (__main__.ProtocolTests.test_summary_weighted_fps) ... ok
+test_usb_partial_reads (__main__.ProtocolTests.test_usb_partial_reads) ... ok
+test_varint_boundaries_and_mask_bit31 (__main__.ProtocolTests.test_varint_boundaries_and_mask_bit31) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.012s
+
+OK

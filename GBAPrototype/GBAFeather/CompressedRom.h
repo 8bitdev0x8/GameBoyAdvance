@@ -4,8 +4,12 @@
 #include "src/tinf/tinf.h"
 #include <Arduino.h>
 #include "src/psram_arena.h"
+#include "src/esp_attr.h"
 
 class CompressedRom final : public gba::RomProvider {
+public:
+  bool native_code_immutable()const override{return true;}
+private:
   static constexpr uint32_t SLOTS=GBA_ROM_BACKING_BYTES/ROM_PAGE_SIZE;
   static_assert(SLOTS<65535 && ROM_BLOCK_COUNT<65535);
   static constexpr uint32_t HOT_LINE_SIZE=256,HOT_LINES=GBA_ROM_HOT_BYTES/HOT_LINE_SIZE;
@@ -17,9 +21,23 @@ class CompressedRom final : public gba::RomProvider {
   mutable uint32_t clockHand=0;
   mutable uint32_t hotTags[HOT_LINES];
   mutable uint8_t hotVictim[HOT_LINES/2];
-  static gba::u8 fastByte(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read_byte(a);}
-  static gba::u16 fast16(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read16(a);}
-  static gba::u32 fast32(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read32(a);}
+  // Separate from evictable data-cache lines. Ordinary data reads may replace
+  // hot-cache slots without invalidating the current instruction window.
+  alignas(4) mutable uint8_t instructionLine[256]{};
+  // Cache-hit callbacks execute beside the interpreter in internal SRAM.
+  // Cache fill/decompression remains on the existing flash path.
+  static gba::u8 IRAM_ATTR fastByte(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read_byte(a);}
+  static gba::u16 IRAM_ATTR fast16(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read16(a);}
+  static gba::u32 IRAM_ATTR fast32(const void* p,gba::u32 a) {return static_cast<const CompressedRom*>(p)->read32(a);}
+  static const uint8_t* codeLine(const void* p,gba::u32 base) {
+    const auto* self=static_cast<const CompressedRom*>(p);
+    if((base&255u) || base>=ROM_SIZE)return nullptr;
+    static_assert(HOT_LINE_SIZE==256);
+    const uint8_t* source=self->hotAddress(base);
+    if(!source)return nullptr;
+    memcpy(self->instructionLine,source,256);
+    return self->instructionLine;
+  }
 #ifdef __GNUC__
   __attribute__((noinline))
 #endif
@@ -69,7 +87,7 @@ public:
   }
   size_t size() const override { return ROM_SIZE; }
   gba::RomFastAccess fast_access() const override {
-    return {this,&fastByte,&fast16,&fast32,nullptr,0};
+    return {this,&fastByte,&fast16,&fast32,nullptr,0,&codeLine};
   }
   const uint8_t* page(uint32_t index) const {
     if(!cache || index>=ROM_BLOCK_COUNT) { failed=true;return nullptr; }

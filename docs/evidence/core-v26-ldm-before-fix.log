@@ -1,0 +1,2 @@
+Thumb LDMIA base r0 list 1 r0 got 2000104 expected 91000000
+FAIL: LDMIA must retain a loaded base register instead of overwriting it with writeback

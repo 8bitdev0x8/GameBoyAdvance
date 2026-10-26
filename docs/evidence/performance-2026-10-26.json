@@ -1,0 +1,106 @@
+{
+  "qualification": "Single matched comparisons; headless native results are not HDMI gameplay; Casper scripted scene not visually verified",
+  "native_cache": {
+    "baseline_fps": 3.9386037321552534,
+    "cached_fps": 4.314534554723735,
+    "improvement_percent": 9.544773938523821,
+    "headless_only": true,
+    "one_pair_not_variance_proof": true
+  },
+  "native_sram": {
+    "previous_cached_fps": 4.314534554723735,
+    "hot_memory_fps": 4.610773605329357,
+    "improvement_percent": 6.866072037394799,
+    "headless_only": true,
+    "one_pair_not_variance_proof": true
+  },
+  "casper": {
+    "baseline_fps": 11.478967375052875,
+    "candidate_fps": 10.498535804206506,
+    "fps_change": -0.9804315708463687,
+    "fps_change_percent": -8.541112966111664,
+    "baseline_run_outside_wait_ms": 82.10014999999997,
+    "candidate_run_outside_wait_ms": 90.16996666666667,
+    "qualification": "Fixed frame/input workload with equal CPU/RAM/video endpoint hashes; repeat trials quantify timing noise"
+  },
+  "casper_playable_verified": true,
+  "native_fallback_verified": true,
+  "casper_phases": [
+    {
+      "name": "compressed",
+      "benchmark": {
+        "phase": 3,
+        "frame": 1680,
+        "warmup": 1500,
+        "count": 180,
+        "policy": 3,
+        "start_state": 890182495,
+        "end_state": 316145756,
+        "start_video": 4121752207,
+        "end_video": 2907534620,
+        "start_cycle": 421260442,
+        "end_cycle": 471822400
+      },
+      "metrics": {
+        "weighted_fps": 11.478967375052875,
+        "mean_ms_per_frame": {
+          "run": 82.10014999999997,
+          "draw": 15.723850000000002,
+          "copy": 0.0001500000000000001,
+          "wait": 0.0,
+          "qfull": 0.0,
+          "barrier": 0.0,
+          "prep": 2.0505333333333327,
+          "bg": 6.645722222222219,
+          "obj": 1.4445999999999999,
+          "mix": 3.3436166666666685,
+          "rgb": 2.014138888888889,
+          "other": 0.22523888888888902
+        },
+        "irq_per_second": 31500.008322251346,
+        "cpu_hz": 240000000,
+        "psram_hz": 30000000,
+        "health_issues": []
+      },
+      "flash_used_bytes": 1720832
+    },
+    {
+      "name": "direct",
+      "benchmark": {
+        "phase": 3,
+        "frame": 1680,
+        "warmup": 1500,
+        "count": 180,
+        "policy": 3,
+        "start_state": 890182495,
+        "end_state": 316145756,
+        "start_video": 4121752207,
+        "end_video": 2907534620,
+        "start_cycle": 421260442,
+        "end_cycle": 471822400
+      },
+      "metrics": {
+        "weighted_fps": 10.498535804206506,
+        "mean_ms_per_frame": {
+          "run": 90.16996666666667,
+          "draw": 15.670055555555551,
+          "copy": 0.00012777777777777784,
+          "wait": 0.0,
+          "qfull": 0.0,
+          "barrier": 0.0,
+          "prep": 2.0534555555555563,
+          "bg": 6.591733333333338,
+          "obj": 1.4291111111111119,
+          "mix": 3.3506833333333335,
+          "rgb": 2.0177999999999985,
+          "other": 0.22727222222222235
+        },
+        "irq_per_second": 31499.981802537943,
+        "cpu_hz": 240000000,
+        "psram_hz": 30000000,
+        "health_issues": []
+      },
+      "flash_used_bytes": 4529408
+    }
+  ]
+}

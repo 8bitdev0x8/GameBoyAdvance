@@ -1,0 +1,74 @@
+{
+  "version": 25,
+  "rom": "Sonic Advance 3 (Europe)",
+  "changes": [
+    "Inline unchanged IRQ line/IE/IF/IME/advance, DMA deadline, halt and prefetch methods so interpreter does not branch into flash for tiny operations",
+    "Inline cartridge ROM-size lookup",
+    "Place only three ROM cache-hit callbacks in SRAM; retain existing miss/fill/decompression path"
+  ],
+  "build": "Arduino CLI -O3 C++20, separate source units; unchanged v24 build flags/linker/startup clock/HDMI/IRQ wrapper",
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "arduino_reported_program_bytes": 4942372,
+  "static_sram_bytes": 224552,
+  "additional_static_sram_vs_v24": 656,
+  "heap_capacity_before_dynamic_allocations": 283344,
+  "main_stack_bytes": 16384,
+  "core1_stack_bytes": 8192,
+  "psram_arena_used_bytes": 7832576,
+  "psram_arena_spare_bytes": 31744,
+  "uf2_bytes": 10005504,
+  "flash_address_span_bytes": 5002496,
+  "sha256": "e9e8f08d8761a2dac59ff400569c711c82956a5991b3cbdd7e03e2fff13a2b54",
+  "initialized_ram_load_bytes_verified": 47572,
+  "hot_rom_callbacks_in_sram": {
+    "CompressedRom::fast32(void const*, unsigned long)": "0x200001b8",
+    "CompressedRom::fastByte(void const*, unsigned long)": "0x2000026c",
+    "CompressedRom::fast16(void const*, unsigned long)": "0x20000314"
+  },
+  "cpu_run_until_static_call_sites_before": 20,
+  "cpu_run_until_static_call_sites_after": 12,
+  "native_test_frames": 6000,
+  "native_status": "PASS full CPU/banked/flags, exact guest cycles, bus/prefetch/latches, EWRAM/IWRAM and framebuffer comparison; 16 VBlank/IRQ cases, RAM wait, ROM/cache/corruption/arena/save/input/audio/video tests",
+  "native_checkpoint_count_matches_v24": 20,
+  "native_final_pc": "080bcca6",
+  "native_final_hash": "5ba30470",
+  "native_final_guest_cycles": 1685292894,
+  "native_vblank_bypassed_cycles": 347342144,
+  "native_keyinput_reads": 11861,
+  "preserved_v24_sources_verified": [
+    "GBAFeather/BoardStartup.h",
+    "GBAFeather/src/core/render_worker.cpp",
+    "GBAFeather/src/gba/core/render_worker.hpp",
+    "build.ps1",
+    "linker/feather-8mb-stack16k.ld",
+    "GBAFeather/src/core/ppu.cpp",
+    "GBAFeather/src/core/apu.cpp"
+  ],
+  "validation": "PASS UF2 headers/order/count/flash bounds; vector/stacks/PSRAM; exact packed ROM; ELF initialized RAM; unchanged moved-method bodies; compiler call-site removal and SRAM callback placement",
+  "fallback_v24_sha256": "42c86fd17bf0f9a0e9db1c51822f99cb60235cf7c3f089e59946a4bed3f1c64b",
+  "baseline_v24_hardware": {
+    "fps": 5,
+    "vblank_skip_percent_range": [
+      15,
+      21
+    ],
+    "draw_ms_per_frame": 46,
+    "copy_ms_per_frame": 10
+  },
+  "hardware_tested": true,
+  "hardware_fps": 6,
+  "limits": "Latest inferred-v25 hardware report: about 6 FPS, Run 144, Draw 37, Copy 10 ms/frame; VBskip 12%; misses 0-8/s, decode 0 ms/s. No controlled same-scene speedup proof. 30/60 FPS unmet. Native tests compare paths within the same core, not original hardware.",
+  "hardware_vblank_skip_percent": 12,
+  "hardware_run_ms_per_frame": 144,
+  "hardware_draw_ms_per_frame": 37,
+  "hardware_copy_ms_per_frame": 10,
+  "hardware_rom_misses_per_second_range": [
+    0,
+    8
+  ],
+  "hardware_rom_decode_ms_per_second": 0,
+  "hardware_report_date": "2026-10-19",
+  "hardware_version_inferred": true,
+  "hardware_report_note": "Reported during v26 development after v25 was supplied. Version inferred from sequence; the report did not explicitly name the flashed version. Scene unspecified."
+}

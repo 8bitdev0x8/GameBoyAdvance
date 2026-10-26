@@ -4,17 +4,26 @@ An educational hardware experiment: emulate a Game Boy Advance on an **Adafruit 
 
 This project grew from a simple question: can I read every controller value on an ESP32? It became a UART bridge, an HDMI input viewer, a memory and video debugging exercise, and finally a running GBA interpreter on the Feather. This repository documents the working pieces, the failed attempts, and the limits of the current result.
 
-**Current hardware result, v24, reported 19 October 2026:** Sonic Advance 3 runs with controller input and HDMI output at approximately **5 emulated FPS**. `VBskip` varies from **15-21%**, `Draw` is about **46 ms/frame**, and `Copy` is about **10 ms/frame**. The game screen and Run timing were not supplied with this measurement. The 30 FPS minimum and 60 FPS goal have **not** been reached. A 60 Hz monitor signal does not mean the emulator runs at 60 FPS.
+**Status updated 26 October 2026.** Sonic gameplay remains below full speed. The normal path is still an ARM/Thumb interpreter with a second-core renderer. A separate whole-ROM native experiment is being tested; it is not an established faster replacement.
+
+Recent matched native headless tests measured 3.93860 to 4.31453 FPS with a lookup cache (+9.54%), then 4.61077 FPS with IWRAM/VRAM in SRAM (+6.87% versus cached). These are single headless comparisons, not HDMI gameplay gains. Casper's matched interpreter test measured 11.48 FPS compressed versus 10.50 FPS uncompressed direct Flash (-8.54%); CPU/RAM/pixel endpoints matched. Its 4 MiB ROM fits wholly in Flash. The 60 FPS target remains unmet.
+
+Read the [current performance status](GBAPrototype/PERFORMANCE-STATUS.md), [26 October results](GBAPrototype/PERFORMANCE-2026-10-26.md), [native experiment](GBAPrototype/WHOLE-ROM-NATIVE-EXPERIMENT.md), [reference-guided plan](GBAPrototype/REFERENCE-GUIDED-OPTIMIZATION.md), and [uploader version history](GBAPrototype/ROM-UPLOADER-HISTORY.md). The older V45 table below is historical, not current status.
 
 ## Read the development story
 
 - [Architecture](docs/architecture.md): boards, data flow, CPU cores, timing, caches, memory and video.
-- [Complete development history](docs/development-history.md): from controller experiments through emulator v24, including failed builds.
+- [Complete development history](docs/development-history.md): from controller experiments through V45 and the unfinished V46 investigation, including failed builds.
 - [Debugging guide](docs/debugging.md): how black screens, allocator failures, startup stages and apparent game stalls were investigated.
 - [Validation and current state](docs/validation.md): what passed, what was measured on hardware, and what remains unproven.
 - [Build and wiring guide](docs/building.md): reproducible support-sketch setup and the prerequisites for the private emulator build.
+- [AI development metrics](docs/ai-project-metrics.md): auditable token/time counts, API cost estimates and reproducible JSON/CSV.
+- [Memory layout](docs/memory-layout.md) and [interactive treemap source/UX](docs/memory-explorer.md).
+- [Binary USB logging](docs/debug-log-v41.md), [on-board PC sampling](docs/profiling-v31.md), and [renderer profile fields](docs/profiling-v40.md).
 - [Third-party provenance and publication boundaries](THIRD_PARTY_NOTICES.md).
-- [Text evidence](docs/evidence/README.md): saved build summaries and native test logs.
+- [Text evidence](docs/evidence/README.md): build summaries, hardware reports and native test logs through V45, with explicitly labeled V46 work in progress.
+- [Core audit, v27](docs/core-audit-v27.md): reproduced Thumb transfer bugs, fetch/timer work and remaining accuracy gaps.
+- [Performance and profiling, v28](docs/performance-v28.md): video writes, caches, PSRAM/IRQ measurement, acceleration candidates and proposed PC sampling.
 
 ## Architecture at a glance
 
@@ -26,8 +35,8 @@ flowchart LR
     Flash[Flash: compressed ROM pages] --> Cache[PSRAM backing cache and SRAM hot cache]
     Cache --> CPU
     CPU -->|scanline jobs| PPU[Core 1: GBA scanline rendering]
-    PPU --> Frame[PSRAM GBA framebuffer]
-    Frame -->|RGB555 to RGB565 copy| Video[SRAM display framebuffer]
+    PPU --> Row[480-byte SRAM RGB555 scanline]
+    Row -->|convert and write directly| Video[SRAM RGB565 display framebuffer]
     Video --> HSTX[DMA and HSTX DVI output]
     HSTX --> Monitor[HDMI monitor]
 ```
@@ -55,7 +64,7 @@ Use 3.3 V UART logic. Initial testing powered each board separately by USB witho
 
 The ESP32 retains the complete 78-byte Bluetooth input report rather than printing a stream of human-readable values. A bounded one-item FreeRTOS queue transfers the newest report from the Bluetooth callback to the UART sender. The sender transmits at up to 100 Hz using COBS framing and CRC-16/CCITT-FALSE.
 
-The Feather validates framing, packet size, version, flags, report ID and CRC. It clears controls after a disconnect report or 250 ms without valid packets. The GBA frontend also latches short button edges across a complete guest frame because a game running at 5 FPS polls much less often than the controller updates.
+The Feather validates framing, packet size, version, flags, report ID and CRC. It clears controls after a disconnect report or 250 ms without valid packets. The GBA frontend also latches short button edges across a complete guest frame because a game running at 7 FPS polls much less often than the controller updates.
 
 | DualSense | GBA |
 | --- | --- |
@@ -72,21 +81,36 @@ The diagnostic receiver can show sticks, buttons, triggers, touch contacts, raw 
 
 | Area | State |
 | --- | --- |
-| Hardware startup | v24 confirmed working by the project author |
+| Hardware startup | V45 confirmed by valid board captures; earlier intermittent video recovery remains documented |
 | Game tested in current build | Sonic Advance 3, European version; supplied locally, not distributed |
 | Earlier game | Super Mario Advance 3: Yoshi's Island, European version |
 | Execution | Cycle-scheduled ARM/Thumb interpreter, not a native game port or dynamic recompiler |
-| CPU cores | Core 0: interpreter, scheduling, UART, presentation and video IRQ; core 1: scanline rendering |
+| CPU cores | Core 0: interpreter, scheduling, UART, HUD and video IRQ; core 1: scanline rendering and direct RGB565 output |
 | Video | 240x160 game image centered in a 320x240 RGB565 buffer; 640x480/60 Hz DVI-compatible output |
-| Measured speed | About 5 emulated FPS in the latest user report; full-speed play remains unresolved |
-| VBlank accelerator | Active; 15-21% of guest cycles bypassed in the latest report |
+| Measured speed | Latest slow V45 capture 7.24 FPS over 45.6 retained seconds; full-speed play remains unresolved |
+| VBlank accelerator | Active for recognized event-bounded polling loops; bypassed guest cycles are not host utilization |
 | ROM storage | Independently compressed pages in Feather flash, decoded on demand into PSRAM |
 | Saves | EEPROM/SRAM/Flash emulation; volatile RAM only, no persistence after reset |
 | Sound | No audio output; silent APU mode preserves relevant register/FIFO/event behavior |
-| Rendering | Single display buffer; tearing is possible; no intentional frame skipping |
+| Rendering | Direct scanline output; repeated writes avoid joins/invalidation; one display buffer can tear; no intentional frame skipping |
 | Compatibility | Experimental; no claim of complete gameplay or original-hardware accuracy |
 
-The latest native test completed **6000 emulated frames** with matching CPU/banked state, exact guest cycles, bus/prefetch/latch state, RAM and framebuffer between accelerated/compressed/threaded execution and an ordinary synchronous/original-ROM execution path. These paths share the emulator core. Agreement is useful regression evidence, not proof that both are correct against a real GBA.
+The V45 native test completed **6000 emulated frames** with matching CPU/banked state, exact guest cycles, bus/prefetch/latch state, RAM and every converted RGB565 pixel/display margin between accelerated/compressed/threaded execution and an ordinary synchronous/original-ROM path with conservative video invalidation. It also replaces the display allocation at frame 3000. These paths share the emulator core. Agreement is useful regression evidence, not proof that both are correct against a real GBA.
+
+## Performance history at a glance
+
+The V24–V28 entries are user reports with unspecified scene/duration; V45 is a retained binary capture. Times are ms/frame; `—` means not supplied. The v25 identification is inferred from the build sequence, not explicitly named in that report.
+
+| Build | FPS | Run | Draw | Copy | Wait | Main work |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| v24 | about 5 | — | 46 | 10 | — | Event-bounded VBlank polling acceleration |
+| v25, inferred | about 6 | 144 | 37 | 10 | — | Interpreter helper inlining and SRAM ROM-hit callbacks |
+| v26 | 6-7 | — | 49 | 0 | 26 | Core-1 direct video output; full-frame copy removed |
+| v27 | about 7 | 121 | 33 | 0 | 32 | Thumb correctness fixes, specialized fetches and cached timer deadlines |
+| v28 | about 7 | 113 | 22 | 0 | 14 | Unchanged-write suppression and selective tile-cache invalidation |
+| V45 slow capture | 7.24 | 131.48 | 35.76 | ~0 | 14.70 | Packed renderer math; native PC sampling and per-frame binary evidence |
+
+V28's scripted native run found 4,141,934 of 4,196,721 video writes unchanged. Decoded tile-row cache misses fell from 8,011,631 to 3,848,078, while almost all scanlines still rendered. Those work counts are not hardware speedup percentages. Read the [full history](docs/development-history.md) for earlier 1-5 FPS builds, black-screen failures and subsequent corrections.
 
 ## What is published here
 
@@ -94,7 +118,7 @@ This is a **development record and original support-code repository**, not a com
 
 The local experiment adapts [`gba-embedded`](https://github.com/bhoot1234567890/gba-embedded) at commit `4ddb79e60f20979b8e438dfa00bf1c71a4a5a289`. Its README explicitly states that it grants no licence to copy, modify or redistribute the code. The modified CPU, bus, PPU and other core sources under `GBAPrototype/GBAFeather/src/core/` and `src/gba/` are therefore **excluded from this publication**. The repository's GPLv3 file does not grant rights to that absent upstream code.
 
-Included: original controller/UART code, HDMI and PSRAM diagnostics, emulator integration/support files, the ROM packer, test harnesses, provenance and development documentation. The controller viewer and standalone hardware tests can be built independently. The GBA frontend and its native tests require the separately held modified core and locally generated ROM assets; **a fresh clone cannot build the v24 emulator as-is**. Upstream alone also lacks this project's private changes.
+Included: original controller/UART code, HDMI and PSRAM diagnostics, emulator integration/support files, the ROM packer, test harnesses, provenance and development documentation. The controller viewer and standalone hardware tests can be built independently. The GBA frontend and its native tests require the separately held modified core and locally generated ROM assets; **a fresh clone cannot build the v28 emulator as-is**. Upstream alone also lacks this project's private changes.
 
 No commercial ROM, compressed game payload, game screenshot, ROM-containing UF2, compiled emulator binary or archived core source is uploaded. Game titles and numerical test results identify the experiments without distributing game data. See [publication boundaries](THIRD_PARTY_NOTICES.md) before using or extending this repository.
 
@@ -108,8 +132,8 @@ HDMIPSRAMTest/        Early combined video/memory diagnostic
 HDMIPSRAMSafeTest/    Staged clock/memory diagnostic
 PSRAMDirectTest/      Direct mapped-memory test separated from allocator test
 GBAPrototype/
-  GBAFeather/         v24 frontend and original support files; core excluded
-  tools/             ROM packer and reference-test preparation tool
+  GBAFeather/         v28 frontend and original support files; core excluded
+  tools/             ROM packer and private-reference preparation tools
   tests/             Native test harness; requires excluded core and local assets
   linker/            16 KiB main-stack linker layout and SDK licence
 docs/                 Architecture, chronological history, debugging and evidence
@@ -118,7 +142,14 @@ Emulator Development/ Existing reference documents retained from main
 
 ## Where development can go next
 
-The remaining performance work needs measurements on the Feather. Candidates include reducing HSTX interrupt overhead, investigating interpreter and bus costs, and revisiting framebuffer transfer after startup remains stable. A faster CPU backend would be a substantial engineering task. The failed v22 experiment is a reminder that passing desktop tests does not establish embedded startup safety.
+Board PC sampling, renderer phase timing, PSRAM benchmark loops and USB binary
+capture are now implemented. Recent logs place CPU dispatch/fetch ahead of explicit
+renderer waits. The next work examines the full execution/bus/scheduler path and
+more complete native/guest workload profiles, with controlled same-scene board
+A/B runs. V46's cached-fetch leaf is a board-trial candidate, not a demonstrated solution. Its first host comparison is modest/mixed, including a later-scene
+regression. Native JIT translation, DWT/XIP/bus attribution and a new scanout
+backend remain unimplemented proposals. The 60 FPS target is the acceptance
+criterion, not a claimed result.
 
 Before a complete public emulator release, the core needs redistribution permission or replacement with a suitably licensed implementation. Save persistence, sound, broader game compatibility and stable gameplay also remain open work.
 

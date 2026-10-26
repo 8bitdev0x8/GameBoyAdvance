@@ -1,0 +1,173 @@
+{
+  "version": 42,
+  "baseline": 41,
+  "kind": "Window-span compositor and optional second-layer kernel",
+  "sha256": "bbf50727a826410871b3b6ab2784a33babd77c49f1e72cfab8ece6a3b052ad02",
+  "uf2_bytes": 10145792,
+  "arduino_reported_program_bytes": 5006080,
+  "static_sram_bytes": 238268,
+  "static_sram_change_vs_v41": -408,
+  "heap_capacity_before_dynamic_allocations": 269628,
+  "final_arm_class_sizes": {
+    "Emulator": 83560,
+    "CompressedRom": 5124,
+    "Cartridge": 172,
+    "ScanlineWorker": 1032,
+    "RenderState": 84,
+    "Recorder": 332,
+    "GbaPcProfileSnapshot": 120
+  },
+  "ppu_render_stack_frame_bytes": 328,
+  "main_stack_bytes": 16384,
+  "core1_stack_bytes": 8192,
+  "initialized_sram_bytes_verified": 54132,
+  "cpu_mhz": 240,
+  "psram_mhz": 30,
+  "log_ring_bytes": 24576,
+  "psram_arena_used_bytes": 7857152,
+  "psram_arena_spare_bytes": 7168,
+  "sampler_function_ranges": 1032,
+  "map_fingerprint": 1088876913,
+  "analyzed_v41_captures": 10,
+  "analyzed_frame_records": 3343,
+  "native_benchmark": [
+    {
+      "warmup": 0,
+      "frames": 1800,
+      "baseline": {
+        "wall_ms": 1421.119,
+        "draw_ms": 587.996
+      },
+      "candidate": {
+        "wall_ms": 1296.094,
+        "draw_ms": 465.809
+      },
+      "reduction_percent": {
+        "wall_ms": 8.797644672965454,
+        "draw_ms": 20.780243403016343
+      }
+    },
+    {
+      "warmup": 3600,
+      "frames": 1200,
+      "baseline": {
+        "wall_ms": 1030.808,
+        "draw_ms": 427.174
+      },
+      "candidate": {
+        "wall_ms": 940.32,
+        "draw_ms": 332.979
+      },
+      "reduction_percent": {
+        "wall_ms": 8.77835639614748,
+        "draw_ms": 22.050733424787083
+      }
+    },
+    {
+      "warmup": 12000,
+      "frames": 600,
+      "baseline": {
+        "wall_ms": 1008.336,
+        "draw_ms": 296.1
+      },
+      "candidate": {
+        "wall_ms": 943.541,
+        "draw_ms": 233.396
+      },
+      "reduction_percent": {
+        "wall_ms": 6.425933419019048,
+        "draw_ms": 21.176629517055055
+      }
+    }
+  ],
+  "native_frames": 6000,
+  "native_checkpoints_match_v41": 20,
+  "native_final_pc": "080bc248",
+  "native_final_hash": "5ba30470",
+  "native_guest_cycles": 1685293130,
+  "native_worker_scanlines": 953015,
+  "independent_ppu_fixtures": 480,
+  "concurrent_snapshot_scanlines": 38400,
+  "fallback": "GBAFeather-Sonic-v41-USB.uf2",
+  "fallback_sha256": "5adf279257425b8801b67bb2602d9d7856158c5737958964aec5324e90a5b704",
+  "preserved_v41_sources": [
+    "GBAFeather/BiosStorage.h",
+    "GBAFeather/BiosStub.h",
+    "GBAFeather/BoardStartup.h",
+    "GBAFeather/CompressedRom.h",
+    "GBAFeather/ControllerState.h",
+    "GBAFeather/DebugLog.h",
+    "GBAFeather/MemoryBenchmark.h",
+    "GBAFeather/PcProfiler.h",
+    "GBAFeather/RenderProfileDisplay.h",
+    "GBAFeather/src/BiosStorage.cpp",
+    "GBAFeather/src/BootTrace.h",
+    "GBAFeather/src/core/apu.cpp",
+    "GBAFeather/src/core/bus.cpp",
+    "GBAFeather/src/core/cartridge.cpp",
+    "GBAFeather/src/core/cpu.cpp",
+    "GBAFeather/src/core/dma.cpp",
+    "GBAFeather/src/core/emulator.cpp",
+    "GBAFeather/src/core/irq.cpp",
+    "GBAFeather/src/core/log.cpp",
+    "GBAFeather/src/core/render_worker.cpp",
+    "GBAFeather/src/core/rom_provider.cpp",
+    "GBAFeather/src/core/scheduler.cpp",
+    "GBAFeather/src/core/timers.cpp",
+    "GBAFeather/src/esp_attr.h",
+    "GBAFeather/src/esp_heap_caps.h",
+    "GBAFeather/src/FaultCapture.cpp",
+    "GBAFeather/src/FaultCapture.h",
+    "GBAFeather/src/FrameInputLatch.h",
+    "GBAFeather/src/gba/core/apu.hpp",
+    "GBAFeather/src/gba/core/bus.hpp",
+    "GBAFeather/src/gba/core/cartridge.hpp",
+    "GBAFeather/src/gba/core/constants.hpp",
+    "GBAFeather/src/gba/core/cpu.hpp",
+    "GBAFeather/src/gba/core/dma.hpp",
+    "GBAFeather/src/gba/core/downscale.hpp",
+    "GBAFeather/src/gba/core/emulator.hpp",
+    "GBAFeather/src/gba/core/irq.hpp",
+    "GBAFeather/src/gba/core/log.hpp",
+    "GBAFeather/src/gba/core/ppu.hpp",
+    "GBAFeather/src/gba/core/render_backend.hpp",
+    "GBAFeather/src/gba/core/render_profile.hpp",
+    "GBAFeather/src/gba/core/render_profile_clock.hpp",
+    "GBAFeather/src/gba/core/render_worker.hpp",
+    "GBAFeather/src/gba/core/rom_provider.hpp",
+    "GBAFeather/src/gba/core/save_allocator.hpp",
+    "GBAFeather/src/gba/core/scheduler.hpp",
+    "GBAFeather/src/gba/core/timers.hpp",
+    "GBAFeather/src/gba/core/types.hpp",
+    "GBAFeather/src/generated/manifest.json",
+    "GBAFeather/src/generated/rom_blob.S",
+    "GBAFeather/src/generated/RomIndex.h",
+    "GBAFeather/src/PcProfiler.cpp",
+    "GBAFeather/src/PcProfilerFormat.h",
+    "GBAFeather/src/PcProfilerTable.cpp",
+    "GBAFeather/src/psram_arena.cpp",
+    "GBAFeather/src/psram_arena.h",
+    "GBAFeather/src/ReplacementBios-LICENSE.txt",
+    "GBAFeather/src/ReplacementBios.h",
+    "GBAFeather/src/tinf/crc32.c",
+    "GBAFeather/src/tinf/LICENSE",
+    "GBAFeather/src/tinf/tinf.h",
+    "GBAFeather/src/tinf/tinflate.c",
+    "GBAFeather/src/VideoIdleMonitor.h",
+    "GBAFeather/UartProtocol.h",
+    "linker/feather-8mb-stack16k.ld",
+    "build.ps1"
+  ],
+  "changed_v41_firmware_sources": [
+    "GBAFeather/BiosSelection.h",
+    "GBAFeather/GBAFeather.ino",
+    "GBAFeather/src/core/ppu.cpp",
+    "GBAFeather/src/generated/pc-profile-map.json",
+    "GBAFeather/src/generated/PcProfileRanges.h"
+  ],
+  "validation": "PASS final UF2/vectors/stacks/initialized SRAM/exact ROM/single BIOS/exact map; independent PPU/snapshot/core tests; 6000 Sonic frames exact CPU/bus/cycles/RAM/video and binary log accounting; PC decoder fingerprint tests",
+  "hardware_tested": false,
+  "hardware_fps": null,
+  "limits": "Native timing reductions are not board FPS gains. Need a V42 board log on a comparable scene. CPU dispatch/fetch and HDMI IRQ cost remain; rendering alone cannot reach 60 FPS.",
+  "publication": "Private local only; no modified core, ROM, BIOS, firmware or source archive published"
+}

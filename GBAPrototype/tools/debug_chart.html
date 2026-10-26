@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GBA performance log</title>
+<style>
+:root{color-scheme:light dark;--bg:#f5f7fa;--surface:#fff;--text:#182333;--muted:#57687c;--grid:#d8e0e9;--track:#e9eef4;--wall:#1c304d;--run:#336cdb;--draw:#09877f;--wait:#bf650a;--prep:#8072c7;--bgline:#2782c9;--obj:#d28c29;--mix:#159d91;--rgb:#ba619d;--other:#78899d;--target:#bd4756}
+@media(prefers-color-scheme:dark){:root{--bg:#101720;--surface:#17212e;--text:#e2eaf5;--muted:#a5b4c8;--grid:#344253;--track:#253243;--wall:#dce9fa;--run:#79a8ff;--draw:#50ccbd;--wait:#f4b15f;--prep:#a79be1;--bgline:#69b0e4;--obj:#e8ba6c;--mix:#4bbfb3;--rgb:#d792bd;--other:#91a1b6;--target:#f08b97}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1400px;margin:auto;padding:28px 32px 44px}header{display:flex;justify-content:space-between;gap:18px;align-items:start}h1{font-size:25px;margin:0 0 4px;font-weight:650;letter-spacing:-.5px}h2{font-size:17px;font-weight:600;margin:0}p{margin:4px 0}.muted{color:var(--muted)}.small{font-size:12px}.mono{font-family:ui-monospace,Consolas,monospace}.numbers{font-variant-numeric:tabular-nums}#source{overflow-wrap:anywhere}.capture{display:flex;gap:24px;flex-wrap:wrap;margin:23px 0 25px;padding:16px 0;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid)}.stat{min-width:140px;flex:1}.stat strong{display:block;font-size:27px;font-weight:600;letter-spacing:-.5px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}.plots{min-width:0}figure{margin:0 0 24px}.caption{display:flex;justify-content:space-between;align-items:center;gap:12px}.legend{display:flex;flex-wrap:wrap;gap:5px 16px;margin:9px 0 5px;min-height:24px}.legend button,.key{display:inline-flex;align-items:center;gap:6px;color:var(--text);background:transparent;border:0;padding:2px 0;font:inherit;font-size:12px}.legend button{cursor:pointer}.legend button[aria-pressed="false"]{opacity:.4}.swatch{display:inline-block;width:15px;height:3px;background:var(--c);flex-shrink:0}.stack-key .swatch{height:9px;width:11px}.chart{display:block;width:100%;height:254px;touch-action:pan-y}.short{height:210px}.framebox{position:sticky;top:18px;padding-left:20px;border-left:1px solid var(--grid)}.framebox h2{margin-bottom:2px}.framebox input{width:100%;accent-color:var(--draw);margin:12px 0}label{display:block}.metric{display:flex;justify-content:space-between;gap:16px;padding:4px 0;border-bottom:1px solid var(--track)}.metric span:last-child{font-variant-numeric:tabular-nums}.section-label{margin:18px 0 5px;font-weight:600}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.detailgrid div{padding:6px 0}.detailgrid strong{display:block;font-size:14px;font-weight:500}.detailgrid span{font-size:12px;color:var(--muted)}details{margin-top:16px}summary{cursor:pointer}.raw{font-size:12px;width:100%;border-collapse:collapse;overflow-wrap:anywhere}.raw td{border-bottom:1px solid var(--track);padding:4px 0;vertical-align:top}.raw td:last-child{text-align:right;font-variant-numeric:tabular-nums}.cpu-row{margin:5px 0;font-size:12px;overflow-wrap:anywhere}.cpu-row strong{font-weight:500}footer{margin-top:10px;padding-top:14px;border-top:1px solid var(--grid);font-size:12px;color:var(--muted)}.empty{padding:30px 0;color:var(--muted)}button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--run);outline-offset:4px}.stats-line{margin-top:5px}.cpu-detail{min-height:42px}
+@media(max-width:950px){main{padding:22px}.layout{grid-template-columns:minmax(0,1fr) 265px;gap:18px}.framebox{padding-left:16px}.stat{min-width:100px}}
+@media(max-width:720px){main{padding:18px 14px}header{display:block}.layout{display:flex;flex-direction:column}.plots,.framebox{width:100%}.framebox{position:static;padding:18px 0 0;border-left:0;border-top:1px solid var(--grid)}.capture{gap:14px}.stat{flex-basis:40%}.chart{height:235px}.caption{display:block}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<main>
+<header><div><h1>GBA frame performance</h1><p id="source" class="muted small"></p><p id="hardware" class="muted small"></p></div><p class="small muted">RP2350 · Sonic Advance 3 · v41</p></header>
+<div class="capture numbers" aria-label="Capture summary">
+ <div class="stat"><span class="muted small">Weighted frame rate</span><strong id="average-fps"></strong></div>
+ <div class="stat"><span class="muted small">Average drawing</span><strong id="average-draw"></strong></div>
+ <div class="stat"><span class="muted small">Average renderer wait</span><strong id="average-wait"></strong></div>
+ <div class="stat"><span class="muted small">Worst frame</span><strong id="worst-frame"></strong></div>
+</div>
+<div class="layout">
+<section class="plots" aria-label="Performance graphs">
+ <figure><div class="caption"><h2>Frame execution</h2><span class="small muted">Hover or tap to inspect a frame</span></div>
+ <p class="small muted">Run includes waiting; drawing overlaps Run. These lines must not be added together.</p>
+ <div id="timing-legend" class="legend"></div><canvas id="timing" class="chart" role="img" aria-label="Per-frame wall, Run, Draw and Wait times in milliseconds over the capture"></canvas></figure>
+ <figure><h2>Where drawing time goes</h2><p class="small muted">Exclusive renderer stages; the stacked total equals Draw.</p>
+ <div id="render-legend" class="legend stack-key"></div><canvas id="renderer" class="chart" role="img" aria-label="Stacked renderer stage times in milliseconds over the capture"></canvas>
+ <p id="render-share" class="small muted stats-line"></p></figure>
+ <figure><h2>Frame rate</h2><p class="small muted">Individual-frame FPS; dashed line is the time-weighted capture average.</p>
+ <canvas id="fps" class="chart short" role="img" aria-label="Instantaneous frame rate in FPS over the capture"></canvas></figure>
+ <figure><h2>Core 0 sampled hotspots</h2><p class="small muted">Shares of core-0 samples. Points mark the end of each sampling window; Submit includes queue waiting.</p>
+ <div id="cpu-legend" class="legend"></div><canvas id="cpu" class="chart short" role="img" aria-label="Top sampled core-zero function percentages at five-second sampling windows"></canvas>
+ <p id="cpu-detail" class="small muted cpu-detail"></p></figure>
+</section>
+<aside class="framebox" aria-label="Selected frame details">
+ <h2 id="selected-frame"></h2><p id="selected-time" class="muted small numbers"></p>
+ <label for="frame-picker" class="small muted">Inspect frame <span id="selected-number" class="numbers"></span></label>
+ <input id="frame-picker" type="range" min="0" max="0" value="0" step="1">
+ <div id="selected-timings"></div>
+ <div class="section-label">State and activity</div><div id="selected-state" class="detailgrid"></div>
+ <div class="section-label">CPU window covering this frame</div><div id="selected-cpu"></div>
+ <details><summary class="small">All raw values for this frame</summary><table class="raw"><tbody id="raw-values"></tbody></table></details>
+</aside>
+</div>
+<footer id="capture-note"></footer>
+</main>
+<script type="application/json" id="capture-data">__GBA_LOG_DATA__</script>
+<script>
+(()=>{
+'use strict';
+const data=JSON.parse(document.getElementById('capture-data').textContent), F=data.frames, P=data.profiles, S=data.summary, H=data.header;
+const $=id=>document.getElementById(id), fmt=(n,d=1)=>Number(n||0).toFixed(d), ms=n=>fmt(n,2)+' ms';
+const css=getComputedStyle(document.documentElement), color=name=>css.getPropertyValue('--'+name).trim();
+const timing=[{key:'wall_ms',label:'Wall',c:'wall'},{key:'run_ms',label:'Run',c:'run'},{key:'draw_ms',label:'Draw',c:'draw'},{key:'wait_ms',label:'Wait',c:'wait'}];
+const phases=[{key:'prep_ms',label:'Prep',c:'prep'},{key:'bg_ms',label:'BG',c:'bgline'},{key:'obj_ms',label:'OBJ',c:'obj'},{key:'mix_ms',label:'Mix',c:'mix'},{key:'rgb_ms',label:'RGB',c:'rgb'},{key:'other_ms',label:'Other',c:'other'}];
+const visible=new Set(timing.map(x=>x.key));
+let selected=F.length?F.reduce((best,f,i)=>f.wall_us>F[best].wall_us?i:best,0):0;
+let selectedCpu=P.length-1;
+const duration=F.length?F[F.length-1].t:1;
+const plots={};
+const shortName=n=>n.includes('ScanlineWorker::submit')?'Submit / queue wait':n.includes('cpu_run_until')?'CPU dispatch':n.includes('Bus::read_code')?'Code fetch':n.replace('gba::','').split('(')[0];
+const cpuNames=[...new Set(P.flatMap(p=>[p.function1,p.function2,p.function3]).filter(n=>n&&n!=='none'))];
+const palette=['wait','run','draw','prep','rgb','other'];
+function node(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
+function legend(id,series,toggle){const root=$(id);series.forEach(s=>{const item=node(toggle?'button':'span',undefined,toggle?'':'key');if(toggle){item.type='button';item.setAttribute('aria-pressed','true');item.addEventListener('click',()=>{if(visible.has(s.key))visible.delete(s.key);else visible.add(s.key);item.setAttribute('aria-pressed',String(visible.has(s.key)));drawTiming();});}const sw=node('span',undefined,'swatch');sw.style.setProperty('--c','var(--'+s.c+')');item.append(sw,node('span',s.label));root.append(item);});}
+legend('timing-legend',timing,true);legend('render-legend',phases,false);legend('cpu-legend',cpuNames.map((n,i)=>({label:shortName(n),c:palette[i%palette.length]})),false);
+$('source').textContent=(S.capture_file||'GBA capture')+' · '+F.length+' frames · '+fmt(S.retained_wall_seconds,2)+' seconds';
+$('hardware').textContent=fmt(H.cpu_hz/1e6,0)+' MHz CPU · '+fmt(H.psram_hz/1e6,0)+' MHz PSRAM · BIOS '+(F[0]?.bios_sram?'SRAM copy':'flash view');
+$('average-fps').textContent=fmt(S.weighted_fps,2)+' FPS';$('average-draw').textContent=ms(S.mean_ms_per_frame?.draw);$('average-wait').textContent=ms(S.mean_ms_per_frame?.wait);$('worst-frame').textContent=ms(S.worst_frame_ms);
+$('render-share').textContent='Average Mix '+ms(S.mean_ms_per_frame?.mix)+' · '+fmt(100*(S.mean_ms_per_frame?.mix||0)/(S.mean_ms_per_frame?.draw||1),1)+'% of Draw';
+$('capture-note').textContent=F.length+' retained consecutive-frame entries · '+(H.dropped_records||0).toLocaleString()+' older records overwritten · '+(S.invalid_frame_partitions||0)+' invalid timing partitions. USB/logging overhead is included; CPU sampling windows are independent of frame timings. Capture time: '+(S.capture_local_time||'not recorded')+'.';
+if(!F.length){$('selected-frame').textContent='No completed frames';document.querySelectorAll('canvas').forEach(c=>{c.replaceWith(node('p','No frame data in this capture.','empty'));});return;}
+const max=(rows,key)=>Math.max(0,...rows.map(r=>Number(r[key])||0));
+function niceMax(value){if(value<=0)return 1;const p=10**Math.floor(Math.log10(value));return Math.ceil(value/p/0.5)*p*0.5;}
+function setup(id,yMax,unit){
+ const canvas=$(id),box=canvas.getBoundingClientRect(),w=Math.max(250,box.width),h=box.height,dpr=window.devicePixelRatio||1;
+ if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+ const L=62,R=17,T=13,B=43,pw=w-L-R,ph=h-T-B;
+ const x=t=>L+t/duration*pw,y=n=>T+ph-n/yMax*ph;
+ ctx.font='12px system-ui';ctx.lineWidth=1;ctx.fillStyle=color('muted');ctx.strokeStyle=color('grid');
+ for(let i=0;i<=4;i++){const value=yMax*i/4,at=y(value);ctx.beginPath();ctx.moveTo(L,at);ctx.lineTo(w-R,at);ctx.stroke();ctx.textAlign='right';ctx.fillText(value>=100?fmt(value,0):fmt(value,1),L-9,at+4);}
+ const ticks=w<440?3:5;for(let i=0;i<=ticks;i++){const t=duration*i/ticks,at=x(t);ctx.textAlign=i===0?'left':i===ticks?'right':'center';ctx.fillText(fmt(t,1),at,h-B+21);}
+ ctx.strokeRect(L,T,pw,ph);ctx.textAlign='center';ctx.fillText('Elapsed capture time (s)',L+pw/2,h-3);ctx.save();ctx.translate(14,T+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText(unit,0,0);ctx.restore();
+ const p={ctx,w,h,L,R,T,B,pw,ph,x,y,yMax};plots[id]=p;return p;
+}
+function clipping(p,fn){p.ctx.save();p.ctx.beginPath();p.ctx.rect(p.L,p.T,p.pw,p.ph);p.ctx.clip();fn();p.ctx.restore();}
+function line(p,rows,key,c,width=1.5,dash=[]){const g=p.ctx;g.strokeStyle=color(c);g.lineWidth=width;g.setLineDash(dash);g.beginPath();let active=false;for(const r of rows){if(r[key]===null||r[key]===undefined){active=false;continue;}if(active)g.lineTo(p.x(r.t),p.y(r[key]));else{g.moveTo(p.x(r.t),p.y(r[key]));active=true;}}g.stroke();g.setLineDash([]);}
+function guide(p,t){const g=p.ctx;g.strokeStyle=color('muted');g.lineWidth=1;g.setLineDash([3,4]);g.beginPath();g.moveTo(p.x(t),p.T);g.lineTo(p.x(t),p.T+p.ph);g.stroke();g.setLineDash([]);}
+function point(p,t,value,c){const g=p.ctx;g.fillStyle=color(c);g.beginPath();g.arc(p.x(t),p.y(value),3.2,0,Math.PI*2);g.fill();}
+function drawTiming(){const yMax=niceMax(Math.max(1000/60,...timing.filter(s=>visible.has(s.key)).map(s=>max(F,s.key)))*1.06),p=setup('timing',yMax,'Frame time (ms)');clipping(p,()=>{for(const s of timing)if(visible.has(s.key)){line(p,F,s.key,s.c,s.key==='wall_ms'?1.8:1.3);point(p,F[selected].t,F[selected][s.key],s.c);}p.ctx.strokeStyle=color('target');p.ctx.setLineDash([5,4]);p.ctx.beginPath();p.ctx.moveTo(p.L,p.y(1000/60));p.ctx.lineTo(p.L+p.pw,p.y(1000/60));p.ctx.stroke();p.ctx.setLineDash([]);guide(p,F[selected].t);});p.ctx.fillStyle=color('muted');p.ctx.textAlign='right';p.ctx.fillText('60 FPS budget · 16.7 ms',p.L+p.pw-5,p.y(1000/60)-6);}
+function drawRenderer(){const p=setup('renderer',niceMax(max(F,'draw_ms')*1.08),'Draw time (ms)');clipping(p,()=>{let lower=F.map(()=>0);for(const s of phases){const upper=F.map((f,i)=>lower[i]+f[s.key]),g=p.ctx;g.beginPath();F.forEach((f,i)=>i?g.lineTo(p.x(f.t),p.y(upper[i])):g.moveTo(p.x(f.t),p.y(upper[i])));for(let i=F.length-1;i>=0;i--)g.lineTo(p.x(F[i].t),p.y(lower[i]));g.closePath();g.fillStyle=color(s.c);g.globalAlpha=.83;g.fill();g.globalAlpha=1;lower=upper;}line(p,F,'draw_ms','wall',1);guide(p,F[selected].t);});}
+function drawFps(){const p=setup('fps',niceMax(Math.max(max(F,'fps'),S.weighted_fps||0)*1.07),'Frames per second');clipping(p,()=>{line(p,F,'fps','run');p.ctx.strokeStyle=color('muted');p.ctx.setLineDash([5,4]);p.ctx.beginPath();p.ctx.moveTo(p.L,p.y(S.weighted_fps));p.ctx.lineTo(p.L+p.pw,p.y(S.weighted_fps));p.ctx.stroke();p.ctx.setLineDash([]);guide(p,F[selected].t);point(p,F[selected].t,F[selected].fps,'run');});}
+function drawCpu(){const cpuMax=Math.max(1,...P.flatMap(p=>[p.percent1,p.percent2,p.percent3]));const p=setup('cpu',niceMax(cpuMax*1.15),'Core 0 samples (%)');if(!P.length)return;clipping(p,()=>{cpuNames.forEach((name,i)=>{const rows=P.map(v=>{const rank=[1,2,3].find(k=>v['function'+k]===name);return{t:v.t,value:rank?v['percent'+rank]:null};});line(p,rows,'value',palette[i%palette.length],1.5,i>=6?[4,3]:[]);rows.forEach(r=>{if(r.value!==null)point(p,r.t,r.value,palette[i%palette.length]);});});if(P[selectedCpu])guide(p,P[selectedCpu].t);});const v=P[selectedCpu];$('cpu-detail').textContent=v?'Window ending at '+fmt(v.t,2)+' s · '+v.samples.toLocaleString()+' samples over '+fmt(v.window_ms/1000,2)+' s · '+[1,2,3].map(i=>shortName(v['function'+i])+' '+v['percent'+i]+'%').join(' / '):'';}
+function metric(root,label,value){const row=node('div',undefined,'metric');row.append(node('span',label),node('span',value));root.append(row);}
+function updateSelection(){const f=F[selected];$('selected-frame').textContent='Frame '+f.frame;$('selected-number').textContent=f.frame;$('selected-time').textContent=fmt(f.t,3)+' s · '+fmt(f.fps,2)+' FPS';$('frame-picker').value=String(selected);$('frame-picker').setAttribute('aria-valuetext','Frame '+f.frame+', '+fmt(f.wall_ms,2)+' milliseconds');const times=$('selected-timings');times.replaceChildren();[['Wall','wall_ms'],['Run','run_ms'],['Draw','draw_ms'],['Wait','wait_ms'],['Queue full','qfull_ms'],['Barrier','barrier_ms'],['Prep','prep_ms'],['Backgrounds','bg_ms'],['Sprites','obj_ms'],['Mix','mix_ms'],['RGB','rgb_ms'],['Other','other_ms']].forEach(([name,key])=>metric(times,name,ms(f[key])));
+ const state=$('selected-state');state.replaceChildren();const cells=[['Guest PC','0x'+f.guest_pc_hex],['Controller',f.pad_on?'PAD ON':'PAD OFF'],['Buttons','0x'+Number(f.keys).toString(16).padStart(3,'0')],['Guest input reads',f.key_reads],['VBlank skip',fmt(f.vbskip_percent,1)+'%'],['IFetch hit',fmt(f.ifetch_hit_percent,1)+'%'],['ROM misses',f.rom_misses],['ROM decode',ms(f.decode_us/1000)],['HDMI IRQ time',ms(f.hdmi_irq_us/1000)],['HDMI resets',f.hdmi_resets],['Free heap (cached)',f.free_heap_cached.toLocaleString()+' B'],['Timing checks',f.partition_valid&&f.device_valid?'Valid':'Invalid']];cells.forEach(([name,value])=>{const c=node('div');c.append(node('span',name),node('strong',String(value),name==='Guest PC'?'mono':''));state.append(c);});
+ const cpu=$('selected-cpu');cpu.replaceChildren();const covering=P.find(p=>f.uptime_ms>=p.uptime_ms-p.window_ms && f.uptime_ms<=p.uptime_ms);if(covering){cpu.append(node('p',covering.samples.toLocaleString()+' samples / '+fmt(covering.window_ms/1000,2)+' s','small muted'));for(const i of [1,2,3]){const row=node('div',undefined,'cpu-row');row.append(node('strong',shortName(covering['function'+i])+': '),node('span',covering['percent'+i]+'%'));cpu.append(row);}if(covering.includes_export_pause)cpu.append(node('p','Window includes USB export work.','small muted'));}else cpu.append(node('p','No retained sampling window covers this frame.','small muted'));
+ const raw=$('raw-values');raw.replaceChildren();Object.entries(f).filter(([k])=>!['t'].includes(k)).forEach(([k,v])=>{const row=node('tr');row.append(node('td',k),node('td',String(v)));raw.append(row);});
+ drawTiming();drawRenderer();drawFps();}
+function nearest(rows,t){let lo=0,hi=rows.length-1;while(lo<hi){const mid=(lo+hi)>>1;if(rows[mid].t<t)lo=mid+1;else hi=mid;}return lo>0&&Math.abs(rows[lo-1].t-t)<Math.abs(rows[lo].t-t)?lo-1:lo;}
+function wire(id,cpu=false){$(id).addEventListener('pointermove',e=>{const p=plots[id];if(!p)return;const b=$(id).getBoundingClientRect(),at=e.clientX-b.left;if(at<p.L||at>p.L+p.pw)return;const t=(at-p.L)/p.pw*duration;if(cpu){if(P.length){selectedCpu=nearest(P,t);drawCpu();}}else{const i=nearest(F,t);if(i!==selected){selected=i;updateSelection();}}});$(id).addEventListener('pointerdown',e=>{const p=plots[id];if(!p)return;const t=Math.max(0,Math.min(duration,(e.clientX-$(id).getBoundingClientRect().left-p.L)/p.pw*duration));selected=nearest(F,t);updateSelection();});}
+for(const id of ['timing','renderer','fps'])wire(id);wire('cpu',true);
+$('frame-picker').max=String(F.length-1);$('frame-picker').value=String(selected);$('frame-picker').addEventListener('input',e=>{selected=Number(e.target.value);updateSelection();});
+let redrawQueued=false;const observer=new ResizeObserver(()=>{if(!redrawQueued){redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;updateSelection();drawCpu();});}});document.querySelectorAll('canvas').forEach(el=>observer.observe(el));
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{updateSelection();drawCpu();});
+updateSelection();drawCpu();document.documentElement.dataset.chartsReady='true';
+})();
+</script>
+</body>
+</html>
