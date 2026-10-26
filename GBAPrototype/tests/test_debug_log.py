@@ -45,11 +45,29 @@ class ProtocolTests(unittest.TestCase):
         _,frames,_=debug.decode(packet([record(1,values)]))
         self.assertEqual(frames[0]['leaf_fetch_on'],1)
         self.assertEqual(frames[0]['alu_burst_on'],0)
+        values[27]=256
+        _,frames,_=debug.decode(packet([record(1,values)]))
+        self.assertEqual(frames[0]['fast_memory_on'],1)
+        self.assertEqual(frames[0]['leaf_fetch_on'],0)
+        values[27]=512
+        _,frames,_=debug.decode(packet([record(1,values)]))
+        self.assertEqual(frames[0]['native_on'],1)
+        self.assertEqual(frames[0]['fast_memory_on'],0)
+        values[27]=2048
+        _,frames,_=debug.decode(packet([record(1,values)]))
+        self.assertEqual(frames[0]['flash_aot'],1)
+        self.assertEqual(frames[0]['native_on'],0)
+        self.assertEqual(frames[0]['hstx_dma_ring'],0)
+        values[27]=512|1024|2048
+        _,frames,_=debug.decode(packet([record(1,values)]))
+        self.assertEqual([frames[0][key] for key in ('native_on','hstx_dma_ring','flash_aot')],[1,1,1])
         values[27]=0
         _,frames,_=debug.decode(packet([record(1,values)]))
         self.assertEqual(frames[0]['blocks_on'],0)
         status_spec=importlib.util.spec_from_file_location('block_control',Path(__file__).resolve().parents[1]/'tools/block_control.py')
         control=importlib.util.module_from_spec(status_spec);status_spec.loader.exec_module(control)
+        self.assertEqual(control.parse_native_status('JIT 1 00000010 00000002 00000003 00000004 00000005 00000006 00000000')['memory'],5)
+        with self.assertRaises(ValueError):control.parse_native_status('JIT 2 0 0 0 0 0 0 0')
         parsed=control.parse_status('BLK 1 00000002 ffffffff 00000003 00000004 00000005 00000000\n')
         self.assertTrue(parsed['enabled']);self.assertEqual(parsed['hits'],0xffffffff)
         self.assertEqual(parsed['instructions'],5)
@@ -59,6 +77,10 @@ class ProtocolTests(unittest.TestCase):
         self.assertTrue(control.parse_fetch_status('FET 1\n')['enabled'])
         self.assertFalse(control.parse_fetch_status('FET 0\n')['enabled'])
         with self.assertRaises(ValueError):control.parse_fetch_status('FET 2')
+        self.assertTrue(control.parse_memory_status('MEM 1\n')['enabled'])
+        self.assertFalse(control.parse_memory_status('MEM 0\n')['enabled'])
+        for bad in ('MEM 2','MEM 1 0','RAM 1'):
+            with self.assertRaises(ValueError):control.parse_memory_status(bad)
         for bad in ['BLK 2 0 0 0 0 0 0','BLK 0 0 0 0 0 0 100000000','BLK 0 0 0','dump']:
             with self.assertRaises(ValueError):control.parse_status(bad)
 

@@ -7,6 +7,9 @@
 #include "src/esp_attr.h"
 
 class CompressedRom final : public gba::RomProvider {
+public:
+  bool native_code_immutable()const override{return true;}
+private:
   static constexpr uint32_t SLOTS=GBA_ROM_BACKING_BYTES/ROM_PAGE_SIZE;
   static_assert(SLOTS<65535 && ROM_BLOCK_COUNT<65535);
   static constexpr uint32_t HOT_LINE_SIZE=256,HOT_LINES=GBA_ROM_HOT_BYTES/HOT_LINE_SIZE;

@@ -4,28 +4,11 @@ An educational hardware experiment: emulate a Game Boy Advance on an **Adafruit 
 
 This project grew from a simple question: can I read every controller value on an ESP32? It became a UART bridge, an HDMI input viewer, a memory and video debugging exercise, and finally a running GBA interpreter on the Feather. This repository documents the working pieces, the failed attempts, and the limits of the current result.
 
-**Latest board-measured build: V45, 20 October 2026.** Sonic runs with
-DualSense input and HSTX output, but slow gameplay remains around **7 FPS**.
-The latest 45.6-second retained window measures **7.24 FPS**, Run **131.48**,
-Draw **35.76** and Wait **14.70 ms/frame**. About 89% of Run is outside explicit
-renderer waiting. The **60 FPS gameplay target remains unmet**; a 60 Hz monitor
-signal is not 60 emulated FPS.
+**Status updated 26 October 2026.** Sonic gameplay remains below full speed. The normal path is still an ARM/Thumb interpreter with a second-core renderer. A separate whole-ROM native experiment is being tested; it is not an established faster replacement.
 
-Seven V45 captures contain 2,213 unique frames after removing overlap, covering
-185.672 seconds at a weighted 11.92 FPS across different retained scenes. Faster
-entry/menu windows do not establish smooth gameplay. There is no controlled
-same-scene V44/V45 speedup measurement. Read the [V45 board analysis](docs/v45-board-results.md).
+Recent matched native headless tests measured 3.93860 to 4.31453 FPS with a lookup cache (+9.54%), then 4.61077 FPS with IWRAM/VRAM in SRAM (+6.87% versus cached). These are single headless comparisons, not HDMI gameplay gains. Casper's matched interpreter test measured 11.48 FPS compressed versus 10.50 FPS uncompressed direct Flash (-8.54%); CPU/RAM/pixel endpoints matched. Its 4 MiB ROM fits wholly in Flash. The 60 FPS target remains unmet.
 
-V46 is now a **packaged local CPU-fetch/profile trial**, with exact native
-regressions and firmware checks passed; V45 remains the latest board-measured
-build. The full mapped PC histogram preserves the functions that older logs
-omitted. Host fetch timings are modest and mixed; no board gain or 60 FPS result
-is established. Read [the V46 trial and A/B commands](docs/performance-v46.md).
-The modified core and private assets remain excluded.
-
-The workspace began on **18 October 2026 at 22:50:09 Dublin time**; its first
-surviving original sketch was created at **22:54:53**. The [history](docs/development-history.md)
-distinguishes folder, session, first-code and emulator-subfolder timestamps.
+Read the [current performance status](GBAPrototype/PERFORMANCE-STATUS.md), [26 October results](GBAPrototype/PERFORMANCE-2026-10-26.md), [native experiment](GBAPrototype/WHOLE-ROM-NATIVE-EXPERIMENT.md), [reference-guided plan](GBAPrototype/REFERENCE-GUIDED-OPTIMIZATION.md), and [uploader version history](GBAPrototype/ROM-UPLOADER-HISTORY.md). The older V45 table below is historical, not current status.
 
 ## Read the development story
 

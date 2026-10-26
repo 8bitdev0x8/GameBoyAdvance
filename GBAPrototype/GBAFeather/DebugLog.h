@@ -24,7 +24,7 @@ enum ProfileField : size_t {
 // Type 3: exact full native-PC histogram, six ID/count pairs per chunk.
 // A window's chunks share frame/window/samples/flags. Zero-count pairs are padding.
 enum HistogramField : size_t {HistFrame,HistWindowMs,HistSamples,HistFlags,HistId1,HistHits1};
-enum Flag : uint32_t {PadOn=1,BiosSram=2,TimingValid=4,UsbAttached=16,BlocksOn=32,AluBurstOn=64,LeafFetchOn=128};
+enum Flag : uint32_t {PadOn=1,BiosSram=2,TimingValid=4,UsbAttached=16,BlocksOn=32,AluBurstOn=64,LeafFetchOn=128,FastMemoryOn=256,NativeOn=512,HstxDmaRing=1024};
 using Counters=std::array<uint32_t,FieldCount>;
 using Profile=std::array<uint32_t,ProfileFieldCount>;
 constexpr size_t StorageBytes=24*1024,HeaderBytes=64,MaxRecordBytes=169;

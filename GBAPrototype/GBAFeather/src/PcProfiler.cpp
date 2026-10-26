@@ -6,6 +6,7 @@
 #include <hardware/timer.h>
 #include <hardware/sync.h>
 #include <cstring>
+extern "C" uint32_t gba_native_profile_address(uint32_t pc);
 
 namespace {
 volatile uint16_t hits[GBA_PC_RANGE_CAPACITY]{};
@@ -25,7 +26,7 @@ extern "C" void __no_inline_not_in_flash_func(gba_pc_profile_capture)(const uint
   samples=samples+1;
   if(gbaProfileFramePc(frame,excReturn,0x20000000u,0x20080000u,pc)) {
     if(!(excReturn&8u))irqSamples=irqSamples+1;
-    const int index=gbaProfileFindRange(pc,gbaPcRanges,gbaPcRangeCount);
+    const int index=gbaProfileFindRange(gba_native_profile_address(pc),gbaPcRanges,gbaPcRangeCount);
     if(index>=0) {
       const uint16_t old=hits[index];
       if(old!=0xffffu)hits[index]=old+1;

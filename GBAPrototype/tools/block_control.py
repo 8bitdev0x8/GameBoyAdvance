@@ -1,4 +1,4 @@
-"""Set/query CPU blocks, ALU burst or V46 inline fetch over RP2350 USB."""
+"""Set/query CPU native translation, blocks, burst, fetch or memory paths over USB."""
 import argparse
 import json
 from pathlib import Path
@@ -30,11 +30,28 @@ def parse_fetch_status(line: str) -> dict:
     return dict(enabled=parts[1]=='1')
 
 
+def parse_memory_status(line: str) -> dict:
+    parts=line.strip().split()
+    if len(parts)!=2 or parts[0]!='MEM' or parts[1] not in ('0','1'):
+        raise ValueError('Invalid memory-path status response')
+    return dict(enabled=parts[1]=='1')
+
+
+def parse_native_status(line: str) -> dict:
+    parts=line.strip().split()
+    if len(parts)!=9 or parts[0]!='JIT' or parts[1] not in ('0','1'):
+        raise ValueError('Invalid native translation status response')
+    values=[int(p,16) for p in parts[2:]]
+    if any(v<0 or v>0xffffffff for v in values):raise ValueError('Counter outside u32 range')
+    return dict(enabled=parts[1]=='1',**dict(zip(
+        ('lookups','compiled','batches','instructions','memory','exits','mismatches'),values)))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", required=True)
     parser.add_argument("--mode", choices=("on", "off", "status"), default="status")
-    parser.add_argument("--engine", choices=("blocks", "burst", "fetch"), default="blocks")
+    parser.add_argument("--engine", choices=("blocks", "burst", "fetch", "memory", "native"), default="blocks")
     parser.add_argument("--output", type=Path, help="Optional new JSON status file")
     args = parser.parse_args()
     if args.output and args.output.exists():
@@ -52,10 +69,10 @@ def main() -> None:
                 device.write(f"{args.engine} status\n".encode("ascii"))
                 next_query = time.monotonic() + 1
             line = device.readline().decode("ascii", errors="replace")
-            prefix={"blocks":"BLK ","burst":"BST ","fetch":"FET "}[args.engine]
+            prefix={"blocks":"BLK ","burst":"BST ","fetch":"FET ","memory":"MEM ","native":"JIT "}[args.engine]
             if not line.startswith(prefix):
                 continue
-            status = {"blocks":parse_status,"burst":parse_burst_status,"fetch":parse_fetch_status}[args.engine](line)
+            status = {"blocks":parse_status,"burst":parse_burst_status,"fetch":parse_fetch_status,"memory":parse_memory_status,"native":parse_native_status}[args.engine](line)
             if args.mode != "status" and status["enabled"] != (args.mode == "on"):
                 raise RuntimeError("Firmware did not apply requested execution mode")
             text = json.dumps(status, indent=2) + "\n"

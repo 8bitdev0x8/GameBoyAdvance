@@ -7,13 +7,13 @@
 inline const auto& firmwareBiosBytes = local_gba_bios_bin;
 inline constexpr char firmwareBiosStage[] = "5: LOAD LOCAL GBA BIOS";
 #ifdef GBA_DEBUG_USB
-inline constexpr char firmwareBootBanner[] = "BOOT v46 - SONIC / CPU FETCH TRIAL";
+inline constexpr char firmwareBootBanner[] = "BOOT v53 - SONIC / FRAME BENCHMARK";
 #else
-inline constexpr char firmwareBootBanner[] = "BOOT v46 - SONIC / CORE 1 TIMINGS";
+inline constexpr char firmwareBootBanner[] = "BOOT v53 - SONIC / FRAME BENCHMARK";
 #endif
 #else
 #include "src/ReplacementBios.h"
 inline const auto& firmwareBiosBytes = gba_bios_bin;
 inline constexpr char firmwareBiosStage[] = "5: LOAD REPLACEMENT BIOS";
-inline constexpr char firmwareBootBanner[] = "BOOT v46 - SONIC / CULT BIOS";
+inline constexpr char firmwareBootBanner[] = "BOOT v53 - SONIC / FRAME BENCHMARK";
 #endif

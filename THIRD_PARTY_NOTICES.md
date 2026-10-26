@@ -56,5 +56,4 @@ performance captures, not emulator implementations or ROM data. Numerical
 build/capture summaries, original diagnostics/decoder code, and aggregate AI
 usage exports are included. Raw conversations, account identifiers/credentials,
 raw board captures, supplied BIOS bytes and game imagery remain excluded.
-The V46 integration source is explicitly labeled unfinished; the latest private
-packaged and board-measured version is V45.
+The current private experiment status is recorded in GBAPrototype/PERFORMANCE-STATUS.md and PERFORMANCE-2026-10-26.md. Standalone original allocator/cache experiment support is included; alternate runtime sources and generated game translations are not included.

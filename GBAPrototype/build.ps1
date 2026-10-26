@@ -1,13 +1,19 @@
-param([switch]$Clean, [string]$BiosPath, [switch]$Profile, [switch]$DebugUsb)
+param([switch]$Clean, [string]$BiosPath, [switch]$Profile, [switch]$DebugUsb,
+    [switch]$UsePreparedBios, [string]$BuildDirectory, [string]$OutputDirectory,
+    [string]$CliPath, [string]$ConfigPath, [string]$PythonPath = 'python',
+    [switch]$FrameBenchmark, [int]$BenchmarkWarmupFrames=5000,
+    [int]$BenchmarkFrames=180, [ValidateRange(0,3)][int]$BenchmarkPolicy=3,
+    [switch]$HstxDmaRing, [string]$LibraryDirectory)
 $ErrorActionPreference = 'Stop'
 $taskRoot = $PSScriptRoot
 $taskSketch = Join-Path $taskRoot 'GBAFeather'
-if (-not (Test-Path -LiteralPath (Join-Path $taskSketch 'src/core/cpu.cpp'))) {
-    throw 'The emulator core is intentionally excluded from this public repository. See docs/building.md and THIRD_PARTY_NOTICES.md; standalone hardware sketches build independently.'
-}
+if (-not (Test-Path -LiteralPath (Join-Path $taskSketch 'src/core/cpu.cpp'))) { throw 'The emulator core is intentionally excluded from this public repository. See THIRD_PARTY_NOTICES.md.' }
 $taskCli = 'C:/Program Files/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe'
 $taskConfig = Join-Path $env:USERPROFILE '.arduinoIDE/arduino-cli.yaml'
 $taskBuild = Join-Path $taskRoot '../build/gba'
+if ($BuildDirectory) { $taskBuild = [IO.Path]::GetFullPath($BuildDirectory) }
+if ($CliPath) { $taskCli = $CliPath }
+if ($ConfigPath) { $taskConfig = $ConfigPath }
 $taskInclude = (Join-Path $taskSketch 'src').Replace('\','/')
 # Local RP2350/8 MiB layout: reserve the top 16 KiB of main SRAM for core 0.
 # Generate it at prelink time because Arduino removes generated files at startup.
@@ -17,20 +23,44 @@ $taskLinkerHook = 'recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-py
 $taskCompileOptions = @()
 if ($Clean) { $taskCompileOptions += '--clean' }
 $taskBiosFlags = ''
+if ($LibraryDirectory) {
+    $taskCompileOptions += @('--library',[IO.Path]::GetFullPath($LibraryDirectory))
+}
+if ($HstxDmaRing) {
+    $taskRingHeader = $LibraryDirectory -and (Test-Path -LiteralPath (Join-Path $LibraryDirectory 'src/drivers/dvhstx/HstxDmaRing.h'))
+    $taskCompactHeader = $LibraryDirectory -and (Test-Path -LiteralPath (Join-Path $LibraryDirectory 'src/drivers/dvhstx/HstxCompactIrq.h'))
+    if (!$taskRingHeader -and !$taskCompactHeader) {
+        throw 'HSTX DMA-ring trial requires the isolated experimental library directory'
+    }
+    $taskBiosFlags += ' -DDVHSTX_DMA_RING=1'
+}
+if ($FrameBenchmark) {
+    if (!$DebugUsb) {throw 'Frame benchmark requires -DebugUsb'}
+    if ($BenchmarkWarmupFrames -lt 0 -or $BenchmarkWarmupFrames -gt 100000 -or $BenchmarkFrames -lt 1 -or $BenchmarkFrames -gt 180) {
+        throw 'Frame benchmark requires 0-100000 warmup frames and 1-180 measured frames'
+    }
+    $taskBiosFlags += " -DGBA_FRAME_BENCHMARK -DGBA_BENCH_WARMUP_FRAMES=$BenchmarkWarmupFrames -DGBA_BENCH_FRAMES=$BenchmarkFrames -DGBA_BENCH_POLICY=$BenchmarkPolicy"
+}
 $taskUsbStack = 'nousb'
 if ($DebugUsb) {
     $taskUsbStack = 'picosdk'
     $taskBiosFlags += ' -DGBA_DEBUG_USB'
 }
 if ($BiosPath) {
-    & python (Join-Path $taskRoot 'tools/prepare_bios.py') $BiosPath
+    & $PythonPath (Join-Path $taskRoot 'tools/prepare_bios.py') $BiosPath
     if ($LASTEXITCODE -ne 0) { throw 'Private BIOS preparation failed' }
+    $taskBiosFlags += ' -DGBA_USE_LOCAL_BIOS'
+}
+elseif ($UsePreparedBios) {
+    if (!(Test-Path -LiteralPath (Join-Path $taskSketch 'src/generated/LocalBios.h'))) {
+        throw 'Prepared BIOS header is missing'
+    }
     $taskBiosFlags += ' -DGBA_USE_LOCAL_BIOS'
 }
 $taskProfileTool = Join-Path $taskRoot 'tools/prepare_pc_profile.py'
 if ($Profile) {
     $taskBiosFlags += ' -DGBA_ENABLE_PC_PROFILE'
-    & python $taskProfileTool --empty
+    & $PythonPath $taskProfileTool --empty
     if ($LASTEXITCODE -ne 0) { throw 'PC profile table preparation failed' }
 }
 function Invoke-GbaCompile {
@@ -41,14 +71,16 @@ Invoke-GbaCompile
 if ($Profile) {
     $taskNm = Join-Path $env:LOCALAPPDATA 'Arduino15/packages/rp2040/tools/pqt-gcc/4.1.0-1aec55e/bin/arm-none-eabi-nm.exe'
     $taskElf = Join-Path $taskBuild 'GBAFeather.ino.elf'
-    & python $taskProfileTool --elf $taskElf --nm $taskNm
+    & $PythonPath $taskProfileTool --elf $taskElf --nm $taskNm
     if ($LASTEXITCODE -ne 0) { throw 'PC symbol map generation failed' }
     $taskCompileOptions = @()
+    if ($LibraryDirectory) { $taskCompileOptions += @('--library',[IO.Path]::GetFullPath($LibraryDirectory)) }
     Invoke-GbaCompile
-    & python $taskProfileTool --elf $taskElf --nm $taskNm --check
+    & $PythonPath $taskProfileTool --elf $taskElf --nm $taskNm --check
     if ($LASTEXITCODE -ne 0) { throw 'Final ELF does not match PC map; firmware not delivered' }
 }
 $taskOutput = Join-Path $taskRoot 'output'
+if ($OutputDirectory) { $taskOutput = [IO.Path]::GetFullPath($OutputDirectory) }
 New-Item -ItemType Directory -Path $taskOutput -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $taskBuild 'GBAFeather.ino.uf2') -Destination (Join-Path $taskOutput 'GBAFeather.uf2')
 Write-Host ('UF2 ready: ' + (Join-Path $taskOutput 'GBAFeather.uf2'))

@@ -44,9 +44,16 @@ int main(int argc,char** argv) {
         emulator.set_rom_provider(std::move(provider));emulator.cartridge().auto_detect_save_type();
         emulator.load_bios(std::move(bios));emulator.reset(false);emulator.apu().set_synthesis_enabled(false);
         emulator.cpu().set_idle_acceleration(true);emulator.cpu().set_fast_fetch(true);
+#ifdef GBA_RUNTIME_MEMORY_OFF
+        emulator.cpu().set_fast_memory(false);
+#endif
 #ifdef GBA_DISABLE_LEAF_FETCH
         emulator.cpu().set_leaf_fetch(false);
 #endif
+#ifdef GBA_FORCE_INTERPRETER_DEFAULT
+        emulator.cpu().set_alu_burst(false);
+        emulator.cpu().set_block_execution(false);
+#else
 #ifdef GBA_DISABLE_ALU_BURST
         emulator.cpu().set_alu_burst(false);
 #else
@@ -54,6 +61,7 @@ int main(int argc,char** argv) {
 #endif
 #ifndef GBA_DISABLE_BLOCKS
         emulator.cpu().set_block_execution(true);
+#endif
 #endif
         std::vector<uint16_t> video(320*240,0xdead);
         for(unsigned y=48;y<208;++y)std::fill_n(video.data()+y*320+40,240,0xffdf);

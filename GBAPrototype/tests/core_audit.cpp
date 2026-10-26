@@ -132,12 +132,14 @@ void testVideoDma();
 void testBiosReads();
 void testInstructionWindow();
 void testLeafFetch();
+void testMemoryReads();
+void testArithmeticFlags();
 void testThumbAluFast();
 void testBlockExecution();
 void testColorMath();
 int main(int argc,char**) {
     try {
-        testThumbMultiple(argc>1?1:0);testThumbAluFast();testFetchPath();testBiosReads();testInstructionWindow();testLeafFetch();
+        testThumbMultiple(argc>1?1:0);testThumbAluFast();testArithmeticFlags();testFetchPath();testBiosReads();testInstructionWindow();testLeafFetch();testMemoryReads();
         testVideoWrites();testVideoDma();
         testBlockExecution();
         testColorMath();

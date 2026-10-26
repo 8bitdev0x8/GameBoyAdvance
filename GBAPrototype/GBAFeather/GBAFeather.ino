@@ -9,6 +9,7 @@
 #include "BiosSelection.h"
 #include "BiosStorage.h"
 #include "RenderProfileDisplay.h"
+#include "FrameBenchmark.h"
 #ifdef GBA_DEBUG_USB
 #ifdef NO_USB
 #error "GBA_DEBUG_USB requires the Pico SDK USB stack"
@@ -24,6 +25,9 @@
 #include <hardware/exception.h>
 #include <hardware/dma.h>
 #include <hardware/irq.h>
+#include <hardware/resets.h>
+#include <hardware/structs/hstx_ctrl.h>
+#include <hardware/structs/hstx_fifo.h>
 #include <new>
 #include "src/BootTrace.h"
 #include "src/FaultCapture.h"
@@ -87,7 +91,12 @@ gba::RenderProfile lastRenderProfile{};
 #ifdef GBA_DEBUG_USB
 GbaDebug::Recorder debugRecorder;
 bool debugBiosSram=false,debugUsbAttached=false,debugResetAtFrame=false,debugPcExportGap=false;
+bool debugFlashPrepared=false;
+uint32_t debugFlashPreparedAt=0;
 uint32_t debugCachedHeap=0;
+#ifdef GBA_FRAME_BENCHMARK
+FrameBenchmark::Window frameBenchmark{GBA_BENCH_WARMUP_FRAMES,GBA_BENCH_FRAMES,GBA_BENCH_POLICY};
+#endif
 GbaDebug::Counters debugFrameBefore{};
 GbaDebug::Config debugConfig;
 #endif
@@ -99,6 +108,11 @@ uint32_t videoRestarts=0;
 uint32_t lastVideoRestart=0;
 VideoIdleMonitor videoIdle;
 VideoProgressMonitor videoProgress;
+#if defined(DVHSTX_DMA_RING) && DVHSTX_DMA_RING
+VideoRateMonitor videoRate{45,75};
+#else
+VideoRateMonitor videoRate;
+#endif
 volatile uint32_t videoIrqCount=0;
 volatile uint32_t videoIrqWallUs=0;
 uint32_t lastVideoIrqRate=0,lastVideoIrqMsPerSecond=0;
@@ -120,6 +134,7 @@ void installVideoProbe() {
   }
   irq_set_enabled(DMA_IRQ_2,true);
   videoProgress.reset();
+  videoRate.reset();
 }
 
 void recoveryLed() {
@@ -142,6 +157,11 @@ void restartVideo(bool force) {
   if(directVideoReady)renderWorker.set_video_target(nullptr,0);
   memcpy(videoBackup,display.getBuffer(),VIDEO_BYTES);
   display.end();
+  // end() disables HSTX and aborts DMA, but leaves FIFO words. Re-enabling
+  // the command expander can then interpret leftover pixel data as commands.
+  // Reset only HSTX, after all its DMA producers have stopped.
+  reset_block(RESETS_RESET_HSTX_BITS);
+  unreset_block_wait(RESETS_RESET_HSTX_BITS);
   if(!display.begin()) {
     // The old buffer was freed; do not draw through it after a failed begin.
     videoReady=false;
@@ -169,12 +189,14 @@ void serviceVideo() {
   const bool busy=dma_channel_is_busy(0) || dma_channel_is_busy(1) || dma_channel_is_busy(2);
   const bool idle=videoIdle.stopped(now,busy);
   const bool stalled=videoProgress.stalled(now,videoIrqCount);
-  if(idle || stalled)restartVideo(false);
+  const bool malformed=videoRate.invalid(now,videoIrqCount);
+  if(idle || stalled || malformed)restartVideo(false);
 }
 void runtimeProgress() {
   static uint32_t lastTime=0,lastIrqs=0,lastIrqUs=0;
   const uint32_t now=millis();
   if(uint32_t(now-lastTime)<1000)return;
+  serviceVideo();
   const uint32_t count=videoIrqCount;
   const uint32_t irqUs=videoIrqWallUs;
   const uint32_t irqMsPerSecond=uint32_t(irqUs-lastIrqUs)/uint32_t(now-lastTime);
@@ -200,11 +222,41 @@ void textLine(int y,const char* message,uint16_t color) {
   display.setTextSize(1);display.setTextColor(color);display.setCursor(4,y+2);
   display.print(message);
 }
+void serviceBootUsb(const char* reason) {
+#ifdef GBA_DEBUG_USB
+  // Boot errors precede the normal frame/USB command loop. Keep them queryable
+  // without touching a missing interpreter or its logging allocations.
+  static bool initialized=false;
+  static char command[24];static unsigned length=0;static bool overflow=false;
+  if(!initialized){Serial.begin(115200);initialized=true;}
+  if(!Serial){length=0;overflow=false;return;}
+  for(unsigned budget=0;budget<64 && Serial.available();++budget) {
+    const int ch=Serial.read();
+    if(ch=='\r'||ch=='\n') {
+      if(length && !overflow) {
+        command[length]=0;
+        if(!strcmp(command,"bench status")||!strcmp(command,"boot status")) {
+          Serial.printf("BOOTFAIL stage=%lu fault=%08lx pc=%08lx lr=%08lx reason=%s\n",
+              (unsigned long)watchdog_hw->scratch[1],(unsigned long)watchdog_hw->scratch[3],
+              (unsigned long)watchdog_hw->scratch[5],(unsigned long)watchdog_hw->scratch[6],reason);
+        } else if(!strcmp(command,"prepare flash")) {
+          watchdog_hw->scratch[0]=0;Serial.write("FLASH READY\n");Serial.flush();
+        }
+      }
+      length=0;overflow=false;
+    } else if(ch>=32 && ch<127) {
+      if(length+1<sizeof(command))command[length++]=char(ch);else overflow=true;
+    }
+  }
+#else
+  (void)reason;
+#endif
+}
 void fail(const char* message) {
   watchdog_disable();watchdog_hw->scratch[0]=0;
   textLine(100,message,0xf800);
   textLine(116,"Stop. Reset board after fixing this.");
-  while(true) {digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));delay(200);}
+  while(true) {serviceBootUsb(message);digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));delay(200);}
 }
 void beginBootStage(uint32_t stage) {
   // Arm recovery before drawing, waiting, or invoking cartridge code.
@@ -295,8 +347,13 @@ GbaDebug::Counters captureDebugCounters(uint32_t now) {
       (debugBiosSram?GbaDebug::BiosSram:0u)|(debugUsbAttached?GbaDebug::UsbAttached:0u)|
       (emulator->cpu().block_execution()?GbaDebug::BlocksOn:0u)|
       (emulator->cpu().alu_burst() && !emulator->cpu().block_execution()?GbaDebug::AluBurstOn:0u)|
-      (emulator->cpu().leaf_fetch()?GbaDebug::LeafFetchOn:0u);
+      (emulator->cpu().leaf_fetch()?GbaDebug::LeafFetchOn:0u)|
+      (emulator->cpu().fast_memory()?GbaDebug::FastMemoryOn:0u)|
+      (emulator->cpu().native_execution()?GbaDebug::NativeOn:0u);
   c[GbaDebug::Keys]=uint32_t((~emulator->bus().keyinput())&0x03ffu);
+#if defined(DVHSTX_DMA_RING) && DVHSTX_DMA_RING
+  c[GbaDebug::Flags]|=GbaDebug::HstxDmaRing;
+#endif
   c[GbaDebug::HdmiResets]=videoRestarts;c[GbaDebug::FreeHeap]=debugCachedHeap;
   c[GbaDebug::KeyReads]=emulator->bus().keyinput_read_count();
   return c;
@@ -327,6 +384,44 @@ void resetDebugWindow(uint32_t now) {
   debugFrameBefore=captureDebugCounters(now);
   debugResetAtFrame=false;
 }
+#ifdef GBA_FRAME_BENCHMARK
+uint32_t benchmarkStateHash() {
+  uint32_t hash=2166136261u;
+  const auto& s=emulator->cpu().state();
+  for(auto value:s.regs)hash=FrameBenchmark::hashWord(hash,value);
+  hash=FrameBenchmark::hashWord(hash,s.cpsr);
+  for(auto value:s.banked_usr_r8_r12)hash=FrameBenchmark::hashWord(hash,value);
+  for(const auto& bank:s.banked_r13_r14)for(auto value:bank)hash=FrameBenchmark::hashWord(hash,value);
+  for(auto value:s.banked_fiq_r8_r14)hash=FrameBenchmark::hashWord(hash,value);
+  for(auto value:{s.spsr_svc,s.spsr_irq,s.spsr_abt,s.spsr_und,s.spsr_fiq,uint32_t(s.halted),uint32_t(s.next_fetch_access)})
+    hash=FrameBenchmark::hashWord(hash,value);
+  for(const auto bytes:{emulator->bus().ewram(),emulator->bus().iwram()})
+    for(auto value:bytes)hash=FrameBenchmark::hashByte(hash,value);
+  for(const auto bytes:{emulator->bus().vram(),emulator->bus().palette(),emulator->bus().oam()})
+    for(auto value:bytes)hash=FrameBenchmark::hashByte(hash,value);
+  return hash;
+}
+uint32_t benchmarkVideoHash() {
+  uint32_t hash=2166136261u;
+  const uint16_t* pixels=display.getBuffer()+48*320+40;
+  for(unsigned y=0;y<160;++y)for(unsigned x=0;x<240;++x) {
+    const uint16_t value=pixels[y*320+x];
+    hash=FrameBenchmark::hashByte(hash,uint8_t(value));
+    hash=FrameBenchmark::hashByte(hash,uint8_t(value>>8));
+  }
+  return hash;
+}
+void beginBenchmarkWindow() {
+  emulator->flush_render();
+  frameBenchmark.startState=benchmarkStateHash();
+  frameBenchmark.startVideo=benchmarkVideoHash();
+  frameBenchmark.startCycle=emulator->cpu().current_cycle();
+  debugRecorder.clear();debugPcExportGap=true;
+  frameBenchmark.phase=FrameBenchmark::Phase::Measuring;
+  // Hashing and warmup are outside the first measured frame.
+  resetDebugWindow(millis());
+}
+#endif
 bool serviceDebugUsb() {
   static uint32_t lastTransmit=0;
   static char command[16]{};
@@ -346,13 +441,55 @@ bool serviceDebugUsb() {
     if(ch=='\r' || ch=='\n') {
       if(commandLength && !overflow) {
         command[commandLength]='\0';
-        if(!strcmp(command,"dump")) {
+        if(!debugRecorder.exporting() && !strcmp(command,"bench status")) {
+#ifdef GBA_FRAME_BENCHMARK
+          char status[192];
+          const int n=snprintf(status,sizeof(status),"BENCH %lu %lu %lu %lu %lu %08lx %08lx %08lx %08lx %08lx %08lx\n",
+              (unsigned long)frameBenchmark.phase,(unsigned long)emulatedFrames,
+              (unsigned long)frameBenchmark.warmup,(unsigned long)frameBenchmark.count,(unsigned long)frameBenchmark.policy,
+              (unsigned long)frameBenchmark.startState,(unsigned long)frameBenchmark.endState,
+              (unsigned long)frameBenchmark.startVideo,(unsigned long)frameBenchmark.endVideo,
+              (unsigned long)uint32_t(frameBenchmark.startCycle),(unsigned long)uint32_t(frameBenchmark.endCycle));
+          if(n>0 && n<int(sizeof(status)) && Serial.availableForWrite()>=n)Serial.write((const uint8_t*)status,size_t(n));
+#else
+          Serial.write("BENCH 0\n");
+#endif
+        } else if(!debugRecorder.exporting() && !strcmp(command,"prepare flash")) {
+          // Drained frame boundary: a planned upload is not a failed run.
+          emulator->flush_render();watchdog_hw->scratch[0]=0;
+          debugFlashPrepared=true;debugFlashPreparedAt=millis();
+          Serial.write("FLASH READY\n");Serial.flush();
+        } else if(!strcmp(command,"dump")) {
           emulator->flush_render();debugConfig.uptimeMs=now;
           if(debugRecorder.startDump(debugConfig))lastTransmit=now;
+        } else if(!debugRecorder.exporting() && !strcmp(command,"video restart")) {
+          restartVideo(true);debugResetAtFrame=true;debugPcExportGap=true;
+        } else if(!debugRecorder.exporting() && !strcmp(command,"video status")) {
+          char status[128];
+          const int n=snprintf(status,sizeof(status),"VID %08lx %08lx %08lx %08lx %08lx %08lx %08lx %08lx %08lx %08lx\n",
+              (unsigned long)emulatedFrames,(unsigned long)lastVideoIrqRate,
+              (unsigned long)lastVideoIrqMsPerSecond,(unsigned long)videoRestarts,
+              (unsigned long)clock_get_hz(clk_sys),(unsigned long)clock_get_hz(clk_hstx),
+              (unsigned long)hstx_ctrl_hw->csr,(unsigned long)hstx_fifo_hw->stat,
+              (unsigned long)reinterpret_cast<uintptr_t>(display.getBuffer()),
+              (unsigned long)display.getBuffer()[4*320+4]);
+          if(n>0 && n<int(sizeof(status)) && Serial.availableForWrite()>=n)Serial.write((const uint8_t*)status,size_t(n));
+          debugResetAtFrame=true;
         } else if(!debugRecorder.exporting() &&
             (!strcmp(command,"blocks on") || !strcmp(command,"blocks off"))) {
           emulator->cpu().set_block_execution(!strcmp(command,"blocks on"));
           debugResetAtFrame=true;debugPcExportGap=true;
+        } else if(!debugRecorder.exporting() && (!strcmp(command,"native on") || !strcmp(command,"native off"))) {
+          emulator->cpu().set_native_execution(!strcmp(command,"native on"));
+          debugResetAtFrame=true;debugPcExportGap=true;
+        } else if(!debugRecorder.exporting() && !strcmp(command,"native status")) {
+          const auto s=emulator->cpu().native_stats();char status[80];
+          const int n=snprintf(status,sizeof(status),"JIT %u %08lx %08lx %08lx %08lx %08lx %08lx %08lx\n",
+              emulator->cpu().native_execution()?1u:0u,(unsigned long)s.lookups,(unsigned long)s.compiled,
+              (unsigned long)s.batches,(unsigned long)s.instructions,(unsigned long)s.memory,
+              (unsigned long)s.exits,(unsigned long)s.mismatches);
+          if(n>0 && n<int(sizeof(status)) && Serial.availableForWrite()>=n)Serial.write((const uint8_t*)status,size_t(n));
+          debugResetAtFrame=true;
         } else if(!debugRecorder.exporting() && !strcmp(command,"blocks status")) {
           const auto s=emulator->cpu().block_stats();char status[64];
           const int n=snprintf(status,sizeof(status),"BLK %u %08lx %08lx %08lx %08lx %08lx %08lx\n",
@@ -374,6 +511,14 @@ bool serviceDebugUsb() {
           debugResetAtFrame=true;debugPcExportGap=true;
         } else if(!debugRecorder.exporting() && !strcmp(command,"fetch status")) {
           const char* status=emulator->cpu().leaf_fetch()?"FET 1\n":"FET 0\n";
+          if(Serial.availableForWrite()>=6)Serial.write((const uint8_t*)status,6);
+          debugResetAtFrame=true;
+        } else if(!debugRecorder.exporting() &&
+            (!strcmp(command,"memory on") || !strcmp(command,"memory off"))) {
+          emulator->cpu().set_fast_memory(!strcmp(command,"memory on"));
+          debugResetAtFrame=true;debugPcExportGap=true;
+        } else if(!debugRecorder.exporting() && !strcmp(command,"memory status")) {
+          const char* status=emulator->cpu().fast_memory()?"MEM 1\n":"MEM 0\n";
           if(Serial.availableForWrite()>=6)Serial.write((const uint8_t*)status,6);
           debugResetAtFrame=true;
         } else if(!strcmp(command,"clear"))debugRecorder.clear();
@@ -413,7 +558,20 @@ void presentGame() {
   ++emulatedFrames;++fpsFrames;
   const uint32_t now=millis();
 #ifdef GBA_DEBUG_USB
+#ifdef GBA_FRAME_BENCHMARK
+  if(frameBenchmark.begins(emulatedFrames)) {beginBenchmarkWindow();return;}
+#endif
   appendDebugFrame(now);
+#ifdef GBA_FRAME_BENCHMARK
+  if(frameBenchmark.ends(emulatedFrames)) {
+    frameBenchmark.endCycle=emulator->cpu().current_cycle();
+    // Last frame is recorded before endpoint hashing; frozen guest state and
+    // log ring remain available across arbitrarily slow USB downloads.
+    frameBenchmark.endState=benchmarkStateHash();frameBenchmark.endVideo=benchmarkVideoHash();
+    frameBenchmark.phase=FrameBenchmark::Phase::Complete;
+    textLine(34,"FRAME BENCHMARK COMPLETE",0x07e0);return;
+  }
+#endif
 #endif
   // Five-second averages keep all timing rows readable with one sample ID.
   // Game pixels/input still update at their normal frame/slice cadence.
@@ -447,7 +605,7 @@ void presentGame() {
   fpsFrames=0;lastFps=now;
   diagnosticSample=(diagnosticSample+1u)%1000u;
   char line[80];
-  snprintf(line,sizeof(line),"v46 %lu.%lu FPS | PAD %s | VBskip %lu%% B%u",(unsigned long)(fps/10),(unsigned long)(fps%10),controller.connected?"ON":"OFF",(unsigned long)vblankPercent,emulator->cpu().block_execution()?1u:0u);
+  snprintf(line,sizeof(line),"v53 %lu.%lu FPS | PAD %s | VBskip %lu%% J%u",(unsigned long)(fps/10),(unsigned long)(fps%10),controller.connected?"ON":"OFF",(unsigned long)vblankPercent,emulator->cpu().native_execution()?1u:0u);
   textLine(4,line,0x07ff);
   snprintf(line,sizeof(line),"Run %lu.%lu Draw %lu.%lu Copy %lu Wait %lu #%03lu",
       (unsigned long)(runTenths/10),(unsigned long)(runTenths%10),(unsigned long)(drawTenths/10),
@@ -595,9 +753,13 @@ void setup() {
   pinMode(LED_BUILTIN,OUTPUT);
   digitalWrite(LED_BUILTIN,HIGH);
   safeCpuAndRamClock();
+  // Reserve the large interpreter object before framebuffer, UART and display
+  // helper allocations fragment the internal SRAM heap. Construct it later,
+  // after ROM/PSRAM diagnostics, so boot-stage fault capture remains useful.
+  void* coreStorage=malloc(sizeof(gba::Emulator));
   Serial1.setRX(1);Serial1.setTX(0);Serial1.setFIFOSize(4096);Serial1.begin(230400);
   controller.clear();
-  if(!display.begin())while(true){digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));delay(100);}
+  if(!display.begin())while(true){serviceBootUsb("HDMI initialization/allocation failed");digitalWrite(LED_BUILTIN,!digitalRead(LED_BUILTIN));delay(100);}
   installVideoProbe();
   display.setTextWrap(false);display.fillScreen(0);
   textLine(8,"GBA RP2350 EXPERIMENT",0x07ff);
@@ -618,9 +780,9 @@ void setup() {
     textLine(148,detail);
     snprintf(detail,sizeof(detail),"SP %08lX %s",(unsigned long)faultSp,softwareAbort?"CALLER RECORD":(fault&8u)?"Frame VALID":"Frame UNAVAILABLE");
     textLine(166,detail);
-    textLine(190,"Photo this screen; working fallback is v36.");
+    textLine(190,"Record this screen; working fallback is v47.");
     watchdog_hw->scratch[0]=0;
-    while(true){serviceVideo();recoveryLed();busy_wait_ms(10);}
+    while(true){serviceBootUsb("recovery screen");serviceVideo();recoveryLed();busy_wait_ms(10);}
   }
   gbaInstallFaultCapture();
   char bootInfo[70];
@@ -657,12 +819,11 @@ void setup() {
   if(retained!=std::min(size_t(ROM_BLOCK_COUNT),rom->backing_capacity()))
     fail("ROM cache residency mapping FAILED");
   textLine(64,"ROM cache retention PASSED",0x07e0);
-  snprintf(bootInfo,sizeof(bootInfo),"SRAM free %d / core needs %lu",rp2040.getFreeHeap(),(unsigned long)sizeof(gba::Emulator));
+  snprintf(bootInfo,sizeof(bootInfo),"Core SRAM %s %lu | free %d",coreStorage?"reserved":"NEEDS",(unsigned long)sizeof(gba::Emulator),rp2040.getFreeHeap());
   textLine(128,bootInfo);
   beginBootStage(2);
   gbaBootTraceHook=constructorProgress;
   gbaBootTrace(20);
-  void* coreStorage=malloc(sizeof(gba::Emulator));
   if(!coreStorage)fail("Cannot allocate GBA interpreter SRAM");
   gbaBootTrace(35);
   emulator=new(coreStorage) gba::Emulator();
@@ -693,6 +854,9 @@ void setup() {
   emulator->apu().set_synthesis_enabled(false);
   emulator->cpu().set_idle_acceleration(true);
   emulator->cpu().set_fast_fetch(true);
+  // V49 board A/B/A: native translation loses on the measured workload.
+  // Retain the USB opt-in for experiments; default to the faster interpreter.
+  emulator->cpu().set_native_execution(false);
   // Restart after all save/BIOS allocations and bulk memory initialization.
   restartVideo(true);
   snprintf(bootInfo,sizeof(bootInfo),"PSRAM %lu /7680 KiB | SRAM free %d",(unsigned long)(gbaPsramUsed()/1024),rp2040.getFreeHeap());
@@ -705,6 +869,9 @@ void setup() {
   debugConfig.cpuHz=clock_get_hz(clk_sys);debugConfig.psramHz=30000000;
   for(unsigned i=0;i<3;++i)debugConfig.dependentNs[i]=memoryResults[i].dependentReadNs;
   debugConfig.flags=debugBiosSram?GbaDebug::BiosSram:0u;
+#if defined(DVHSTX_DMA_RING) && DVHSTX_DMA_RING
+  debugConfig.flags|=GbaDebug::HstxDmaRing;
+#endif
 #ifdef GBA_ENABLE_PC_PROFILE
   debugConfig.mapFingerprint=GbaDebug::fingerprint({reinterpret_cast<const uint8_t*>(gbaPcRanges),gbaPcRangeCount*sizeof(GbaPcRange)});
 #endif
@@ -731,18 +898,34 @@ void setup() {
 #endif
   inputLatch.clear();
   if(controller.connected)inputLatch.update(gbaKeys(),emulatedFrames);
+#if defined(GBA_DEBUG_USB) && defined(GBA_FRAME_BENCHMARK)
+  if(frameBenchmark.begins(0))beginBenchmarkWindow();
+#endif
 }
 void loop() {
+#ifdef GBA_DEBUG_USB
+  if(debugFlashPrepared && uint32_t(millis()-debugFlashPreparedAt)>=5000u) {
+    // Restore ordinary fault recovery if the host abandons the upload.
+    watchdog_hw->scratch[0]=BOOT_MAGIC;debugFlashPrepared=false;
+  }
+#endif
   pollController();
   runtimeProgress();
 #ifdef GBA_DEBUG_USB
+#ifdef GBA_FRAME_BENCHMARK
+  if(frameBenchmark.frozen()) {serviceDebugUsb();watchdog_update();return;}
+#endif
   if(debugRecorder.exporting()) {
     serviceDebugUsb();watchdog_update();
     if(!debugRecorder.exporting() && debugResetAtFrame)resetDebugWindow(millis());
     return;
   }
 #endif
+#ifdef GBA_FRAME_BENCHMARK
+  emulator->set_keys(FrameBenchmark::keys(emulatedFrames,frameBenchmark.policy));
+#else
   emulator->set_keys(inputLatch.value(emulatedFrames));
+#endif
   // Small emulated-cycle slices keep the UART receiver serviced between calls.
   const uint32_t started=micros();
   emulator->run_until(emulator->cpu().current_cycle()+1024);

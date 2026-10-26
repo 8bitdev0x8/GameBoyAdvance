@@ -14,6 +14,7 @@
 #include "src/FrameInputLatch.h"
 #include "gba/core/render_worker.hpp"
 #include "DebugLog.h"
+#include "FrameBenchmark.h"
 
 class HostRenderThread {
   gba::ScanlineWorker& worker_;
@@ -330,6 +331,18 @@ int main(int argc,char**argv) {
     check(!videoProgress.stalled(0xfffffff0u,0xffffffffu) && !videoProgress.stalled(4,0),"IRQ counter wrap is progress");
     check(videoProgress.stalled(104,0),"Video progress timeout handles time wrap");
     std::cout<<"PASS: video IRQ progress timeout and counter/time wrap\n";
+    VideoRateMonitor videoRate;
+    VideoRateMonitor frameRate{45,75};
+    check(!frameRate.invalid(0,0) && !frameRate.invalid(500,30) && !frameRate.invalid(1000,60),"Healthy DMA ring frame IRQ rate");
+    check(!frameRate.invalid(1500,15810) && frameRate.invalid(2000,31560),"Line-rate IRQs invalid in frame-ring mode");
+    check(!videoRate.invalid(0,0) && !videoRate.invalid(500,15750) && !videoRate.invalid(1000,31500),"Healthy HDMI line rate");
+    check(!videoRate.invalid(1500,73500) && videoRate.invalid(2000,115500),"V48 84 kHz malformed stream triggers recovery");
+    videoRate.reset();
+    check(!videoRate.invalid(0,0) && !videoRate.invalid(500,42000) && !videoRate.invalid(1000,57750) && !videoRate.invalid(1500,99750),"Healthy window clears transient rate error");
+    check(!videoRate.invalid(5000,200000) && !videoRate.invalid(5500,242000) && videoRate.invalid(6000,284000),"Long startup pauses rebaseline video rate");
+    videoRate.reset();
+    check(!videoRate.invalid(0xffffff00u,0xffffe000u) && !videoRate.invalid(244,7558) && !videoRate.invalid(744,23308),"Video rate handles time and IRQ count wrap");
+    std::cout<<"PASS: HDMI line-rate recovery, transient rejection, startup pauses and counter wrap\n";
     std::vector<uint8_t> arenaBuffer(GBA_PSRAM_ARENA_BYTES);
     GbaArena bounded(arenaBuffer.data(),arenaBuffer.size());
     // Static SRAM holds IWRAM, VRAM, palette, OAM, wait tables and hot ROM lines.
@@ -338,14 +351,22 @@ int main(int argc,char**argv) {
     for(size_t n:{size_t(gba::kIwramSize),size_t(gba::kPaletteSize),size_t(gba::kVramSize),size_t(gba::kOamSize),sizeof(gba::Bus::WaitStateTables)})
       check(fast.allocate(n)!=nullptr,"Static SRAM pool capacity");
     check(fast.used()==GBA_FAST_BUS_BYTES && !fast.allocate(1),"Exact SRAM pool budget");
-    // PSRAM boot order: video recovery buffer, ROM cache, PPU, EWRAM, save.
+    // Full external-memory budget, including debug capture and cold host PCM.
     for(size_t n:{size_t(320*240*2),GBA_ROM_BACKING_BYTES,size_t(gba::kFramebufferPixels*2),
         size_t(gba::kEwramSize),GBA_SAVE_CAPACITY}) {
       void* p=bounded.allocate(n);
       check(p && bounded.owns(p) && !(reinterpret_cast<uintptr_t>(p)&15),"Bounded arena allocation/alignment");
     }
+    check(bounded.allocate(GbaDebug::StorageBytes)!=nullptr,"Debug ring fits beside largest cartridge save");
+#if defined(GBA_PLATFORM_RP2350) && !defined(GBA_APU_INTERNAL_MIX_BUFFER)
+    check(bounded.allocate(GBA_APU_MIX_BYTES)!=nullptr,"Cold audio buffer fits beside largest save and debug ring");
+#endif
     const size_t before=bounded.used();
-    check(before==7832576 && GBA_PSRAM_ARENA_BYTES-before==31744,"Complete ROM cache and 128 KiB save arena budget");
+#if defined(GBA_PLATFORM_RP2350) && !defined(GBA_APU_INTERNAL_MIX_BUFFER)
+    check(before==7848960 && GBA_PSRAM_ARENA_BYTES-before==15360,"Complete ROM/audio/debug/128 KiB save arena budget");
+#else
+    check(before==7857152 && GBA_PSRAM_ARENA_BYTES-before==7168,"Complete ROM/debug/128 KiB save arena budget");
+#endif
     check(!bounded.allocate(GBA_PSRAM_ARENA_BYTES) && bounded.used()==before,"Arena bounds/failure atomicity");
     std::cout<<"PASS: fixed 7.5 MiB arena capacity, alignment, overflow rejection\n";
     auto original=load(argv[1]),packed=load(argv[2]);
@@ -443,10 +464,15 @@ int main(int argc,char**argv) {
     HostRenderThread renderThread(worker,threaded);
     std::vector<uint8_t> borrowedBios; // External view outlives both emulators.
     gba::Emulator memory,compressed;
+    memory.cpu().set_fast_memory(false);
     memory.cpu().optimize_thumb_alu=false;
     compressed.cpu().set_idle_acceleration(true);
     compressed.cpu().set_fast_fetch(true);
     compressed.cpu().set_block_execution(false);
+    if(getenv("GBA_TEST_NATIVE_MODEL")) {
+      gba::Arm7tdmi::native_executor=[](uint16_t*,uint32_t,uint32_t*,uint32_t*,void* c){gba::Arm7tdmi::native_test_model(c);};
+      compressed.cpu().set_native_execution(true);
+    }
     memory.bus().optimize_video_writes=false;
     memory.cartridge().optimize_bios_reads=false;
     memory.ppu().optimize_video_writes=false;
@@ -510,6 +536,8 @@ int main(int argc,char**argv) {
       c[GbaDebug::Flags]=compressed.cpu().block_execution()?GbaDebug::BlocksOn:0u;
       if(compressed.cpu().alu_burst() && !compressed.cpu().block_execution())c[GbaDebug::Flags]|=GbaDebug::AluBurstOn;
       if(compressed.cpu().leaf_fetch())c[GbaDebug::Flags]|=GbaDebug::LeafFetchOn;
+      if(compressed.cpu().fast_memory())c[GbaDebug::Flags]|=GbaDebug::FastMemoryOn;
+      if(compressed.cpu().native_execution())c[GbaDebug::Flags]|=GbaDebug::NativeOn;
       c[GbaDebug::Keys]=uint32_t((~compressed.bus().keyinput())&0x03ffu);
       c[GbaDebug::KeyReads]=compressed.bus().keyinput_read_count();return c;
     };
@@ -532,6 +560,8 @@ int main(int argc,char**argv) {
         if(frame>=2400 && frame<2408)keys=1<<3;
         if(frame>=3600)keys|=1<<4;
       }
+      if(const char* policy=getenv("GBA_TEST_FRAME_POLICY"))
+        keys=FrameBenchmark::keys(frame,unsigned(std::stoul(policy)));
       memory.set_keys(keys);compressed.set_keys(keys);
       if(getenv("GBA_TEST_SLICED")) {
         // Match the firmware's UART polling boundaries as well as run_frame().
@@ -612,6 +642,11 @@ int main(int argc,char**argv) {
     std::cout<<"VBlank polling cycles skipped "<<compressed.cpu().vblank_skipped_cycles()<<"\n";
     std::cout<<"Instruction fast reads "<<compressed.bus().code_fetch_fast_hits<<" of "<<compressed.bus().code_fetch_attempts<<"\n";
     std::cout<<"Thumb ALU fast executions "<<compressed.cpu().fast_thumb_alu_count<<"\n";
+    if(compressed.cpu().native_execution()) {
+      const auto s=compressed.cpu().native_stats();
+      std::cout<<"Native model: compiled "<<s.compiled<<" batches "<<s.batches<<" instructions "<<s.instructions<<" exits "<<s.exits<<" mismatches "<<s.mismatches<<"\n";
+      check(s.batches>0 && s.instructions>s.batches,"Game replay exercises mixed multi-instruction JIT plans");
+    }
     std::cout<<"Instruction window hits "<<compressed.cartridge().instruction_hits()<<" fills "<<compressed.cartridge().instruction_fills()<<"\n";
     std::cout<<"Inline instruction fetch hits "<<compressed.bus().code_line_leaf_hits<<"\n";
     std::cout<<"Thumb base-in-list cases: loads "<<compressed.cpu().base_load_corrections<<" stores "<<compressed.cpu().base_store_corrections<<"\n";

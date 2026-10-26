@@ -154,6 +154,10 @@ def decode(data: bytes, map_path: Path | None = None) -> tuple[dict, list[dict],
             row["blocks_on"] = int(bool(row["flags"] & 32))
             row["alu_burst_on"] = int(bool(row["flags"] & 64))
             row["leaf_fetch_on"] = int(bool(row["flags"] & 128))
+            row["fast_memory_on"] = int(bool(row["flags"] & 256))
+            row["native_on"] = int(bool(row["flags"] & 512))
+            row["hstx_dma_ring"] = int(bool(row["flags"] & 1024))
+            row["flash_aot"] = int(bool(row["flags"] & 2048))
             frames.append(row)
         elif kind == 2:
             for rank in range(1, 4):
